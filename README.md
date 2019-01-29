@@ -1,2 +1,2 @@
 # bit-algorithms
-A exploratory implementation of the bit version of the C++ standard algorithms
+An exploratory implementation of the bit version of the C++ standard algorithms
