@@ -23,7 +23,7 @@ The structure of the repository is the following:
             * **`src`**: source files of standardization documents
     * **`ext`**:
         * **`bit`**: a local copy of the bit library
-    * **`include`**: header files implementing bit algorithms
+    * **`include`**: main directory, containing the implementation of all the bit algorithms as header files
     * **`lib`**: library files, if any
     * **`src`**: source files including examples, tests, and benchmarks
         * **`benchmarks`**: benchmarking utilities
