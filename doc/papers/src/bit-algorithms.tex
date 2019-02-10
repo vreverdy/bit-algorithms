@@ -1,0 +1,127 @@
+% ============================== BIT ALGORITHMS ============================== %
+% Project:          The Experimental Bit Algorithms Library
+% Name:             bit-algorithms.tex
+% Description:      Scientific and technical paper on bit algorithms
+% Creator:          Vincent Reverdy
+% Contributor(s):   Vincent Reverdy [2019]
+% License:          BSD 3-Clause License
+% ============================================================================ %
+
+
+
+% =============================== CONFIGURATION ============================== %
+% Document class
+\documentclass[letterpaper, 8pt, twocolumn]{article}
+% ---------------------------------------------------------------------------- %
+% Packages
+\usepackage[
+    tmargin = 1in,
+    bmargin = 1in,
+    lmargin = 1in,
+    rmargin = 1in
+]{geometry}
+\usepackage{lipsum}
+\usepackage{lmodern}
+\usepackage{titling}
+\usepackage{titlesec}
+\usepackage[sf=false]{libertine}
+\usepackage{cite}
+\usepackage{array}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{fdsymbol}
+\usepackage{tabularx}
+\usepackage{epigraph}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{siunitx}
+\usepackage{colortbl}
+\usepackage{enumitem}
+\usepackage[listings,skins,theorems,breakable,most]{tcolorbox}
+\edef\restoreparindent{\parindent=\the\parindent\relax}
+\usepackage[parfill]{parskip}
+\restoreparindent
+\usepackage{hyperref}
+% ---------------------------------------------------------------------------- %
+% Compilation
+\pdfpageattr{/Group << /S /Transparency /I true /CS /DeviceRGB>>}
+% ---------------------------------------------------------------------------- %
+% Bibliography
+\bibliographystyle{apalike}
+% ============================================================================ %
+
+
+
+% ================================== LAYOUT ================================== %
+% Page style
+\pagestyle{fancy}
+\fancyhead{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+% ---------------------------------------------------------------------------- %
+% Fonts
+\renewcommand{\ttdefault}{cmtt}
+% ---------------------------------------------------------------------------- %
+% Spacing
+\titlespacing\section{0pt}{0.25\baselineskip plus 2pt minus 1pt}{0.125\baselineskip plus 2pt minus 1pt}
+\titlespacing\subsection{0pt}{0.25\baselineskip plus 2pt minus 1pt}{0.125\baselineskip plus 2pt minus 1pt}
+\titlespacing\subsubsection{0pt}{0.25\baselineskip plus 2pt minus 1pt}{0.125\baselineskip plus 2pt minus 1pt}
+\setlist{topsep=-0.25\baselineskip, itemsep=0.25\baselineskip, partopsep=0.\baselineskip, parsep=0.\baselineskip}
+% ============================================================================ %
+
+
+
+% ================================= COMMANDS ================================= %
+% Acronyms
+\newcommand{\acronym}[1]{\textsc{#1}}
+\newcommand{\acrolang}[1]{\textsc{#1}}
+\newcommand{\cpp}{\acrolang{C++}}
+\newcommand{\clang}{\acrolang{C}}
+\newcommand{\typecell}[3]{\cellcolor{#1}\textcolor{blue}{#2}#3}
+% ============================================================================ %
+
+
+
+% ================================ INFORMATION =============================== %
+% Information
+\title{Towards a Standard Library of Bit Manipulation Algorithms}
+\author{%
+Vincent Reverdy%
+%\and FirstName LastName%
+}
+\date{\today}
+% ---------------------------------------------------------------------------- %
+% Hyperref
+\hypersetup{
+    pdfauthor={\theauthor},
+    pdftitle={\thetitle},
+    pdfsubject={Bit manipulation algorithms},
+    pdfkeywords={high performance computing, programming languages, algorithms, bit, bit manipulation, C++},
+    pdfproducer={LaTeX},
+    pdfcreator={pdflatex},
+    colorlinks,
+    citecolor=blue,
+    filecolor=blue,
+    linkcolor=blue,
+    urlcolor=blue
+}
+% ============================================================================ %
+
+
+
+% =================================== MAIN =================================== %
+\begin{document}
+\maketitle
+% ---------------------------------------------------------------------------- %
+\begin{abstract}
+\label{sec:abstract}
+\end{abstract}
+% ---------------------------------------------------------------------------- %
+\section{Introduction}
+\label{sec:introduction}
+% ---------------------------------------------------------------------------- %
+\bibliography{bit-algorithms}
+% ---------------------------------------------------------------------------- %
+\end{document}
+% ============================================================================ %
