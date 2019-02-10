@@ -27,6 +27,7 @@ The structure of the repository is the following:
                * **`packages`**: additional latex packages
     * **`ext`**:
         * **`bit`**: a local copy of the bit library
+        * **`cplusplus`**: a local copy of the required files from the C++ standard
     * **`include`**: main directory, containing the implementation of all the bit algorithms as header files
     * **`lib`**: library files, if any
     * **`src`**: source files including examples, tests, and benchmarks
