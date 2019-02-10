@@ -1,6 +1,6 @@
 #!/bin/bash
 # =================================== MAKE =================================== #
-# Project: 			Bit Algorithms
+# Project: 			The Experimental Bit Algorithms Library
 # Name:				make.sh
 # Description: 		Main makefile to compile different components of the project
 # Creator:         	Vincent Reverdy
@@ -16,5 +16,15 @@
 
 
 # ================================ PARAMETERS ================================ #
-
+# Compiler for C++ compilation
+COMPILER=g++
+# Flags for C++ compilation
+FLAGS="-std=c++17"
+WFLAGS="-pedantic -Wall -Wextra -Wfatal-errors"
+OFLAGS="-O3 -g -DNDEBUG -march=native -mtune=native"
+DFLAGS="-O0 -g"
+# ---------------------------------------------------------------------------- #
+# Latex compilation
+LATEX=pdflatex
+BIBTEX=bibtex
 # ============================================================================ #
