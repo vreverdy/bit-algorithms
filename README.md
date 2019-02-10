@@ -31,7 +31,7 @@ The structure of the repository is the following:
         * **`manager`**: project manager to automatically generate algorithms files
         * **`tests`**: unit tests for the algorithms
     * `LICENSE`: information on the licensing terms of the project
-    * `Makefile`: main makefile to compile different components of the library
+    * `Makefile`: main makefile to compile different components of the project
     * `README.md`: this file, with the main basic documentation
     
 
