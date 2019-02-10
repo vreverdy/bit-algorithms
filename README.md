@@ -17,10 +17,14 @@ The structure of the repository is the following:
         * **`papers`**: 
             * **`pdf`**: pdf files of technical and scientific papers
             * **`src`**: source files of technical and scientific papers
+               * **`figures`**: figures to be included in documents
+               * **`packages`**: additional latex packages
         * **`wg21`**: standardization documents for the ISO WG21 standards committee
             * **`html`**: html files of standardization documents
             * **`pdf`**: pdf files of standardization documents
             * **`src`**: source files of standardization documents
+               * **`figures`**: figures to be included in documents
+               * **`packages`**: additional latex packages
     * **`ext`**:
         * **`bit`**: a local copy of the bit library
     * **`include`**: main directory, containing the implementation of all the bit algorithms as header files
