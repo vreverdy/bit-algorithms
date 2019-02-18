@@ -16,9 +16,14 @@
 // C++ standard library
 #include <istream>
 #include <ostream>
+#include <fstream> //Not sure if there is anything against using fstream
+#include <streambuf>
 #include <utility>
 #include <filesystem>
 #include <type_traits>
+#include <string>
+#include <regex>
+#include <unordered_map>
 // Project sources
 // Third-party libraries
 // Miscellaneous
@@ -30,21 +35,21 @@
 // Namelist class definition
 template <
     class String = std::string,
-    class Map = std::unordered_map<String, String>
+    class Map = std::map<String, String> //changed from unordered_map to map for now to fit typenames
 >
 class namelist
 {
     // Types
     public:
     using string = String;
-    using map = Map
-    using char_type = typename string::traits::char_type;
+    using map_type = Map;
+    using char_type = typename string::traits_type::char_type;
     using key_type = typename map_type::key_type;
     using mapped_type = typename map_type::mapped_type;
     using value_type = typename map_type::value_type;
     using size_type = typename map_type::size_type;
     using difference_type = typename map_type::difference_type;
-    using key_compare = typename map_type::key_compare;
+    using key_compare = typename map_type::key_compare; //Unordered maps don't need to or have comparison
     using allocator_type = typename map_type::allocator_type;
     using reference = typename map_type::reference;
     using const_reference = typename map_type::const_reference;
@@ -55,7 +60,7 @@ class namelist
     using reverse_iterator = typename map_type::reverse_iterator;
     using const_reverse_iterator = typename map_type::const_reverse_iterator;
     using path = std::filesystem::path;
-    using regex = std::regex<char_type>;
+    using regex = std::regex;// <char_type> template was throwing compiler errors...
     using istream = std::basic_istream<char_type>;
     using ostream = std::basic_ostream<char_type>;
 
@@ -97,7 +102,7 @@ class namelist
 
     // Implementation details: data members
     private:
-    map _map;
+    map_type _map;
 };
 /* ************************************************************************** */
 
@@ -112,9 +117,6 @@ bool namelist<String, Map>::load(
     const regex& linebreak
 )
 {
-    // Initialization
-    bool success = false;
-
     /* TO BE DONE:
      * imagine a parameter file of the type:
      * 
@@ -128,7 +130,30 @@ bool namelist<String, Map>::load(
      * break the string into a key/value pair using the separator regex
      * and then adds the key/value pair to the _map data member.
     */
+    
+    // Initialization
+    bool success = true;
 
+    // Open input path and convert to string (I'm assuming the input files are relatively small)
+    std::ifstream infile(p.generic_string(), std::ifstream::in);
+    string instring((std::istreambuf_iterator<char>(infile)),
+                     std::istreambuf_iterator<char>());
+
+    // Split input on newline token
+    std::sregex_token_iterator lineiter(instring.begin(),
+            instring.end(),
+            linebreak,
+            -1);
+    std::sregex_token_iterator end;
+    std::smatch match;
+    for(; lineiter != end; ++lineiter)
+    {
+        string line = (*lineiter).str(); 
+        if (std::regex_search(line, match, separator))
+            this->_map[match.prefix()] = match.suffix();
+        else if ((*lineiter).length() > 0)
+            success = false; // Should we return immediately here? 
+    }
     // Finalization
     return success;
 }
