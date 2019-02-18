@@ -23,7 +23,7 @@
 #include <type_traits>
 #include <string>
 #include <regex>
-#include <unordered_map>
+#include <map>
 // Project sources
 // Third-party libraries
 // Miscellaneous
@@ -60,7 +60,7 @@ class namelist
     using reverse_iterator = typename map_type::reverse_iterator;
     using const_reverse_iterator = typename map_type::const_reverse_iterator;
     using path = std::filesystem::path;
-    using regex = std::regex;// <char_type> template was throwing compiler errors...
+    using regex = std::basic_regex<char_type>; // std::regex<char_type> template was throwing compiler errors...
     using istream = std::basic_istream<char_type>;
     using ostream = std::basic_ostream<char_type>;
 
