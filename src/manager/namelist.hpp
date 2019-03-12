@@ -37,7 +37,7 @@ class namelist
     // Types
     public:
     using string = String;
-    using map = Map
+    using map = Map;
     using char_type = typename string::traits::char_type;
     using key_type = typename map_type::key_type;
     using mapped_type = typename map_type::mapped_type;
