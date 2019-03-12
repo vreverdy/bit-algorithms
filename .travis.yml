@@ -2,6 +2,10 @@ language: cpp
 
 os:
   - linux
+    addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
   - osx
 
 dist: xenial
