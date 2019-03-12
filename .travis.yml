@@ -1,10 +1,8 @@
 language: cpp
 
-matrix:
-  include:
-    - os: linux
-      dist: xenial
-    - os: osx
+- os: linux
+  dist: xenial
+- os: osx
 
 compiler:
   - gcc
