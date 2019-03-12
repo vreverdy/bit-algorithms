@@ -1,9 +1,10 @@
 language: cpp
 
-os: linux
+os:
   - linux
   - osx
-  dist: xenial
+
+dist: xenial
 
 compiler:
   - gcc
