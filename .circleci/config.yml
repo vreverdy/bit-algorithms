@@ -37,7 +37,7 @@ jobs:
       - run: brew install cmake
       - run: mkdir build && cd build && cmake .. && make -j8
       - run: cd build && make test
-  
+
 workflows:
   version: 2
   ci:
@@ -46,4 +46,3 @@ workflows:
       - linux_clang
       - macos_gcc
       - macos_clang
-
