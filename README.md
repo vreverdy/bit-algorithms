@@ -1,6 +1,6 @@
 # bit-algorithms
 
-[![Build Status](https://travis-ci.org/vreverdy/bit-algorithms.svg?branch=master)](https://travis-ci.org/vreverdy/bit-algorithms)
+[![CircleCI](https://circleci.com/gh/gress2/bit-algorithms.svg?style=svg)](https://circleci.com/gh/gress2/bit-algorithms)
 
 An exploratory implementation of bit overloads of the C++ standard algorithms
 
