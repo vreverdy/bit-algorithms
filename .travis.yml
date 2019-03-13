@@ -3,7 +3,6 @@ language: cpp
 os:
   - linux
   - osx
-  - windows
 
 addons:
   apt:
@@ -17,6 +16,9 @@ dist: xenial
 compiler:
   - gcc
   - clang
+
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update ; fi
 
 script:
   - mkdir build
