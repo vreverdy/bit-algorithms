@@ -4,7 +4,7 @@ jobs:
     docker:
       - image: ubuntu:19.04
     steps:
-      - run: apt-get -update and apt-get install -y git
+      - run: apt-get update and apt-get install -y git
       - checkout
       - run: apt-get install -y gcc g++
       - run: apt-get install -y cmake
