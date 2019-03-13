@@ -24,9 +24,9 @@ jobs:
     macos:
       xcode: "10.0.0"
     steps:
-      - run: brew install -y git
+      - run: brew install git
       - checkout
-      - run: brew install -y cmake
+      - run: brew install cmake
       - run: mkdir build && cd build && cmake .. && make -j8
       - run: cd build && make test
 
