@@ -25,6 +25,7 @@ jobs:
       xcode: "10.0.0"
     steps:
       - checkout
+      - run: brew install cmake
       - run: mkdir build && cd build && cmake .. && make -j8
       - run: cd build && make test
 
