@@ -1,18 +1,48 @@
 version: 2
 jobs:
-  linux_gplusplus:
+  linux_gcc:
     docker:
       - image: ubuntu:19.04
     steps:
-      - run: apt-get update and apt-get install -y git
+      - run: apt-get update && apt-get install -y git
       - checkout
       - run: apt-get install -y gcc g++
       - run: apt-get install -y cmake
-      - run: cd build && cmake .. && make -j8
-      - run: make test
+      - run: mkdir build && cd build && cmake .. && make -j8
+      - run: cd build && make test
+  linux_clang:
+    docker:
+      - image: ubuntu:19.04
+    steps:
+      - run: apt-get update && apt-get install -y git
+      - checkout
+      - run: apt-get install -y clang
+      - run: apt-get install -y cmake
+      - run: mkdir build && cd build && cmake .. && make -j8
+      - run: cd build && make test
+  macos_gcc:
+      macos:
+        xcode: "10.0.0"
+      steps:
+        - checkout
+        - run: brew install gcc@8
+        - run: brew install cmake
+        - run: mkdir build && cd build && cmake -DCMAKE_CXX_COMPILER=/usr/local/bin/g++-8 .. && make -j8
+        - run: cd build && make test
+  macos_clang:
+    macos:
+      xcode: "10.0.0"
+    steps:
+      - checkout
+      - run: brew install cmake
+      - run: mkdir build && cd build && cmake .. && make -j8
+      - run: cd build && make test
+
 workflows:
   version: 2
   ci:
     jobs:
-      - linux_gplusplus
-
+      - linux_gcc
+      - linux_clang
+      - macos_gcc
+      - macos_clang
