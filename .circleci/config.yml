@@ -17,6 +17,7 @@ jobs:
       - run: apt-get update && apt-get install -y git
       - checkout
       - run: apt-get install -y clang
+      - run: apt-get install -y cmake
       - run: mkdir build && cd build && cmake .. && make -j8
       - run: cd build && make test
 workflows:
