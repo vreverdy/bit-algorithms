@@ -10,9 +10,19 @@ jobs:
       - run: apt-get install -y cmake
       - run: mkdir build && cd build && cmake .. && make -j8
       - run: cd build && make test
+  linux_clang:
+    docker:
+      - image: ubuntu:19.04
+    steps:
+      - run: apt-get update && apt-get install -y git
+      - checkout
+      - run: apt-get install -y clang
+      - run: mkdir build && cd build && cmake .. && make -j8
+      - run: cd build && make test
 workflows:
   version: 2
   ci:
     jobs:
       - linux_gplusplus
+      - linux_clang
 
