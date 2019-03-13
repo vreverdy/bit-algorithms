@@ -20,7 +20,7 @@ jobs:
       - run: apt-get install -y cmake
       - run: mkdir build && cd build && cmake .. && make -j8
       - run: cd build && make test
-  macos_gplusplus:
+  macos_clang:
     macos:
       xcode: "10.0.0"
     steps:
@@ -36,4 +36,5 @@ workflows:
     jobs:
       - linux_gplusplus
       - linux_clang
+      - macos_clang
 
