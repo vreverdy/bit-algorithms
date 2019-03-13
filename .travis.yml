@@ -18,7 +18,7 @@ compiler:
   - clang
 
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update && sudo apt-get install libc++1-8 ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update && sudo apt-get install libc++1-8 && sudo apt-get install clang ; fi
 
 script:
   - mkdir build
