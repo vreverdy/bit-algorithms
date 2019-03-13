@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run: apt-get install -y gcc g++
       - run: apt-get install -y cmake
-      - run: cd build && cmake .. && make -j8
+      - run: mkdir build && cd build && cmake .. && make -j8
       - run: make test
 workflows:
   version: 2
