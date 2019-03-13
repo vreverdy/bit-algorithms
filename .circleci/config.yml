@@ -20,6 +20,15 @@ jobs:
       - run: apt-get install -y cmake
       - run: mkdir build && cd build && cmake .. && make -j8
       - run: cd build && make test
+  macos_gcc:
+      macos:
+        xcode: "10.0.0"
+      steps:
+        - checkout
+        - run: brew install gcc@8
+        - run: brew install cmake
+        - run: mkdir build && cd build && cmake -DCMAKE_CXX_COMPILER=/usr/local/bin/g++-8 .. && make -j8
+        - run: cd build && make test
   macos_clang:
     macos:
       xcode: "10.0.0"
@@ -28,21 +37,13 @@ jobs:
       - run: brew install cmake
       - run: mkdir build && cd build && cmake .. && make -j8
       - run: cd build && make test
-  macos_gcc:
-    macos:
-      xcode: "10.0.0"
-    steps:
-      - checkout
-      - run: brew install gcc@8
-      - run: brew install cmake
-      - run: mkdir build && cd build && cmake -DCMAKE_CXX_COMPILER=/usr/local/bin/g++-8 .. && make -j8
-      - run: cd build && make test
-
+  
 workflows:
   version: 2
   ci:
     jobs:
-      - linux_gplusplus
+      - linux_gcc
       - linux_clang
+      - macos_gcc
       - macos_clang
 
