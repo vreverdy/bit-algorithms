@@ -29,7 +29,6 @@ jobs:
     steps:
       - checkout
       - run: make CXX=clang++ CXX_STANDARD=c++2a test
-  
 workflows:
   version: 2
   ci:
@@ -38,4 +37,3 @@ workflows:
       - linux_clang
       - macos_gcc
       - macos_clang
-
