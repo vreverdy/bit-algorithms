@@ -1,3 +1,5 @@
+#pragma once
+
 #include "bit.hpp"
 
 namespace bit {
