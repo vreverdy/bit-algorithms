@@ -6,6 +6,7 @@ jobs:
     steps:
       - run: apt-get update && apt-get install -y git
       - checkout
+      - run: apt-get install -y make
       - run: apt-get install -y gcc g++
       - run: make CXX=g++ CXX_STANDARD=c++2a test
   linux_clang:
@@ -14,6 +15,7 @@ jobs:
     steps:
       - run: apt-get update && apt-get install -y git
       - checkout
+      - run: apt-get install -y make
       - run: apt-get install -y clang
       - run: make CXX=clang++ CXX_STANDARD=c++2a test
   macos_gcc:
