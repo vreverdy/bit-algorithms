@@ -10,6 +10,7 @@
 #pragma once
 // ========================================================================== //
 // ================================ PREAMBLE ================================ //
+#include "iterator_utils.hpp"
 #include "count.hpp"
 #include "count_if.hpp"
 #include "reverse.hpp"
