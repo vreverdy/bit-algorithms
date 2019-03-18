@@ -23,9 +23,6 @@ void advance(bit_iterator<InputIt>& first,
              Distance n
 )
 {
-    using word_type = typename bit_iterator<InputIt>::word_type;
-    using size_type = typename bit_iterator<InputIt>::size_type;
-    constexpr size_type digits = binary_digits<word_type>::value;
     first += n;    
 }
 
