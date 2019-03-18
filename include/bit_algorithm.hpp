@@ -13,4 +13,5 @@
 #include "iterator_utils.hpp"
 #include "count.hpp"
 #include "count_if.hpp"
+#include "copy.hpp"
 #include "reverse.hpp"
