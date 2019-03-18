@@ -3,7 +3,6 @@
 #include "bit.hpp"
 #include "catch2.hpp"
 #include "test_utils.hpp"
-#include <iostream>
 
 TEMPLATE_TEST_CASE("One word copy of same size", "[copy]",
   unsigned short, unsigned int, unsigned long, unsigned long long) {
