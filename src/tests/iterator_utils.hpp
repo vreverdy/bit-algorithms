@@ -10,12 +10,7 @@ TEMPLATE_TEST_CASE("RAI: Positive difference", "[distance]",
   using num_type = TestType;
 
   std::string bit_str = random_bit_str(bit::binary_digits<num_type>::value);
-
-  std::string bit_str_reversed = bit_str;
-  std::reverse(bit_str_reversed.begin(), bit_str_reversed.end());
-
   num_type num = string_as_bits<num_type>(bit_str);
-  num_type expected_after_reverse = string_as_bits<num_type>(bit_str_reversed);
   
   auto digits = bit::binary_digits<num_type>::value;
   auto n = 5;
@@ -36,12 +31,7 @@ TEMPLATE_TEST_CASE("RAI: Negative difference", "[distance]",
   using num_type = TestType;
 
   std::string bit_str = random_bit_str(bit::binary_digits<num_type>::value);
-
-  std::string bit_str_reversed = bit_str;
-  std::reverse(bit_str_reversed.begin(), bit_str_reversed.end());
-
   num_type num = string_as_bits<num_type>(bit_str);
-  num_type expected_after_reverse = string_as_bits<num_type>(bit_str_reversed);
   
   auto digits = bit::binary_digits<num_type>::value;
   auto n = -3;
@@ -62,12 +52,7 @@ TEMPLATE_TEST_CASE("RAI: Positive advance", "[advance]",
   using num_type = TestType;
 
   std::string bit_str = random_bit_str(bit::binary_digits<num_type>::value);
-
-  std::string bit_str_reversed = bit_str;
-  std::reverse(bit_str_reversed.begin(), bit_str_reversed.end());
-
   num_type num = string_as_bits<num_type>(bit_str);
-  num_type expected_after_reverse = string_as_bits<num_type>(bit_str_reversed);
   
   auto digits = bit::binary_digits<num_type>::value;
   auto n = 2;
@@ -90,12 +75,7 @@ TEMPLATE_TEST_CASE("RAI: Negative advance", "[advance]",
   using num_type = TestType;
 
   std::string bit_str = random_bit_str(bit::binary_digits<num_type>::value);
-
-  std::string bit_str_reversed = bit_str;
-  std::reverse(bit_str_reversed.begin(), bit_str_reversed.end());
-
   num_type num = string_as_bits<num_type>(bit_str);
-  num_type expected_after_reverse = string_as_bits<num_type>(bit_str_reversed);
   
   auto digits = bit::binary_digits<num_type>::value;
   auto n = -2;
