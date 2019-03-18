@@ -2,6 +2,9 @@
 
 namespace bit {
 
+/**
+ *
+ */
 template<class InputIt>
 typename bit_iterator<InputIt>::difference_type
 count(

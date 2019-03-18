@@ -1,9 +1,17 @@
+/**
+  @file
+*/
 #pragma once
 
 #include "bit.hpp"
 
 namespace bit {
 
+/**
+ * Reverses the order of bits in the range 
+ * @param first the beginning of the iteration range
+ * @param last the end of the iteration range
+ */
 template <class BidirIt>
 void reverse(
     bit_iterator<BidirIt> first,

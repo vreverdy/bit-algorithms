@@ -1,7 +1,16 @@
-#include <iostream>
+#include <vector>
+#include "bit.hpp"
 
 int main() {
-  struct Vec { int x; int y; int z; };
-  Vec actorPos {.x = 1, .y = 2,.z = 3};
+
+  std::vector<unsigned int> v = {1, 2, 3};
+
+  auto b = v.begin();
+  auto e = v.end();
+
+  auto it = bit::bit_iterator<decltype(b)>(b);
+
+  std::cout << *it << "\n";
+
   return 0;
 }
