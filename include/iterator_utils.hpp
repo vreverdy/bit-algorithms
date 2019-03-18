@@ -1,7 +1,6 @@
 #pragma once
 
 #include "bit.hpp"
-#include <iostream>
 
 namespace bit {
 
