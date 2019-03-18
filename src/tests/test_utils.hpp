@@ -6,6 +6,38 @@
 
 #include "bit.hpp"
 
+std::string all_zero_str(std::size_t n) {
+  return std::string(n, '0');
+}
+
+std::string all_one_str(std::size_t n) {
+  return std::string(n, '1');
+}
+
+std::string set_random_chars(std::string str, std::size_t n, char c) {
+  std::vector<std::size_t> indices;
+  for (std::size_t i = 0; i < str.size(); i++) {
+    indices.push_back(i);
+  }
+  std::random_device device;
+  std::default_random_engine engine(device());
+  std::shuffle(indices.begin(), indices.end(), engine);
+
+  for (std::size_t j = 0; j < n; j++) {
+    std::size_t index = indices[j];
+    str[index] = c;
+  }
+  return str;
+}
+
+std::string set_n_random_bits(std::string str, std::size_t n) {
+  return set_random_chars(str, n, '1');
+}
+
+std::string unset_n_random_bits(std::string str, std::size_t n) {
+  return set_random_chars(str, n, '0');
+}
+
 std::string random_bit_str(std::size_t len) {
   std::random_device device;
   std::default_random_engine engine(device());
@@ -34,6 +66,15 @@ NumericType random_number(
 }
 
 template <class NumericType>
+std::vector<NumericType> get_random_vector(std::size_t len) {
+  std::vector<NumericType> vec;
+  for (std::size_t i = 0; i < len; i++) {
+    vec.push_back(random_number<std::size_t>());
+  }
+  return vec;
+}
+
+template <class NumericType>
 NumericType string_as_bits(std::string str) {
   NumericType num = 0;
 
@@ -41,7 +82,7 @@ NumericType string_as_bits(std::string str) {
   auto end = bit::bit_iterator<NumericType*>(&num + 1, 0);
 
   for (auto it = begin; it != end; ++it) {
-    auto index = std::distance(begin, it);
+    std::size_t index = std::distance(begin, it);
 
     if (index > str.size() - 1) {
       break;

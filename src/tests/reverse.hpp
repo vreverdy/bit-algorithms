@@ -97,8 +97,3 @@ TEMPLATE_TEST_CASE("Single number: does nothing if iteration range is empty", "[
   reverse(bit::bit_iterator<num_type*>(&num, random_position), bit::bit_iterator<num_type*>(&num, random_position));
   REQUIRE(num == expected_after_reverse);
 }
-
-TEMPLATE_TEST_CASE("Vector: full reverse correct", "[reverse]", unsigned short,
-  unsigned int, unsigned long, unsigned long long) {
-
-}
