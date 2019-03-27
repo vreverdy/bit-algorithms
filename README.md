@@ -88,7 +88,7 @@ Every source file follows a strict layout. If you are a contributor please make 
         * `#include <something>` (if any)
         * `// Project sources`
         * `#include "something.hpp` (if any)
-        *  ̀// Third-party libraries`
+        * `// Third-party libraries`
         * `#include "ext/something.hpp` (if any)
         * `// Miscellaneous`
         * `#define something` (if any)
