@@ -108,7 +108,7 @@ TEMPLATE_PRODUCT_TEST_CASE("Vector: full reverse correct",
     using container_type = TestType;
     using num_type = typename container_type::value_type;
     auto container_size = 16;
-    container_type bitcont = make_random_vector<container_type>
+    container_type bitcont = make_random_container<container_type>
                                      (container_size);
     auto bfirst = bit::bit_iterator<decltype(std::begin(bitcont))>(std::begin(bitcont));
     auto blast = bit::bit_iterator<decltype(std::end(bitcont))>(std::end(bitcont));
