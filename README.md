@@ -1,6 +1,6 @@
 # bit-algorithms
 
-[![Build Status](https://travis-ci.org/vreverdy/bit-algorithms.svg?branch=master)](https://travis-ci.org/vreverdy/bit-algorithms)
+[![CircleCI](https://circleci.com/gh/gress2/bit-algorithms.svg?style=svg)](https://circleci.com/gh/gress2/bit-algorithms)
 
 An exploratory implementation of bit overloads of the C++ standard algorithms
 
@@ -41,6 +41,70 @@ The structure of the repository is the following:
     * `LICENSE`: information on the licensing terms of the project
     * `make.sh`: main makefile to compile different components of the project
     * `README.md`: this file, with the main basic documentation
+    
+## Style
+Every source file follows a strict layout. If you are a contributor please make sure you follow this common style.
+* C++ files
+    * Indentation: 4 spaces
+    * Line width: 80 characters
+    * Separators: every file is divided in parts, these parts being delimited by separators
+        * Separator styles:
+            * 1: `// ========================================================================== //`
+            * 2: `/* ************************************************************************** */`
+            * 3: `// -------------------------------------------------------------------------- //`
+        * Separator styles description:
+            * 1: general purpose
+            * 2: declarations and types, classes, structures
+            * 3: implementation
+        * Each section begins with a separator and a title
+        * The title is in capital letters, centered, with a white space before and after, without underscores
+        * Each section ends with a separator
+        * Sections are separated by 3 lines
+    * Class members: class members are grouped together
+        * Each group corresponds to a category of members (eg: `Types`, `Lifecycle`, `Access`, `Operators`...)
+        * In the class definition, each group starts with a comment with the name of the group
+        * Each group specifies the class access modifier (eg: public, protected, private)
+        * Groups related to implementation details are marked by `Implementation details`
+        * The separator titles should specify the path of the group they correspond to:
+            * `CLASS NAME: GROUP NAME`, `
+            * `CLASS NAME: IMPLEMENTATION DETAILS: GROUP NAME`
+    * Every file starts with the following information:
+        * `// =============================== FILE NAME ================================ //`
+        * `// Project:         The Experimental Bit Algorithms Library`
+        * `// Name:            file_name.hpp`
+        * `// Description:     1 line description of the file`
+        * `// Creator:         Vincent Reverdy`
+        * `// Contributor(s):  Vincent Reverdy [2019]`
+        * `//                  ContributorFirstName ContributorLastName [FirstYear-LastYear]`
+        * `// License:         BSD 3-Clause License`
+        * `// ========================================================================== //`
+        * `#ifndef _FILE_NAME_HPP_INCLUDED`
+        * `#define _FILE_NAME_HPP_INCLUDED`
+        * `// ========================================================================== //`
+        * The alignment of the second column is 20
+    * Every file is followed by a preamble, typically for file inclusion:
+        * `// ================================ PREAMBLE ================================ //`
+        * `// C++ standard library`
+        * `#include <something>` (if any)
+        * `// Project sources`
+        * `#include "something.hpp` (if any)
+        * `// Third-party libraries`
+        * `#include "ext/something.hpp` (if any)
+        * `// Miscellaneous`
+        * `#define something` (if any)
+        * `namespace something {` (if any)
+        * `// ========================================================================== //`
+    * Every file ends with:
+        * `// ========================================================================== //`
+        * `} // namespace something` (if any)
+        * `#endif // _FILE_NAME_HPP_INCLUDED`
+        * `// ========================================================================== //`
+        
+        
+    
+    
+
+
     
 
 
