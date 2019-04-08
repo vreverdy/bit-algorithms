@@ -12,4 +12,5 @@
 // ================================ PREAMBLE ================================ //
 #include "count.hpp"
 #include "count_if.hpp"
+#include "mismatch.hpp"
 #include "reverse.hpp"

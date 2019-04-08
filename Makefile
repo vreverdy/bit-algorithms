@@ -3,12 +3,19 @@
 # compiler configuration
 CXX = clang++
 CXX_STANDARD = c++2a
+
+ifeq ($(CXX), clang++)
+  ERR_LIMIT = -ferror-limit=1  
+else
+  ERR_LIMIT = -fmax-errors=1
+endif
+
 WARNING_FLAGS = -pedantic -Wall -Wextra
-DEBUG_FLAGS = -O0 -g
+DEBUG_FLAGS = -O0 -g -fno-omit-frame-pointer
 OPTIMIZED_FLAGS = -O3 -g -DNDEBUG -march=native -mtune=native
-TEST_FLAGS = ${WARNING_FLAGS} ${DEBUG_FLAGS}
-BENCHMARK_FLAGS = ${WARNING_FLAGS} ${OPTIMIZED_FLAGS}
-EXAMPLE_FLAGS = ${WARNING_FLAGS} ${OPTIMIZED_FLAGS}
+TEST_FLAGS = ${ERR_LIMIT} ${WARNING_FLAGS} ${DEBUG_FLAGS}
+BENCHMARK_FLAGS = ${ERR_LIMIT} ${WARNING_FLAGS} ${OPTIMIZED_FLAGS}
+EXAMPLE_FLAGS = ${ERR_LIMIT} ${WARNING_FLAGS} ${OPTIMIZED_FLAGS}
 
 # directories
 BUILD_DIR = build
@@ -18,7 +25,7 @@ EXAMPLE_DIR = src/examples
 # source code
 BIT_HEADERS = $(wildcard ext/bit/*.hpp)
 BIT_ALGORITHM_HEADERS = $(wildcard include/*.hpp)
-TEST_SRCS = ${TEST_DIR}/test_root.cc ${TEST_DIR}/count.hpp ${TEST_DIR}/reverse.hpp ${TEST_DIR}/test_utils.hpp
+TEST_SRCS = ${TEST_DIR}/test_root.cc ${TEST_DIR}/count.hpp ${TEST_DIR}/reverse.hpp ${TEST_DIR}/mismatch.hpp ${TEST_DIR}/sample.hpp ${TEST_DIR}/test_utils.hpp
 
 INCLUDES = -I${PWD}/ext -I${PWD}/ext/bit -I${PWD}/include
 
@@ -39,10 +46,10 @@ test: tests
 	./${BUILD_DIR}/tests
 
 # examples
-ex1.o: ${EXAMPLE_DIR}/ex1.cc ${BIT_HEADERS} ${BIT_ALGORITHM_HEADERS} 
+${BUILD_DIR}/ex1.o: ${EXAMPLE_DIR}/ex1.cc ${BIT_HEADERS} ${BIT_ALGORITHM_HEADERS} 
 	mkdir -p ${BUILD_DIR}
-	${CXX} -std=${CXX_STANDARD} ${EXAMPLE_FLAGS} ${INCLUDES} ${EXAMPLE_DIR}/ex1.cc -c -o $@ 
-ex1: ex1.o
+	${CXX} -std=${CXX_STANDARD} ${DEBUG_FLAGS} ${INCLUDES} ${EXAMPLE_DIR}/ex1.cc -c -o $@ 
+ex1: ${BUILD_DIR}/ex1.o
 	${CXX} $< -o ${BUILD_DIR}/$@
 
 examples: ex1
@@ -50,7 +57,7 @@ examples: ex1
 # documentation
 .PHONY: docs
 docs:
-	doxygen doxygen.cfg
+	doxygen Doxyfile
 
 # cleanup
 .PHONY: clean
