@@ -1,22 +1,28 @@
-// =============================== FILE NAME ================================ //
+// =============================== copy.hpp ================================= //
 // Project: The Experimental Bit Algorithms Library
 // Name: copy.hpp
-// Description: Implementations of copy-related algorithms
+// Description: Implementation of copy, copy_if, copy_n and copy_backward 
 // Creator: Bryce Kille
 // Contributor: Bryce Kille [2019]
 // License: BSD 3-Clause License
 // ========================================================================== //
 #ifndef _COPY_HPP_INCLUDED
 #define _COPY_HPP_INCLUDED
+#pragma once
 // ========================================================================== //
 
+
+
 // ================================ PREAMBLE ================================ //
-#pragma once
+// C++ standard library
 // Project sources
 #include "bit.hpp"
-#include "../src/tests/test_utils.hpp"
+// Third-party libraries
+// Miscellaneous
 namespace bit {
 // ========================================================================== //
+
+
 
 // --------------------------- Utility Functions ---------------------------- //
 // Let [i] represent the ith LSB of a word. assign(f, iw, im) will 
@@ -85,6 +91,8 @@ void assign(bit_iterator<InputIt> first,
 }
 // -------------------------------------------------------------------------- //
 
+
+
 // ---------------------------- Copy Algorithms ----------------------------- //
 template <class InputIt, class OutputIt>
 bit_iterator<OutputIt> copy(bit_iterator<InputIt> first,
@@ -92,6 +100,10 @@ bit_iterator<OutputIt> copy(bit_iterator<InputIt> first,
                             bit_iterator<OutputIt> d_first
 )
 {
+    //TODO use std::copy where it applies 
+
+    // Assertions
+    _assert_range_viability(first, last);
     if (first == last) return d_first;
 
     // Types and constants
@@ -101,11 +113,11 @@ bit_iterator<OutputIt> copy(bit_iterator<InputIt> first,
     using out_word_type = typename bit_iterator<OutputIt>::word_type;
     using out_size_type = typename bit_iterator<OutputIt>::size_type;
     constexpr out_size_type out_digits = binary_digits<out_word_type>::value;
+
+    // Initialization
     const bool is_last_aligned = last.position() == 0;
     const bool is_first_aligned = first.position() == 0;
-
     auto d_last = d_first;
-
     in_word_type current_word = *first.base();
     in_word_type current_mask = -1;
 
@@ -142,6 +154,8 @@ bit_iterator<OutputIt> copy(bit_iterator<InputIt> first,
     return d_last;
 }
 // -------------------------------------------------------------------------- //
+
+
 
 // ========================================================================== //
 } // namespace bit

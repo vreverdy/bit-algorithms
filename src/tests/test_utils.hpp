@@ -1,9 +1,9 @@
-// =============================== test_utils.hpp ================================ //
+// ============================ test_utils.hpp ============================== //
 // Project: The Experimental Bit Algorithms Library
 // Name: test_utils.hpp
 // Description: General utilities for testing
 // Creator: Collin Gress
-// Contributor(s): Vincent Reverdy [2019], Bryce Kille [2019]
+// Contributor(s): Vincent Reverdy [2019], Bryce Kille [2019], Collin Gress [2019]
 // License: BSD 3-Clause License
 // ========================================================================== //
 #ifndef _TEST_UTILS_HPP_INCLUDED
@@ -18,11 +18,15 @@
 #include <iostream>
 #include <random>
 #include <string>
+#include <vector>
+#include <list>
+#include <forward_list>
 // Project sources
 #include "bit.hpp" 
 // Third-party libraries
 // Miscellaneous
 // ========================================================================== //
+
 
 
 // ------------------------------- DEBUGGING -------------------------------- //
@@ -39,6 +43,24 @@ void display(O&& os, bit::bit_iterator<Iterator> first, bit::bit_iterator<Iterat
         }
         std::forward<O>(os) << *it;
         mem = it;
+    }
+    std::forward<O>(os) << std::endl;
+}
+
+template <class O, class Iterator> 
+void display(O&& os, Iterator first, Iterator last, size_t size)
+{
+    auto mem = first;
+    auto position = 0;
+    for (auto it = first; it != last; ++it) {
+        if (position % size == 0 && position != 0) {
+            os << " ";
+        } else if (position % 8 == 0 && position != 0) {
+            os << '.';
+        }
+        std::forward<O>(os) << *it;
+        mem = it;
+        ++position;
     }
     std::forward<O>(os) << std::endl;
 }
