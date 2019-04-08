@@ -100,8 +100,6 @@ bit_iterator<OutputIt> copy(bit_iterator<InputIt> first,
                             bit_iterator<OutputIt> d_first
 )
 {
-    //TODO use std::copy where it applies 
-
     // Assertions
     _assert_range_viability(first, last);
     if (first == last) return d_first;
@@ -138,11 +136,17 @@ bit_iterator<OutputIt> copy(bit_iterator<InputIt> first,
     std::advance(d_last, in_digits - first.position());
     InputIt it = std::next(first.base());
     // Assign all remaining full words
-    for (; it != last.base(); it++){
-        current_word = *it;
-        current_mask = -1;
-        assign(d_last, current_word, current_mask);
-        std::advance(d_last, in_digits);
+    if (0 && first.position() == d_first.position() && in_digits == out_digits) {
+        auto d_last_word = std::copy(it, last.base(), d_first.base());
+        d_last = bit_iterator(d_last_word); 
+    }
+    else {
+        for (; it != last.base(); it++){
+            current_word = *it;
+            current_mask = -1;
+            assign(d_last, current_word, current_mask);
+            std::advance(d_last, in_digits);
+        }
     }
     // Assign the last partial word in the range. 
     if (!is_last_aligned) {
