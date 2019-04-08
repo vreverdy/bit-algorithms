@@ -16,7 +16,7 @@ TEST_DIR = src/tests
 # source code
 BIT_HEADERS = $(wildcard ext/bit/*.hpp)
 BIT_ALGORITHM_HEADERS = $(wildcard include/*.hpp)
-TEST_SRCS = ${TEST_DIR}/test_root.cc ${TEST_DIR}/iterator_utils.hpp ${TEST_DIR}/count.hpp ${TEST_DIR}/reverse.hpp ${TEST_DIR}/test_utils.hpp ${TEST_DIR}/copy.hpp 
+TEST_SRCS = ${TEST_DIR}/test_root.cc ${TEST_DIR}/iterator_utils.hpp ${TEST_DIR}/count.hpp ${TEST_DIR}/reverse.hpp ${TEST_DIR}/test_utils.hpp ${TEST_DIR}/copy.hpp ${TEST_DIR}/shift.hpp
 
 # tests
 TEST_OBJS = ${BUILD_DIR}/test_main.o ${BUILD_DIR}/test_root.o

@@ -1,4 +1,5 @@
 #include "count.hpp"
 #include "copy.hpp"
+#include "shift.hpp"
 #include "reverse.hpp"
 #include "iterator_utils.hpp"

@@ -14,4 +14,5 @@
 #include "count.hpp"
 #include "count_if.hpp"
 #include "copy.hpp"
+#include "shift.hpp"
 #include "reverse.hpp"
