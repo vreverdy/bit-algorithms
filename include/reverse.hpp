@@ -69,7 +69,7 @@ void reverse(
             }
             *it <<= gap;
             it = first.base();
-            // Shift the underlying sequence to the right
+        // Shift the underlying sequence to the right
         } else if (first.position() > gap) {
             it = std::prev(last.base(), is_last_aligned);
             gap = first.position() - gap;
