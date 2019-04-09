@@ -25,7 +25,8 @@ EXAMPLE_DIR = src/examples
 # source code
 BIT_HEADERS = $(wildcard ext/bit/*.hpp)
 BIT_ALGORITHM_HEADERS = $(wildcard include/*.hpp)
-TEST_SRCS = ${TEST_DIR}/test_root.cc ${TEST_DIR}/count.hpp ${TEST_DIR}/reverse.hpp ${TEST_DIR}/mismatch.hpp ${TEST_DIR}/sample.hpp ${TEST_DIR}/test_utils.hpp
+TEST_HEADERS = $(wildcard ${TEST_DIR}/*.hpp)
+TEST_SRCS = ${TEST_DIR}/test_root.cc ${TEST_HEADERS} 
 
 INCLUDES = -I${PWD}/ext -I${PWD}/ext/bit -I${PWD}/include
 
@@ -46,13 +47,19 @@ test: tests
 	./${BUILD_DIR}/tests
 
 # examples
-${BUILD_DIR}/ex1.o: ${EXAMPLE_DIR}/ex1.cc ${BIT_HEADERS} ${BIT_ALGORITHM_HEADERS} 
+EXAMPLES = $(notdir $(patsubst %.cc,%, $(wildcard ${EXAMPLE_DIR}/ex*)))
+EXAMPLE_OBJS = $(addprefix ${BUILD_DIR}/,$(EXAMPLES:=.o))
+
+${BUILD_DIR}/ex%.o: ${EXAMPLE_DIR}/ex%.cc ${BIT_HEADERS} ${BIT_ALGORITHM_HEADERS}
 	mkdir -p ${BUILD_DIR}
-	${CXX} -std=${CXX_STANDARD} ${DEBUG_FLAGS} ${INCLUDES} ${EXAMPLE_DIR}/ex1.cc -c -o $@ 
-ex1: ${BUILD_DIR}/ex1.o
+	${CXX} -std=${CXX_STANDARD} ${DEBUG_FLAGS} ${INCLUDES} $< -c -o $@
+
+$(EXAMPLES): ex%: ${BUILD_DIR}/ex%.o 
 	${CXX} $< -o ${BUILD_DIR}/$@
 
-examples: ex1
+
+
+examples: ${EXAMPLES}
 
 # documentation
 .PHONY: docs
