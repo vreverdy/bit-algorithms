@@ -23,6 +23,7 @@
 #include <algorithm>
 #include <stdexcept>
 #include <type_traits>
+#include <iostream>
 // Project sources
 // Third-party libraries
 // Miscellaneous
@@ -38,7 +39,7 @@ template <class Iterator> class bit_iterator;
 /* ***************************** BINARY DIGITS ****************************** */
 // Binary digits structure definition
 template <class UIntType>
-struct binary_digits 
+struct binary_digits
 : std::conditional<
     std::is_const<UIntType>::value || std::is_volatile<UIntType>::value,
     binary_digits<typename std::remove_cv<UIntType>::type>,
@@ -80,7 +81,7 @@ struct _cv_iterator_traits
     using _cv_value_t = _no_reference_t;
     static_assert(std::is_same<_raw_pointer_t, _raw_value_t>::value, "");
     static_assert(std::is_same<_raw_reference_t, _raw_value_t>::value, "");
-    
+
     // Types
     public:
     using difference_type = _difference_t;
@@ -388,11 +389,11 @@ constexpr T _popcnt(T src) noexcept
     static_assert(binary_digits<T>::value, "");
     constexpr T digits = binary_digits<T>::value;
     if (digits <= std::numeric_limits<unsigned int>::digits) {
-        src = __builtin_popcount(src); 
+        src = __builtin_popcount(src);
     } else if (digits <= std::numeric_limits<unsigned long int>::digits) {
-        src = __builtin_popcountl(src); 
+        src = __builtin_popcountl(src);
     } else if (digits <= std::numeric_limits<unsigned long long int>::digits) {
-        src = __builtin_popcountll(src); 
+        src = __builtin_popcountll(src);
     } else {
         src = _popcnt(src, std::ignore);
     }
@@ -424,21 +425,21 @@ constexpr T _lzcnt(T src) noexcept
     T dst = T();
     if (digits < std::numeric_limits<unsigned int>::digits) {
         dst = src ? __builtin_clz(src)
-                     - (std::numeric_limits<unsigned int>::digits 
+                     - (std::numeric_limits<unsigned int>::digits
                      - digits)
                    : digits;
     } else if (digits == std::numeric_limits<unsigned int>::digits) {
         dst = src ? __builtin_clz(src) : digits;
     } else if (digits < std::numeric_limits<unsigned long int>::digits) {
         dst = src ? __builtin_clzl(src)
-                     - (std::numeric_limits<unsigned long int>::digits 
+                     - (std::numeric_limits<unsigned long int>::digits
                      - digits)
                    : digits;
     } else if (digits == std::numeric_limits<unsigned long int>::digits) {
         dst = src ? __builtin_clzl(src) : digits;
     } else if (digits < std::numeric_limits<unsigned long long int>::digits) {
         dst = src ? __builtin_clzll(src)
-                     - (std::numeric_limits<unsigned long long int>::digits 
+                     - (std::numeric_limits<unsigned long long int>::digits
                      - digits)
                    : digits;
     } else if (digits == std::numeric_limits<unsigned long long int>::digits) {
@@ -474,11 +475,11 @@ constexpr T _tzcnt(T src) noexcept
     constexpr T digits = binary_digits<T>::value;
     T dst = T();
     if (digits <= std::numeric_limits<unsigned int>::digits) {
-        dst = src ? __builtin_ctz(src) : digits; 
+        dst = src ? __builtin_ctz(src) : digits;
     } else if (digits <= std::numeric_limits<unsigned long int>::digits) {
-        dst = src ? __builtin_ctzl(src) : digits; 
+        dst = src ? __builtin_ctzl(src) : digits;
     } else if (digits <= std::numeric_limits<unsigned long long int>::digits) {
-        dst = src ? __builtin_ctzll(src) : digits; 
+        dst = src ? __builtin_ctzll(src) : digits;
     } else {
         dst = _tzcnt(src, std::ignore);
     }
@@ -513,7 +514,7 @@ constexpr T _bextr(T src, T start, T len) noexcept
     constexpr T digits = binary_digits<T>::value;
     T dst = T();
     if (digits <= std::numeric_limits<unsigned int>::digits) {
-        dst = __builtin_ia32_bextr_u32(src, start, len); 
+        dst = __builtin_ia32_bextr_u32(src, start, len);
     } else if (digits <= std::numeric_limits<unsigned long long int>::digits) {
         dst = __builtin_ia32_bextr_u64(src, start, len);
     } else {
@@ -545,7 +546,7 @@ constexpr T _pdep(T src, T msk) noexcept
     constexpr T digits = binary_digits<T>::value;
     T dst = T();
     if (digits <= std::numeric_limits<unsigned int>::digits) {
-        dst = _pdep_u32(src, msk); 
+        dst = _pdep_u32(src, msk);
     } else if (digits <= std::numeric_limits<unsigned long long int>::digits) {
         dst = _pdep_u64(src, msk);
     } else {
@@ -587,7 +588,7 @@ constexpr T _pext(T src, T msk) noexcept
     constexpr T digits = binary_digits<T>::value;
     T dst = T();
     if (digits <= std::numeric_limits<unsigned int>::digits) {
-        dst = _pext_u32(src, msk); 
+        dst = _pext_u32(src, msk);
     } else if (digits <= std::numeric_limits<unsigned long long int>::digits) {
         dst = _pext_u64(src, msk);
     } else {
@@ -692,7 +693,7 @@ constexpr T _bitswap(T src) noexcept
     } else if (is_pow2) {
         dst = _bitswap<T, digits>(src);
     } else {
-        for (src >>= 1; src; src >>= 1) {   
+        for (src >>= 1; src; src >>= 1) {
             dst <<= 1;
             dst |= src & 1;
             i--;
@@ -959,6 +960,78 @@ constexpr T _mulx(T src0, T src1, T* hi, X...) noexcept
 }
 // -------------------------------------------------------------------------- //
 
+enum range_type {
+  LEFT_ALIGNED,
+  RIGHT_ALIGNED,
+  INTERNAL,
+  FULL,
+  POINT
+};
+
+template <class WrappedIter>
+range_type get_range_type(bit_iterator<WrappedIter> lhs, bit_iterator<WrappedIter> rhs) {
+  if (lhs.base() == rhs.base()) {
+    if (lhs.position() == rhs.position() - 1) {
+      return range_type::POINT;
+    } else if (lhs.position() > 0) {
+      return range_type::INTERNAL;
+    } else {
+      return range_type::RIGHT_ALIGNED;
+    }
+  } else {
+    if (lhs.position() == 0) {
+      return range_type::FULL;
+    } else {
+      return range_type::LEFT_ALIGNED;
+    }
+  }
+}
+
+std::string to_string(range_type rt) {
+  if (rt == range_type::LEFT_ALIGNED) {
+    return "LEFT_ALIGNED";
+  } else if (rt == range_type::RIGHT_ALIGNED) {
+    return "RIGHT_ALIGNED";
+  } else if (rt == range_type::INTERNAL) {
+    return "INTERNAL";
+  } else if (rt == range_type::FULL) {
+    return "FULL";
+  } else {
+    return "POINT";
+  }
+}
+
+/*
+ * Takes two words and merges them together.
+ * Example: 00001000 01001101 with w1_position = 
+ */ 
+template <class WordType>
+WordType shift_and_merge(WordType w1, WordType w2, std::size_t w1_position) {
+  WordType tmp = w1 << (bit::binary_digits<WordType>::value - w1_position);
+  WordType tmp2 = w2 >> w1_position;
+  return tmp | tmp2;
+}
+
+/*
+ * This function grabs 1 word_type worth of bits starting from the bit pointed
+ * to by iter. This means the bits can span two different words and that unallocated
+ * memory might be read. 
+ *
+ * @param iter an iterator to the bit to start drawing from
+ * @return one complete word
+ */
+template <class WrappedIter, class WordType>
+WordType fetch_word(bit::bit_iterator<WrappedIter> iter) {
+
+  if (iter.position() == 0) {
+    return *(iter.base());
+  }
+
+  WordType base = *(iter.base()); 
+  WordType next = *(iter.base() + 1);
+
+  return shift_and_merge(base, next, iter.position());
+} 
 
 
 // ========================================================================== //
