@@ -1,3 +1,5 @@
 #include "count.hpp"
 #include "reverse.hpp"
 #include "mismatch.hpp"
+#include "sample.hpp"
+#include "search.hpp"

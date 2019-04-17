@@ -1,4 +1,5 @@
-#pragma once
+#ifndef BA_MISMATCH_TEST
+#define BA_MISMATCH_TEST
 
 #include "catch2.hpp"
 #include "test_utils.hpp"
@@ -44,3 +45,30 @@ TEMPLATE_TEST_CASE("Vector", "[mismatch]", unsigned short, unsigned int,
   REQUIRE(expected2.position() == p.second.position());
   REQUIRE(*expected2 == *(p.second));
 }
+
+TEMPLATE_TEST_CASE("Misaligned vector works", "[mismatch]", 
+    unsigned short, unsigned int, unsigned long, unsigned long long) {
+
+  using vec_type = std::vector<TestType>;
+  
+  vec_type vec1 = {80, 24, 890}; // 890 =   001101111010
+  vec_type vec2 = {80, 24, 3116}; // 3116 = 110000101100 
+
+  using biter = bit::bit_iterator<typename vec_type::iterator>;
+
+  biter vec1_begin(vec1.begin());
+  biter vec1_end(vec1.end());
+  biter vec2_begin(vec2.begin());
+  biter vec2_end(vec2.end());
+
+  auto res = mismatch(vec1_begin, vec1_end, vec2_begin, vec2_end);
+
+  REQUIRE(res.first.position() == 1);
+  REQUIRE(res.second.position() == 1);
+
+  REQUIRE(*(res.first.base()) == 890);
+  REQUIRE(*(res.second.base()) == 3116);
+}
+
+#endif
+

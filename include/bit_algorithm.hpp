@@ -7,10 +7,16 @@
 //                  Maghav Kumar [2016-2017]
 // License:         BSD 3-Clause License
 // ========================================================================== //
-#pragma once
+#ifndef BA_ROOT
+#define BA_ROOT
 // ========================================================================== //
 // ================================ PREAMBLE ================================ //
+#include "alg_utils.hpp"
 #include "count.hpp"
 #include "count_if.hpp"
 #include "mismatch.hpp"
 #include "reverse.hpp"
+#include "fill.hpp"
+#include "fill_n.hpp"
+
+#endif

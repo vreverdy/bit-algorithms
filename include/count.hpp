@@ -1,4 +1,5 @@
-#pragma once
+#ifndef BA_COUNT
+#define BA_COUNT
 
 namespace bit {
 
@@ -12,6 +13,7 @@ count(
   bit_iterator <InputIt> last,
   bit_value value
 ) {
+
   // Assertions
   _assert_range_viability(first, last);
 
@@ -57,3 +59,5 @@ count(
 }
 
 }
+
+#endif

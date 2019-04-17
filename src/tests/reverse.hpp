@@ -1,4 +1,5 @@
-#pragma once
+#ifndef BA_REVERSE_TEST
+#define BA_REVERSE_TEST
 
 #include "bit.hpp"
 #include "catch2.hpp"
@@ -97,4 +98,6 @@ TEMPLATE_TEST_CASE("Single number: does nothing if iteration range is empty", "[
   reverse(bit::bit_iterator<num_type*>(&num, random_position), bit::bit_iterator<num_type*>(&num, random_position));
   REQUIRE(num == expected_after_reverse);
 }
+
+#endif
 

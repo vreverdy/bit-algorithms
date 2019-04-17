@@ -1,7 +1,5 @@
-/**
-  @file
-*/
-#pragma once
+#ifndef BA_REVERSE
+#define BA_REVERSE
 
 #include "bit.hpp"
 
@@ -100,3 +98,5 @@ void reverse(
 }
 
 }
+
+#endif

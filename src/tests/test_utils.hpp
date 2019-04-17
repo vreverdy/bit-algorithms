@@ -1,8 +1,9 @@
+#ifndef BA_TEST_UTILS
+#define BA_TEST_UTILS
 /**
  * @brief A set of functions to assist in bit test writing
  * @file
  */
-#pragma once
 
 #include <iostream>
 #include <random>
@@ -158,3 +159,5 @@ NumericType string_as_bits(std::string str) {
 
   return num;
 }
+
+#endif

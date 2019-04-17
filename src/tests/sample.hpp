@@ -1,9 +1,11 @@
-#pragma once
+#ifndef BA_SAMPLE_TEST
+#define BA_SAMPLE_TEST
 
 #include "catch2.hpp"
 #include "test_utils.hpp"
 
-TEMPLATE_TEST_CASE("Sampling bits of single number produces correct number of bit samples", "[sample]", unsigned short, unsigned int, unsigned long, unsigned long long) {
+TEMPLATE_TEST_CASE("Sampling bits of single number produces correct number of bit samples", "[sample]", 
+    unsigned short, unsigned int, unsigned long, unsigned long long) {
 
   TestType t = 255;
 
@@ -33,3 +35,5 @@ TEMPLATE_TEST_CASE("Sampling bits of number where all bits set only returns 1s",
 
   REQUIRE(std::all_of(out.begin(), out.end(), [](bit::bit_value bv) { return bv == bit::bit1; })); 
 }
+
+#endif

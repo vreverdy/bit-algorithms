@@ -1,4 +1,5 @@
-#pragma once
+#ifndef BA_COUNT_TEST
+#define BA_COUNT_TEST
 
 #include "catch2.hpp"
 #include "test_utils.hpp"
@@ -251,4 +252,5 @@ TEMPLATE_TEST_CASE("Vector: correctly counts number of unset bits where bits all
   REQUIRE(num_bits_unset == expected_bits_unset);
 }
 
+#endif
 
