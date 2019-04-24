@@ -1,5 +1,15 @@
-#ifndef BA_COUNT
-#define BA_COUNT
+// ================================= COUNT ================================== //
+// Project: The Experimental Bit Algorithms Library
+// Name: count.hpp
+// Description: bit_iterator overloads for std::count 
+// Creator: Vincent Reverdy
+// Contributor(s): Vincent Reverdy [2019]
+//                 Collin Gress [2019]
+// License: BSD 3-Clause License
+// ========================================================================== //
+#ifndef _COUNT_HPP
+#define _COUNT_HPP
+// ========================================================================== //
 
 namespace bit {
 
@@ -45,7 +55,8 @@ count(
     // Computation when bits belong to the same underlying word
   } else {
     result = _popcnt(
-      _bextr<word_type>(*first.base(), first.position(), last.position() - first.position())
+      _bextr<word_type>(*first.base(), first.position(), last.position() 
+        - first.position())
     );
   }
 
@@ -58,6 +69,6 @@ count(
   return result;
 }
 
-}
+} // namespace bit
 
-#endif
+#endif // _COUNT_HPP

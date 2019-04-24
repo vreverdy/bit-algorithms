@@ -1,103 +1,123 @@
-#ifndef BA_REVERSE_TEST
-#define BA_REVERSE_TEST
+// ============================= REVERSE TESTS ============================== //
+// Project: The Experimental Bit Algorithms Library
+// Name: reverse.hpp
+// Description: Tests for bit iterator overloads of std::reverse 
+// Creator: Vincent Reverdy
+// Contributor(s): Vincent Reverdy [2019]
+//                 Collin Gress [2019] 
+// License: BSD 3-Clause License
+// ========================================================================== //
+#ifndef _REVERSE_TESTS_HPP
+#define _REVERSE_TESTS_HPP
+// ========================================================================== //
 
-#include "bit.hpp"
-#include "catch2.hpp"
+// Project sources
 #include "test_utils.hpp"
+// Third party libraries
+#include "catch2.hpp"
 
 TEMPLATE_TEST_CASE("Single number: full reverse correct", "[reverse]",
-  unsigned short, unsigned int, unsigned long, unsigned long long) {
+    unsigned short, unsigned int, unsigned long, unsigned long long) {
 
-  using num_type = TestType;
+    using num_type = TestType;
 
-  std::string bit_str = random_bit_str(bit::binary_digits<num_type>::value);
+    std::string bit_str = random_bit_str(bit::binary_digits<num_type>::value);
 
-  std::string bit_str_reversed = bit_str;
-  std::reverse(bit_str_reversed.begin(), bit_str_reversed.end());
+    std::string bit_str_reversed = bit_str;
+    std::reverse(bit_str_reversed.begin(), bit_str_reversed.end());
 
-  num_type num = string_as_bits<num_type>(bit_str);
-  num_type expected_after_reverse = string_as_bits<num_type>(bit_str_reversed);
+    num_type num = string_as_bits<num_type>(bit_str);
+    num_type expected_after_reverse = string_as_bits<num_type>(bit_str_reversed);
 
-  reverse(bit::bit_iterator<num_type*>(&num, 0), bit::bit_iterator<num_type*>(&num + 1, 0));
-  REQUIRE(num == expected_after_reverse);
+    reverse(bit::bit_iterator<num_type*>(&num, 0), 
+        bit::bit_iterator<num_type*>(&num + 1, 0));
+    REQUIRE(num == expected_after_reverse);
 }
 
-TEMPLATE_TEST_CASE("Single number: correct where all bits zero", "[reverse]", unsigned short, unsigned int,
-  unsigned long, unsigned long long) {
+TEMPLATE_TEST_CASE("Single number: correct where all bits zero", "[reverse]", 
+    unsigned short, unsigned int, unsigned long, unsigned long long) {
 
-  using num_type = TestType;
+    using num_type = TestType;
 
-  num_type num = 0;
-  num_type expected_after_reverse = 0;
+    num_type num = 0;
+    num_type expected_after_reverse = 0;
 
-  reverse(bit::bit_iterator<num_type*>(&num, 0), bit::bit_iterator<num_type*>(&num + 1, 0));
-  REQUIRE(num == expected_after_reverse);
+    reverse(bit::bit_iterator<num_type*>(&num, 0), 
+        bit::bit_iterator<num_type*>(&num + 1, 0));
+    REQUIRE(num == expected_after_reverse);
 }
 
-TEMPLATE_TEST_CASE("Single number: correct where all bits one", "[reverse]", unsigned short, unsigned int,
-  unsigned long, unsigned long long) {
+TEMPLATE_TEST_CASE("Single number: correct where all bits one", "[reverse]", 
+    unsigned short, unsigned int, unsigned long, unsigned long long) {
 
-  using num_type = TestType;
+    using num_type = TestType;
 
-  num_type num = -1;
-  num_type expected_after_reverse = -1;
+    num_type num = -1;
+    num_type expected_after_reverse = -1;
 
-  reverse(bit::bit_iterator<num_type*>(&num, 0), bit::bit_iterator<num_type*>(&num + 1, 0));
-  REQUIRE(num == expected_after_reverse);
+    reverse(bit::bit_iterator<num_type*>(&num, 0), 
+        bit::bit_iterator<num_type*>(&num + 1, 0));
+    REQUIRE(num == expected_after_reverse);
 }
 
-TEMPLATE_TEST_CASE("Single number: reverses only within the iteration range (first-half)", "[reverse]", unsigned short, unsigned int,
-  unsigned long, unsigned long long) {
+TEMPLATE_TEST_CASE("Single number: reverses only within the iteration range \ 
+    (first-half)", "[reverse]", unsigned short, unsigned int, unsigned long, 
+    unsigned long long) {
 
-  using num_type = TestType;
+    using num_type = TestType;
 
-  constexpr auto num_digits = bit::binary_digits<num_type>::value;
+    constexpr auto num_digits = bit::binary_digits<num_type>::value;
 
-  std::string bit_str = random_bit_str(bit::binary_digits<num_type>::value);
-  std::string bit_str_reversed = bit_str;
+    std::string bit_str = random_bit_str(bit::binary_digits<num_type>::value);
+    std::string bit_str_reversed = bit_str;
 
-  std::reverse(bit_str_reversed.begin(), bit_str_reversed.begin() + num_digits / 2);
+    std::reverse(bit_str_reversed.begin(), bit_str_reversed.begin() + num_digits / 2);
 
-  num_type num = string_as_bits<num_type>(bit_str);
-  num_type expected_after_reverse = string_as_bits<num_type>(bit_str_reversed);
+    num_type num = string_as_bits<num_type>(bit_str);
+    num_type expected_after_reverse = string_as_bits<num_type>(bit_str_reversed);
 
-  reverse(bit::bit_iterator<num_type*>(&num, 0), bit::bit_iterator<num_type*>(&num, num_digits / 2));
-  REQUIRE(num == expected_after_reverse);
+    reverse(bit::bit_iterator<num_type*>(&num, 0), bit::bit_iterator<num_type*>
+        (&num, num_digits / 2));
+    REQUIRE(num == expected_after_reverse);
 }
 
-TEMPLATE_TEST_CASE("Single number: reverses only within the iteration range (second-half)", "[reverse]", unsigned short, unsigned int,
-  unsigned long, unsigned long long) {
+TEMPLATE_TEST_CASE("Single number: reverses only within the iteration range \ 
+    (second-half)", "[reverse]", unsigned short, unsigned int,
+    unsigned long, unsigned long long) {
 
-  using num_type = TestType;
+    using num_type = TestType;
 
-  constexpr auto num_digits = bit::binary_digits<num_type>::value;
+    constexpr auto num_digits = bit::binary_digits<num_type>::value;
 
-  std::string bit_str = random_bit_str(bit::binary_digits<num_type>::value);
-  std::string bit_str_reversed = bit_str;
+    std::string bit_str = random_bit_str(bit::binary_digits<num_type>::value);
+    std::string bit_str_reversed = bit_str;
 
-  std::reverse(bit_str_reversed.begin() + num_digits / 2, bit_str_reversed.end());
+    std::reverse(bit_str_reversed.begin() + num_digits / 2, bit_str_reversed.end());
 
-  num_type num = string_as_bits<num_type>(bit_str);
-  num_type expected_after_reverse = string_as_bits<num_type>(bit_str_reversed);
+    num_type num = string_as_bits<num_type>(bit_str);
+    num_type expected_after_reverse = string_as_bits<num_type>(bit_str_reversed);
 
-  reverse(bit::bit_iterator<num_type*>(&num, num_digits / 2), bit::bit_iterator<num_type*>(&num + 1, 0));
-  REQUIRE(num == expected_after_reverse);
+    reverse(bit::bit_iterator<num_type*>(&num, num_digits / 2), 
+        bit::bit_iterator<num_type*>(&num + 1, 0));
+    REQUIRE(num == expected_after_reverse);
 }
 
-TEMPLATE_TEST_CASE("Single number: does nothing if iteration range is empty", "[reverse]", unsigned short, unsigned int,
-  unsigned long, unsigned long long) {
+TEMPLATE_TEST_CASE("Single number: does nothing if iteration range is empty", 
+    "[reverse]", unsigned short, unsigned int, unsigned long, 
+    unsigned long long) {
 
-  using num_type = TestType;
+    using num_type = TestType;
 
-  num_type num = random_number<num_type>();
-  num_type expected_after_reverse = num;
+    num_type num = random_number<num_type>();
+    num_type expected_after_reverse = num;
 
-  constexpr auto num_digits = bit::binary_digits<num_type>::value;
-  auto random_position = random_number(static_cast<std::size_t>(0), num_digits - 1);
+    constexpr auto num_digits = bit::binary_digits<num_type>::value;
+    auto random_position = random_number(static_cast<std::size_t>(0), num_digits - 1);
 
-  reverse(bit::bit_iterator<num_type*>(&num, random_position), bit::bit_iterator<num_type*>(&num, random_position));
-  REQUIRE(num == expected_after_reverse);
+    reverse(bit::bit_iterator<num_type*>(&num, random_position), 
+        bit::bit_iterator<num_type*>(&num, random_position));
+    REQUIRE(num == expected_after_reverse);
 }
 
-#endif
+#endif // _REVERSE_TESTS_HPP
 

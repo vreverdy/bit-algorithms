@@ -61,6 +61,8 @@ $(EXAMPLES): ex%: ${BUILD_DIR}/ex%.o
 
 examples: ${EXAMPLES}
 
+all: examples tests
+
 # documentation
 .PHONY: docs
 docs:

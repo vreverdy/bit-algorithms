@@ -1,6 +1,16 @@
-#ifndef BA_FILL
-#define BA_FILL
+// ================================= FILL =================================== //
+// Project: The Experimental Bit Algorithms Library
+// Name: fill.hpp
+// Description: bit_iterator overloads for std::fill 
+// Creator: Vincent Reverdy
+// Contributor(s): Vincent Reverdy [2019]
+//                 Collin Gress [2019]
+// License: BSD 3-Clause License
+// ========================================================================== //
+#ifndef _FILL_HPP
+#define _FILL_HPP
 
+// Project sources
 #include "alg_utils.hpp"
 
 namespace bit {
@@ -32,6 +42,6 @@ void fill(bit_iterator<WrappedIter> first, bit_iterator<WrappedIter> last,
   }
 }
 
-}
+} // namespace bit
 
-#endif
+#endif // _FILL_HPP

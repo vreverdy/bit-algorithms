@@ -1,14 +1,20 @@
-#ifndef BA_TEST_UTILS
-#define BA_TEST_UTILS
-/**
- * @brief A set of functions to assist in bit test writing
- * @file
- */
-
+// =============================== TEST UTILS =============================== //
+// Project: The Experimental Bit Algorithms Library
+// Name: test_utils.hpp
+// Description: Utility functions to make test writing easier 
+// Creator: Vincent Reverdy
+// Contributor(s): Vincent Reverdy [2019]
+//                 Collin Gress [2019]
+// License: BSD 3-Clause License
+// ========================================================================== //
+#ifndef _TEST_UTILS_HPP
+#define _TEST_UTILS_HPP
+// ========================================================================== //
+// C++ standard library
 #include <iostream>
 #include <random>
 #include <string>
-
+// Project sources
 #include "bit.hpp"
 
 /**
@@ -160,4 +166,4 @@ NumericType string_as_bits(std::string str) {
   return num;
 }
 
-#endif
+#endif // _TEST_UTILS_HPP

@@ -7,9 +7,8 @@
 //                  Maghav Kumar [2016-2017]
 // License:         BSD 3-Clause License
 // ========================================================================== //
-#ifndef BA_ROOT
-#define BA_ROOT
-// ========================================================================== //
+#ifndef _BIT_ALGORITHM_HPP
+#define _BIT_ALGORITHM_HPP
 // ================================ PREAMBLE ================================ //
 #include "alg_utils.hpp"
 #include "count.hpp"
@@ -19,4 +18,4 @@
 #include "fill.hpp"
 #include "fill_n.hpp"
 
-#endif
+#endif // _BIT_ALGORITHM_HPP

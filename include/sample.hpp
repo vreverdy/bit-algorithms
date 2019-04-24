@@ -1,6 +1,16 @@
-#ifndef BA_SAMPLE
-#define BA_SAMPLE
+// =============================== SAMPLE =================================== //
+// Project: The Experimental Bit Algorithms Library
+// Name: sample.hpp
+// Description: bit_iterator overloads for std::sample
+// Creator: Vincent Reverdy
+// Contributor(s): Vincent Reverdy [2019]
+//                 Collin Gress [2019]
+// License: BSD 3-Clause License
+// ========================================================================== //
+#ifndef _SAMPLE_HPP
+#define _SAMPLE_HPP
 
+// C++ standard library
 #include <iostream>
 #include <algorithm>
 #include <vector>
@@ -30,6 +40,6 @@ SampleIterator sample(bit_iterator<WrappedIterator> first, bit_iterator<WrappedI
   return out;
 }
 
-}
+} // namespace bit
 
-#endif
+#endif // _SAMPLE_HPP

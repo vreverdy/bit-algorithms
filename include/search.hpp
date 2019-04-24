@@ -1,6 +1,16 @@
-#ifndef BA_SEARCH
-#define BA_SEARCH
+// =============================== SEARCH =================================== //
+// Project: The Experimental Bit Algorithms Library
+// Name: search.hpp
+// Description: bit_iterator overloads for std::search
+// Creator: Vincent Reverdy
+// Contributor(s): Vincent Reverdy [2019]
+//                 Collin Gress [2019]
+// License: BSD 3-Clause License
+// ========================================================================== //
+#ifndef _SEARCH_HPP
+#define _SEARCH_HPP
 
+// C++ standard library
 #include <iostream>
 
 namespace bit {
@@ -11,6 +21,6 @@ bit_iterator<WrappedIter1> search(bit_iterator<WrappedIter1> first, bit_iterator
   return first;
 } 
 
-}
+} // namespace bit
 
-#endif
+#endif // _SEARCH_HPP
