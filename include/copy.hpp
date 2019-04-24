@@ -19,75 +19,71 @@
 #include "bit.hpp"
 // Third-party libraries
 // Miscellaneous
+#include "debug_utils.hpp"
 namespace bit {
 // ========================================================================== //
 
 
 
 // --------------------------- Utility Functions ---------------------------- //
-// Let [i] represent the ith LSB of a word. assign(f, iw, im) will 
-// assign iw[i] to *(f+i) iff im[i] == 1
-// Essentially it is the same as _bitblend but for unaligned
-// words of different sizes
-template <class InputIt, class AssignmentType>
-void assign(bit_iterator<InputIt> first,
-            AssignmentType input_word,
-            AssignmentType input_mask
-)
+// Left shifts dst by cnt bits, filling the lsbs of dst by the msbs of src
+template <class T1, class T2, class SizeT>
+constexpr T1 _shld2(T1 dst, T2 src, SizeT cnt) noexcept
+{
+    static_assert(binary_digits<T1>::value, "");
+    static_assert(binary_digits<T2>::value, "");
+    constexpr T1 dst_digits = binary_digits<T1>::value;
+    constexpr T1 src_digits = binary_digits<T2>::value;
+
+
+    if (cnt < src_digits) {
+        dst = ((dst << cnt) * (cnt < dst_digits)) | ((src >> (src_digits - cnt)));
+    } else {
+        dst = ((dst << cnt) * (cnt < dst_digits))
+            | ((src << (cnt - src_digits))*(cnt < src_digits+src_digits)); 
+    }
+    return dst;
+}
+
+// Get next len bits beginning at start and store them in a word of type T
+template <class T, class InputIt>
+T get_word(bit_iterator<InputIt> first, T len=binary_digits<T>::value)
 {
     using native_word_type = typename bit_iterator<InputIt>::word_type;
-    using size_type = typename bit_iterator<InputIt>::size_type;
-    constexpr size_type native_digits = binary_digits<native_word_type>::value; 
-    constexpr size_type assignment_digits = binary_digits<AssignmentType>::value; 
-    auto it = first.base();
-    native_word_type current_assignment; 
-    native_word_type current_mask;
-    bool oversized;
-    short int shift_size;
-    size_type offset = (native_digits - first.position())*(first.position() != 0);
-    // Assign first num_bits from input_word to last num_bits of first.base()
-    if (first.position()) {
-        oversized = offset < assignment_digits;
-        shift_size =  (assignment_digits - offset)*oversized;
-        current_assignment = input_word << shift_size; 
-        current_mask = input_mask << shift_size;
-        *it = _bitblend(*it,
-                        current_assignment,
-                        current_mask
-        );
-        it = std::next(it);
-        // We have already assigned everything to consider
-        if (_popcnt(current_mask) == _popcnt(input_mask)) {
-            return;
-        }
-    }
-    // - For native_word_type #i, we want to assign 
-    // [input_word[offset+i*native_digits], input_word[offset+(i+1)*native_digits)
-    // - Which means the last bit we care about is at 
-    // index = offset+(i+1)*native_digits - 1
-    // - Therefore at each step we need to left shift input_word 
-    // by shift = assignment_digits - (offset+(i+1)*native_digits)
-    // If shift < 0, then we actually have to left right by shift, not left.
-    oversized = native_digits < assignment_digits;
-    unsigned int current_idx = 0;
-    do {
-        shift_size = (assignment_digits - (offset + (current_idx+1)*native_digits));
-        if (shift_size > 0) {
-            current_assignment = input_word << shift_size; 
-            current_mask = input_mask << shift_size;
-        } else {
-            current_assignment = input_word >> -shift_size; 
-            current_mask = input_mask >> -shift_size;
-        } 
-        *it = _bitblend(*it,
-                        current_assignment,
-                        current_mask
+    T native_digits = binary_digits<native_word_type>::value; 
+    constexpr T ret_digits = binary_digits<T>::value; 
+    assert(ret_digits >= len);
+    T offset = native_digits - first.position();
+    T pos = first.position();
+    T ret_word = *first.base() >> first.position();
+
+    // We've already assigned enough bits
+    if (len <= offset) { 
+        return ret_word;
+    } 
+
+    auto it = std::next(first.base());
+    len -= offset;
+    // Fill up ret_word starting at bit [offset] using it
+    while (len > native_digits) {
+        ret_word = _bitblend(
+                ret_word,      
+                (T) (((T) *it) << offset),   
+                offset,
+                native_digits
         );
         ++it;
-        ++current_idx;
-    } while (shift_size > 0); 
-    // if shift_size > 0, then we still have shift_size bits left to assign
-    return;
+        offset += native_digits;
+        len -= native_digits;
+    }
+    // Assign remaining len bits of last word
+    ret_word = _bitblend(
+            ret_word,            
+            (T) (((T) *it) << offset),   
+            offset,
+            len
+    );
+    return ret_word;
 }
 // -------------------------------------------------------------------------- //
 
@@ -105,57 +101,53 @@ bit_iterator<OutputIt> copy(bit_iterator<InputIt> first,
     if (first == last) return d_first;
 
     // Types and constants
-    using in_word_type = typename bit_iterator<InputIt>::word_type;
-    using in_size_type = typename bit_iterator<InputIt>::size_type;
-    constexpr in_size_type in_digits = binary_digits<in_word_type>::value;
-    using out_word_type = typename bit_iterator<OutputIt>::word_type;
-    using out_size_type = typename bit_iterator<OutputIt>::size_type;
-    constexpr out_size_type out_digits = binary_digits<out_word_type>::value;
+    using src_word_type = typename bit_iterator<InputIt>::word_type;
+    using src_size_type = typename bit_iterator<InputIt>::size_type;
+    constexpr src_size_type src_digits = binary_digits<src_word_type>::value;
+    using dst_word_type = typename bit_iterator<OutputIt>::word_type;
+    using dst_size_type = typename bit_iterator<OutputIt>::size_type;
+    constexpr dst_size_type dst_digits = binary_digits<dst_word_type>::value;
 
     // Initialization
-    const bool is_last_aligned = last.position() == 0;
-    const bool is_first_aligned = first.position() == 0;
-    auto d_last = d_first;
-    in_word_type current_word = *first.base();
-    in_word_type current_mask = -1;
+    const bool is_d_first_aligned = d_first.position() == 0;
+    src_word_type current_word = *first.base();
+    src_word_type current_mask = -1;
+    src_size_type total_bits_to_copy = std::distance(first, last);
+    auto it = d_first.base();
 
-    // Assign suffix of first word in range if not aligned
-    if (!is_first_aligned) {
-        current_mask >>= first.position();
-        current_word >>= first.position();
+    // d_first is not aligned. Copy partial word to align it
+    if (!is_d_first_aligned) {
+        dst_size_type partial_bits_to_copy = std::min(
+                total_bits_to_copy,
+                dst_digits - d_first.position()
+                );
+        std::cout << word_to_vec(*it) << std::endl;
+        *it = _bitblend(
+                *it,
+                (dst_word_type) (get_word<dst_word_type>(first, partial_bits_to_copy) 
+                  << ((dst_word_type)d_first.position())),
+                (dst_word_type) d_first.position(),
+                (dst_word_type) partial_bits_to_copy
+                );
+        total_bits_to_copy -= partial_bits_to_copy;
+        std::advance(first, partial_bits_to_copy);
+        it++;
     }
-    // Copy within same word
-    if (std::next(first.base(), is_last_aligned) == last.base()) {
-        current_mask >>= (in_digits - last.position())*(!is_last_aligned); 
-        assign(d_first, current_word, current_mask); 
-        std::advance(d_last, last.position() - first.position());
-        return d_last;
+
+    while (total_bits_to_copy >= dst_digits) {
+        *it = get_word<dst_word_type>(first, dst_digits);
+        total_bits_to_copy -= dst_digits;
+        it++; 
+        std::advance(first, dst_digits);
     }
-    // Assign first word
-    assign(d_first, current_word, current_mask); 
-    std::advance(d_last, in_digits - first.position());
-    InputIt it = std::next(first.base());
-    // Assign all remaining full words
-    if (0 && first.position() == d_first.position() && in_digits == out_digits) {
-        auto d_last_word = std::copy(it, last.base(), d_first.base());
-        d_last = bit_iterator(d_last_word); 
+    if (total_bits_to_copy) {
+        *it = _bitblend(
+                *it,
+                get_word<dst_word_type>(first, total_bits_to_copy),
+                (dst_word_type)((dst_word_type(1) << total_bits_to_copy) - 1)
+        );
     }
-    else {
-        for (; it != last.base(); it++){
-            current_word = *it;
-            current_mask = -1;
-            assign(d_last, current_word, current_mask);
-            std::advance(d_last, in_digits);
-        }
-    }
-    // Assign the last partial word in the range. 
-    if (!is_last_aligned) {
-        current_word = *it;
-        current_mask = -1 >> (in_digits - last.position());
-        assign(d_last, current_word, current_mask);
-        std::advance(d_last, last.position());
-    }
-    return d_last;
+    return bit::bit_iterator<OutputIt>(it, total_bits_to_copy);
 }
 // -------------------------------------------------------------------------- //
 

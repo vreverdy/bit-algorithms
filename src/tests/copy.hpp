@@ -5,7 +5,7 @@
 #include "test_utils.hpp"
 #include "list"
 
-TEMPLATE_TEST_CASE("One word copy of same size", "[copy]",
+TEMPLATE_TEST_CASE("Copy: One word copy of same size", "[copy]",
   unsigned short, unsigned int, unsigned long, unsigned long long) {
   using num_type = TestType;
   auto digits = bit::binary_digits<num_type>::value;
@@ -31,16 +31,16 @@ TEMPLATE_TEST_CASE("One word copy of same size", "[copy]",
   REQUIRE(bits_1 == expected_after_copy);
 }
 
-TEMPLATE_TEST_CASE("One word partial copy", "[copy]",
-  unsigned short, unsigned int, unsigned long, unsigned long long) {
+TEMPLATE_TEST_CASE("Copy: One word partial copy", "[copy]",
+  unsigned short) {
   using num_type = TestType;
   auto digits = bit::binary_digits<num_type>::value;
   std::string bit_str1 = random_bit_str(digits);
   num_type bits_1 = string_as_bits<num_type>(bit_str1);
   std::string bit_str2 = random_bit_str(digits);
   num_type bits_2 = string_as_bits<num_type>(bit_str2);
-  std::copy(bit_str2.begin()+8, 
-            bit_str2.end()-4, 
+  std::copy(bit_str2.begin()+3, 
+            bit_str2.end()-3, 
             bit_str1.begin()+2
   ); 
 
@@ -50,8 +50,8 @@ TEMPLATE_TEST_CASE("One word partial copy", "[copy]",
 
   auto first2 = bit::bit_iterator<num_type*>(&bits_2, 0);
   auto last2 = bit::bit_iterator<num_type*>(&bits_2+1, 0);
-  bit::copy(first2+8, 
-            last2-4,
+  bit::copy(first2+3, 
+            last2-3,
             first+2
   );
   REQUIRE(bits_1 == expected_after_copy);
@@ -92,16 +92,16 @@ TEMPLATE_PRODUCT_TEST_CASE("Copy: copy to smaller words correct",
     std::copy(bool_first1_t, bool_last1_t, bool_first2_t);
     REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
 
-    std::advance(bfirst1_t, 3);
-    std::advance(bool_first1_t, 3);
+    std::advance(bfirst1_t, 9);
+    std::advance(bool_first1_t, 9);
     copy(bfirst1_t, blast1_t, bfirst2_t);
     std::copy(bool_first1_t, bool_last1_t, bool_first2_t);
     REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
 
     bool_last1_t = bool_first1;
-    std::advance(bool_last1_t, (container_size-1)*digits-digits/2);
+    std::advance(bool_last1_t, (container_size-1)*digits-digits/3);
     blast1_t = bfirst1;
-    std::advance(blast1_t, (container_size-1)*digits-digits/2);
+    std::advance(blast1_t, (container_size-1)*digits-digits/3);
     copy(bfirst1_t, blast1_t, bfirst2_t);
     std::copy(bool_first1_t, bool_last1_t, bool_first2_t);
     REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
@@ -191,14 +191,30 @@ TEMPLATE_PRODUCT_TEST_CASE("Copy: same size not aligned copy correct",
     auto bool_last1_t = bool_last1;
     auto bool_last2_t = bool_last2;
     auto blast1_t = blast1;
+    std::cout << "\n\nSRC\n";
+    display(std::cout, bfirst1, blast1);
+    std::cout << "bitcont\n";
+    display(std::cout, bfirst2, blast2);
     copy(bfirst1_t, blast1_t, bfirst2_t);
+    display(std::cout, bfirst2, blast2);
+
+    std::cout << "Boolcont\n";
+    display(std::cout, bool_first2, bool_last2, digits);
     std::copy(bool_first1_t, bool_last1_t, bool_first2_t);
+    display(std::cout, bool_first2, bool_last2, digits);
     REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
 
     std::advance(bfirst1_t, 3);
     std::advance(bool_first1_t, 3);
+    std::cout << "\n\nbitcont\n";
+    display(std::cout, bfirst2, blast2);
     copy(bfirst1_t, blast1_t, bfirst2_t);
+    display(std::cout, bfirst2, blast2);
+
+    std::cout << "Boolcont\n";
+    display(std::cout, bool_first2, bool_last2, digits);
     std::copy(bool_first1_t, bool_last1_t, bool_first2_t);
+    display(std::cout, bool_first2, bool_last2, digits);
     REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
 
     bool_last1_t = bool_first1;
