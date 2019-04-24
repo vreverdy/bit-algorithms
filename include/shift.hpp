@@ -95,7 +95,8 @@ bit_iterator<ForwardIt> shift_left(bit_iterator<ForwardIt> first,
     // Shift words to the left using std::shift 
     auto new_last_base = word_shift_left(first.base(), 
                                          std::next(last.base(), 
-                                                   !is_last_aligned),
+                                                   !is_last_aligned
+                                                   ),
                                          word_shifts);
     last = bit_iterator<ForwardIt>(new_last_base, last.position());
     bit_iterator<ForwardIt> d_last;
@@ -118,6 +119,9 @@ bit_iterator<ForwardIt> shift_left(bit_iterator<ForwardIt> first,
         if (is_last_aligned) {
             d_last = bit_iterator<ForwardIt>(it, digits-remaining_bitshifts);
         } else { // Otherwise, last word is not aligned and needs to be shifted
+            *it = _shrd<word_type>(*it, 
+                                   0, 
+                                   remaining_bitshifts);
             if (remaining_bitshifts > last.position()) 
             {
                 // TODO whats proper formatting for such long lines?
@@ -125,15 +129,9 @@ bit_iterator<ForwardIt> shift_left(bit_iterator<ForwardIt> first,
                             digits-(remaining_bitshifts - last.position())); 
             } else {
                 d_last = bit_iterator<ForwardIt>(++it, 
-                            last.position()-remaining_bitshifts);
-            *it = _shrd<word_type>(*it, 
-                                   0, 
-                                   remaining_bitshifts);
+                            last.position() - remaining_bitshifts);
             }
         }
-        //std::advance(d_last, 
-                     //digits - d_last.position() 
-                     //+last.position() - remaining_bitshifts);
     }
     // Blend bits of the first element
     if (!is_first_aligned) {
