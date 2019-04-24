@@ -12,6 +12,31 @@
 
 namespace bit {
 
+// TODO
+template <class WrappedIt, class UnaryPredicate>
+constexpr bool none_of(bit_iterator<WrappedIt> first, bit_iterator<WrappedIt> last,
+    UnaryPredicate p) {
+
+    first;
+    last;
+    p;
+
+    return true;
+}
+
+// TODO
+template <class ExecutionPolicy, class WrappedIt, class UnaryPredicate>
+bool none_of(ExecutionPolicy&& policy, bit_iterator<WrappedIt> first,
+    bit_iterator<WrappedIt> last, UnaryPredicate p) {
+    
+    policy;
+    first;
+    last;
+    p;
+
+    return true; 
+}
+
 
 } // namespace bit
 

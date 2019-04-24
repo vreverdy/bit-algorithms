@@ -1001,38 +1001,6 @@ std::string to_string(range_type rt) {
   }
 }
 
-/*
- * Takes two words and merges them together.
- * Example: 00001000 01001101 with w1_position = 
- */ 
-template <class WordType>
-WordType shift_and_merge(WordType w1, WordType w2, std::size_t w1_position) {
-  WordType tmp = w1 << (bit::binary_digits<WordType>::value - w1_position);
-  WordType tmp2 = w2 >> w1_position;
-  return tmp | tmp2;
-}
-
-/*
- * This function grabs 1 word_type worth of bits starting from the bit pointed
- * to by iter. This means the bits can span two different words and that unallocated
- * memory might be read. 
- *
- * @param iter an iterator to the bit to start drawing from
- * @return one complete word
- */
-template <class WrappedIter, class WordType>
-WordType fetch_word(bit::bit_iterator<WrappedIter> iter) {
-
-  if (iter.position() == 0) {
-    return *(iter.base());
-  }
-
-  WordType base = *(iter.base()); 
-  WordType next = *(iter.base() + 1);
-
-  return shift_and_merge(base, next, iter.position());
-} 
-
 
 // ========================================================================== //
 } // namespace bit

@@ -12,6 +12,30 @@
 
 namespace bit {
 
+    // TODO
+    template <class WrappedIter, class T>
+    T accumulate(bit_iterator<WrappedIter> first, 
+        bit_iterator<WrappedIter> last, T init) {
+
+        first;
+        last;
+        init;
+
+        return init;
+    }
+
+    // TODO
+    template <class WrappedIter, class T, class BinaryOperation>
+    T accumulate(bit_iterator<WrappedIter> first, 
+        bit_iterator<WrappedIter> last, T init, BinaryOperation op) {
+        
+        first;
+        last;
+        init;
+        op;
+    
+        return init;
+    }
 
 } // namespace bit
 

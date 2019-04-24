@@ -12,6 +12,61 @@
 
 namespace bit {
 
+// TODO
+template <class WrappedIt, class OutputIt>
+OutputIt adjacent_difference(bit_iterator<WrappedIt> first, 
+    bit_iterator<WrappedIt> last, OutputIt d_first) {
+
+    first;
+    last;
+    d_first;
+
+    return d_first;
+}  
+
+// TODO
+template <class ExecutionPolicy, class WrappedIt, class ForwardIt>
+ForwardIt adjacent_difference(ExecutionPolicy&& policy, 
+    bit_iterator<WrappedIt> first, bit_iterator<WrappedIt> last,
+    ForwardIt d_first) {
+
+    policy;
+    first;
+    last;
+    d_first;
+
+    return d_first;
+}
+
+// TODO
+template <class WrappedIt, class OutputIt, class BinaryOperation>
+constexpr OutputIt adjacent_difference(bit_iterator<WrappedIt> first,
+    bit_iterator<WrappedIt> last, OutputIt d_first, BinaryOperation op) {
+
+    first;
+    last;
+    d_first;
+    op;
+
+    return d_first; 
+}
+
+// TODO
+template <class ExecutionPolicy, class WrappedIt, class ForwardIt,
+          class BinaryOperation>
+ForwardIt adjacent_difference(ExecutionPolicy&& policy,
+    bit_iterator<WrappedIt> first, bit_iterator<WrappedIt> last,
+    ForwardIt d_first, BinaryOperation op) {
+
+    policy;
+    first;
+    last;
+    d_first;
+    op;
+
+    return d_first;
+}
+
 
 } // namespace bit
 

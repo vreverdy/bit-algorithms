@@ -12,6 +12,53 @@
 
 namespace bit {
 
+// TODO
+template <class WrappedIt>
+constexpr bit_iterator<WrappedIt> adjacent_find(WrappedIt first, WrappedIt last) {
+
+    first;
+    last;
+
+    return first;
+}
+
+// TODO
+template <class ExecutionPolicy, class WrappedIt>
+bit_iterator<WrappedIt> adjacent_find(ExecutionPolicy&& policy,
+    bit_iterator<WrappedIt> first, bit_iterator<WrappedIt> last) {
+
+    policy;
+    first;
+    last;
+
+    return first;
+}
+
+// TODO
+template <class WrappedIt, class BinaryPredicate>
+constexpr bit_iterator<WrappedIt> adjacent_find(bit_iterator<WrappedIt> first,
+    bit_iterator<WrappedIt> last, BinaryPredicate p) {
+
+    first;
+    last;
+    p;
+
+    return first;
+}
+
+// TODO
+template <class ExecutionPolicy, class WrappedIt, class BinaryPredicate>
+bit_iterator<WrappedIt> adjacent_find(ExecutionPolicy&& policy,
+    bit_iterator<WrappedIt> first, bit_iterator<WrappedIt> last,
+    BinaryPredicate p) {
+
+    policy;
+    first;
+    last;
+    p;
+
+    return first; 
+}
 
 } // namespace bit
 

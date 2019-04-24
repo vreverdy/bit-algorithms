@@ -17,8 +17,14 @@ namespace bit {
 
 template <class WrappedIter1, class WrappedIter2>
 bit_iterator<WrappedIter1> search(bit_iterator<WrappedIter1> first, bit_iterator<WrappedIter1> last,
-   bit_iterator<WrappedIter2> s_first, bit_iterator<WrappedIter2> s_last) {
-  return first;
+    bit_iterator<WrappedIter2> s_first, bit_iterator<WrappedIter2> s_last) {
+
+    first;
+    last;
+    s_first;
+    s_last;
+    
+    return first;
 } 
 
 } // namespace bit

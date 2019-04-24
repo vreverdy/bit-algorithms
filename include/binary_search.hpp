@@ -12,6 +12,31 @@
 
 namespace bit {
 
+// TODO
+template <class WrappedIt, class T>
+constexpr bool binary_search(bit_iterator<WrappedIt> first,
+    bit_iterator<WrappedIt> last, const T& value) {
+
+    first;
+    last;
+    value;
+
+    return true;
+}
+
+// TODO
+template <class WrappedIt, class T, class Compare>
+constexpr bool binary_search(bit_iterator<WrappedIt> first,
+    bit_iterator<WrappedIt> last, const T& value, Compare comp) {
+
+    first;
+    last;
+    value;
+    comp; 
+
+    return true;
+}
+
 
 } // namespace bit
 
