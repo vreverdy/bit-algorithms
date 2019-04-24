@@ -111,7 +111,7 @@ bit_iterator<ForwardIt> shift_left(bit_iterator<ForwardIt> first,
         // For the penultimate word, 
         // take only the last.position() LSB digits from last_value
         *it = _shrd<word_type>(*it, 
-                               ((1 << last.position()) - 1) & last_value, 
+                               last_value & ((1 << last.position()) - 1), 
                                remaining_bitshifts);
         // If last word is aligned, then we have nothing left to shift, 
         // and the end of the resulting range is at 
@@ -119,9 +119,7 @@ bit_iterator<ForwardIt> shift_left(bit_iterator<ForwardIt> first,
         if (is_last_aligned) {
             d_last = bit_iterator<ForwardIt>(it, digits-remaining_bitshifts);
         } else { // Otherwise, last word is not aligned and needs to be shifted
-            *it = _shrd<word_type>(*it, 
-                                   0, 
-                                   remaining_bitshifts);
+            *it = (*it & ((1 << last.position()) -1)) >> remaining_bitshifts;
             if (remaining_bitshifts > last.position()) 
             {
                 // TODO whats proper formatting for such long lines?
