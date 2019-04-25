@@ -1,21 +1,23 @@
 // ================================= COUNT ================================== //
 // Project: The Experimental Bit Algorithms Library
 // Name: count.hpp
-// Description: bit_iterator overloads for std::count 
+// Description: bit_iterator overloads for std::count, std::count_if
 // Creator: Vincent Reverdy
 // Contributor(s): Vincent Reverdy [2019]
 //                 Collin Gress [2019]
 // License: BSD 3-Clause License
 // ========================================================================== //
-#ifndef _COUNT_HPP
-#define _COUNT_HPP
-// ========================================================================== //
+#ifndef _COUNT_HPP_INCLUDED
+#define _COUNT_HPP_INCLUDED
+// ============================== PREAMBLE ================================== //
+// C++ standard library
+// Project sources
+// Third-party libraries
 
 namespace bit {
 
-/**
- *
- */
+// ========================================================================== //
+
 template<class InputIt>
 typename bit_iterator<InputIt>::difference_type
 count(
@@ -71,4 +73,5 @@ count(
 
 } // namespace bit
 
-#endif // _COUNT_HPP
+#endif // _COUNT_HPP_INCLUDED
+// ========================================================================== //

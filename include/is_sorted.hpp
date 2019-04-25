@@ -3,16 +3,20 @@
 // Name: is_sorted.hpp
 // Description: bit_iterator overloads for std::is_sorted
 // Creator: Vincent Reverdy
-// Contributor(s): Vincent Reverdy [2019]
-//                 Collin Gress [2019]
+// Contributor(s): 
 // License: BSD 3-Clause License
 // ========================================================================== //
-#ifndef _IS_SORTED_HPP
-#define _IS_SORTED_HPP
+#ifndef _IS_SORTED_HPP_INCLUDED
+#define _IS_SORTED_HPP_INCLUDED
+// ============================== PREAMBLE ================================== //
+// C++ standard library
+// Project sources
+// Third-party libraries
 
 namespace bit {
 
-
+// ========================================================================== //
 } // namespace bit
 
-#endif // _IS_SORTED_HPP
+#endif // _IS_SORTED_HPP_INCLUDED
+// ========================================================================== //

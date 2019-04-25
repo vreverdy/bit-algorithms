@@ -3,16 +3,20 @@
 // Name: shift_left.hpp
 // Description: bit_iterator overloads for std::shift_left
 // Creator: Vincent Reverdy
-// Contributor(s): Vincent Reverdy [2019]
-//                 Collin Gress [2019]
+// Contributor(s): 
 // License: BSD 3-Clause License
 // ========================================================================== //
-#ifndef _SHIFT_LEFT_HPP
-#define _SHIFT_LEFT_HPP
+#ifndef _SHIFT_LEFT_HPP_INCLUDED
+#define _SHIFT_LEFT_HPP_INCLUDED
+// ============================== PREAMBLE ================================== //
+// C++ standard library
+// Project sources
+// Third-party libraries
 
 namespace bit {
 
-
+// ========================================================================== //
 } // namespace bit
 
-#endif // _SHIFT_LEFT_HPP
+#endif // _SHIFT_LEFT_HPP_INCLUDED
+// ========================================================================== //

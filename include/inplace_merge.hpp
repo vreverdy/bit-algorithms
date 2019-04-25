@@ -3,16 +3,20 @@
 // Name: inplace_merge.hpp
 // Description: bit_iterator overloads for std::inplace_merge
 // Creator: Vincent Reverdy
-// Contributor(s): Vincent Reverdy [2019]
-//                 Collin Gress [2019]
+// Contributor(s): 
 // License: BSD 3-Clause License
 // ========================================================================== //
-#ifndef _INPLACE_MERGE_HPP
-#define _INPLACE_MERGE_HPP
+#ifndef _INPLACE_MERGE_HPP_INCLUDED
+#define _INPLACE_MERGE_HPP_INCLUDED
+// ============================== PREAMBLE ================================== //
+// C++ standard library
+// Project sources
+// Third-party libraries
 
 namespace bit {
 
-
+// ========================================================================== //
 } // namespace bit
 
-#endif // _INPLACE_MERGE_HPP
+#endif // _INPLACE_MERGE_HPP_INCLUDED
+// ========================================================================== //

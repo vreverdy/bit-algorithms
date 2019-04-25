@@ -3,16 +3,20 @@
 // Name: partition_copy.hpp
 // Description: bit_iterator overloads for std::partition_copy
 // Creator: Vincent Reverdy
-// Contributor(s): Vincent Reverdy [2019]
-//                 Collin Gress [2019]
+// Contributor(s): 
 // License: BSD 3-Clause License
 // ========================================================================== //
-#ifndef _PARTITION_COPY_HPP
-#define _PARTITION_COPY_HPP
+#ifndef _PARTITION_COPY_HPP_INCLUDED
+#define _PARTITION_COPY_HPP_INCLUDED
+// ============================== PREAMBLE ================================== //
+// C++ standard library
+// Project sources
+// Third-party libraries
 
 namespace bit {
 
-
+// ========================================================================== //
 } // namespace bit
 
-#endif // _PARTITION_COPY_HPP
+#endif // _PARTITION_COPY_HPP_INCLUDED
+// ========================================================================== //

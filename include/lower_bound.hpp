@@ -3,16 +3,20 @@
 // Name: lower_bound.hpp
 // Description: bit_iterator overloads for std::lower_bound
 // Creator: Vincent Reverdy
-// Contributor(s): Vincent Reverdy [2019]
-//                 Collin Gress [2019]
+// Contributor(s): 
 // License: BSD 3-Clause License
 // ========================================================================== //
-#ifndef _LOWER_BOUND_HPP
-#define _LOWER_BOUND_HPP
+#ifndef _LOWER_BOUND_HPP_INCLUDED
+#define _LOWER_BOUND_HPP_INCLUDED
+// ============================== PREAMBLE ================================== //
+// C++ standard library
+// Project sources
+// Third-party libraries
 
 namespace bit {
 
-
+// ========================================================================== //
 } // namespace bit
 
-#endif // _LOWER_BOUND_HPP
+#endif // _LOWER_BOUND_HPP_INCLUDED
+// ========================================================================== //

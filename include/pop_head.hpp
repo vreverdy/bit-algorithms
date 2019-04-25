@@ -3,16 +3,20 @@
 // Name: pop_head.hpp
 // Description: bit_iterator overloads for std::pop_head
 // Creator: Vincent Reverdy
-// Contributor(s): Vincent Reverdy [2019]
-//                 Collin Gress [2019]
+// Contributor(s): 
 // License: BSD 3-Clause License
 // ========================================================================== //
-#ifndef _POP_HEAD_HPP
-#define _POP_HEAD_HPP
+#ifndef _POP_HEAD_HPP_INCLUDED
+#define _POP_HEAD_HPP_INCLUDED
+// ============================== PREAMBLE ================================== //
+// C++ standard library
+// Project sources
+// Third-party libraries
 
 namespace bit {
 
-
+// ========================================================================== //
 } // namespace bit
 
-#endif // _POP_HEAD_HPP
+#endif // _POP_HEAD_HPP_INCLUDED
+// ========================================================================== //

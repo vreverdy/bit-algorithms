@@ -3,16 +3,20 @@
 // Name: reduce.hpp
 // Description: bit_iterator overloads for std::reduce
 // Creator: Vincent Reverdy
-// Contributor(s): Vincent Reverdy [2019]
-//                 Collin Gress [2019]
+// Contributor(s): 
 // License: BSD 3-Clause License
 // ========================================================================== //
-#ifndef _REDUCE_HPP
-#define _REDUCE_HPP
+#ifndef _REDUCE_HPP_INCLUDED
+#define _REDUCE_HPP_INCLUDED
+// ============================== PREAMBLE ================================== //
+// C++ standard library
+// Project sources
+// Third-party libraries
 
 namespace bit {
 
-
+// ========================================================================== //
 } // namespace bit
 
-#endif // _REDUCE_HPP
+#endif // _REDUCE_HPP_INCLUDED
+// ========================================================================== //

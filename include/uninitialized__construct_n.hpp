@@ -3,16 +3,20 @@
 // Name: uninitialized__construct_n.hpp
 // Description: bit_iterator overloads for std::uninitialized__construct_n
 // Creator: Vincent Reverdy
-// Contributor(s): Vincent Reverdy [2019]
-//                 Collin Gress [2019]
+// Contributor(s): 
 // License: BSD 3-Clause License
 // ========================================================================== //
-#ifndef _UNINITIALIZED__CONSTRUCT_N_HPP
-#define _UNINITIALIZED__CONSTRUCT_N_HPP
+#ifndef _UNINITIALIZED__CONSTRUCT_N_HPP_INCLUDED
+#define _UNINITIALIZED__CONSTRUCT_N_HPP_INCLUDED
+// ============================== PREAMBLE ================================== //
+// C++ standard library
+// Project sources
+// Third-party libraries
 
 namespace bit {
 
-
+// ========================================================================== //
 } // namespace bit
 
-#endif // _UNINITIALIZED__CONSTRUCT_N_HPP
+#endif // _UNINITIALIZED__CONSTRUCT_N_HPP_INCLUDED
+// ========================================================================== //
