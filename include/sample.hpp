@@ -7,13 +7,17 @@
 //                 Collin Gress [2019]
 // License: BSD 3-Clause License
 // ========================================================================== //
-#ifndef _SAMPLE_HPP
-#define _SAMPLE_HPP
+#ifndef _SAMPLE_HPP_INCLUDED
+#define _SAMPLE_HPP_INCLUDED
+// ========================================================================== //
 
+// ============================== PREAMBLE ================================== //
 // C++ standard library
 #include <iostream>
 #include <algorithm>
 #include <vector>
+// Project sources
+// Third-party libraries
 
 namespace bit {
 
@@ -40,6 +44,8 @@ SampleIterator sample(bit_iterator<WrappedIterator> first, bit_iterator<WrappedI
   return out;
 }
 
+// ========================================================================== //
 } // namespace bit
 
-#endif // _SAMPLE_HPP
+#endif // _SAMPLE_HPP_INCLUDED
+// ========================================================================== //

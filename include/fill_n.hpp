@@ -7,17 +7,37 @@
 //                 Collin Gress [2019]
 // License: BSD 3-Clause License
 // ========================================================================== //
-#ifndef _FILL_N_HPP
-#define _FILL_N_HPP
+#ifndef _FILL_N_HPP_INCLUDED
+#define _FILL_N_HPP_INCLUDED
+// ========================================================================== //
+
+// ============================== PREAMBLE ================================== //
+// C++ standard library
+// Project sources
+// Third-party libraries
 
 namespace bit {
 
-template <class WrappedIter, class Size>
-void fill_n(bit_iterator<WrappedIter> first, Size count, bit::bit_value bv) {
-  bit_iterator<WrappedIter> last = first + count;
+// TODO
+template <class OutputIt, class Size>
+constexpr bit_iterator<OutputIt> fill_n(bit_iterator<OutputIt> first, Size count, 
+    const bit_value& bv) {
+  bit_iterator<OutputIt> last = first + count;
   bit::fill(first, last, bv); 
 }
 
+// TODO
+template <class ExecutionPolicy, class ForwardIt, class Size>
+bit_iterator<ForwardIt> fill_n(ExecutionPolicy&& policy, 
+    bit_iterator<ForwardIt> first, Size count, const bit_value& bv) {
+  bv;
+  policy;
+  count;
+  return first;
+}
+
+// ========================================================================== //
 } // namespace bit
 
-#endif // _FILL_N_HPP
+#endif // _FILL_N_HPP_INCLUDED
+// ========================================================================== //

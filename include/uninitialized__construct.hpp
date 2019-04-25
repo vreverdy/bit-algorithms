@@ -8,6 +8,8 @@
 // ========================================================================== //
 #ifndef _UNINITIALIZED__CONSTRUCT_HPP_INCLUDED
 #define _UNINITIALIZED__CONSTRUCT_HPP_INCLUDED
+// ========================================================================== //
+
 // ============================== PREAMBLE ================================== //
 // C++ standard library
 // Project sources

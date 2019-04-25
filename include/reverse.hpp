@@ -7,11 +7,16 @@
 //                 Collin Gress [2019]
 // License: BSD 3-Clause License
 // ========================================================================== //
-#ifndef _REVERSE_HPP
-#define _REVERSE_HPP
+#ifndef _REVERSE_HPP_INCLUDED
+#define _REVERSE_HPP_INCLUDED
+// ========================================================================== //
 
+
+// ============================== PREAMBLE ================================== //
+// C++ standard library
 // Project sources
 #include "bit.hpp"
+// Third-party libraries
 
 namespace bit {
 
@@ -107,6 +112,8 @@ void reverse(
     }
 }
 
+// ========================================================================== //
 } // namespace bit
 
 #endif // _REVERSE_HPP
+// ========================================================================== //

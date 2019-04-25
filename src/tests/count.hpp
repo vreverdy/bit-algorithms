@@ -7,10 +7,12 @@
 //                 Collin Gress [2019]
 // License: BSD 3-Clause License
 // ========================================================================== //
-#ifndef _COUNT_TESTS_HPP
-#define _COUNT_TESTS_HPP
+#ifndef _COUNT_TESTS_HPP_INCLUDED
+#define _COUNT_TESTS_HPP_INCLUDED
 // ========================================================================== //
 
+// ============================== PREAMBLE ================================== //
+// C++ standard library
 // Project sources
 #include "test_utils.hpp"
 // Third party libraries
@@ -264,5 +266,7 @@ TEMPLATE_TEST_CASE("Vector: correctly counts number of unset bits where bits all
     REQUIRE(num_bits_unset == expected_bits_unset);
 }
 
-#endif // _COUNT_TESTS_HPP
+// ========================================================================== //
+#endif // _COUNT_TESTS_HPP_INCLUDED
+// ========================================================================== //
 

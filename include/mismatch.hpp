@@ -7,13 +7,16 @@
 //                 Collin Gress [2019]
 // License: BSD 3-Clause License
 // ========================================================================== //
-#ifndef _MISMATCH_HPP
-#define _MISMATCH_HPP
+#ifndef _MISMATCH_HPP_INCLUDED
+#define _MISMATCH_HPP_INCLUDED
+// ========================================================================== //
 
+// ============================== PREAMBLE ================================== //
 // C++ standard library
 #include <iostream>
 // Project sources
-#include "alg_utils.hpp"
+#include "bit_algorithm_details.hpp"
+// Third-party libraries
 
 namespace bit {
 
@@ -59,6 +62,8 @@ std::pair<bit_iterator<WrappedIter1>, bit_iterator<WrappedIter2>> mismatch(
   return std::make_pair(in1, in2);
 }  
 
+// ========================================================================== //
 } // namespace bit
 
-#endif // _MISMATCH_HPP
+#endif // _MISMATCH_HPP_INCLUDED
+// ========================================================================== //

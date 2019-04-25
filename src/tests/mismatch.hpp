@@ -7,9 +7,12 @@
 //                 Collin Gress [2019]
 // License: BSD 3-Clause License
 // ========================================================================== //
-#ifndef _MISMATCH_TESTS_HPP
-#define _MISMATCH_TESTS_HPP
+#ifndef _MISMATCH_TESTS_HPP_INCLUDED
+#define _MISMATCH_TESTS_HPP_INCLUDED
 // ========================================================================== //
+
+// ============================== PREAMBLE ================================== //
+// C++ standard library
 // Project sources
 #include "test_utils.hpp"
 // Third party libraries
@@ -82,5 +85,7 @@ TEMPLATE_TEST_CASE("Misaligned vector works", "[mismatch]",
     REQUIRE(*(res.second.base()) == 3116);
 }
 
-#endif // _MISMATCH_TESTS_HPP
+// ========================================================================== //
+#endif // _MISMATCH_TESTS_HPP_INCLUDED
+// ========================================================================== //
 

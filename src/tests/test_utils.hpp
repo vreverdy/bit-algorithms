@@ -7,15 +7,18 @@
 //                 Collin Gress [2019]
 // License: BSD 3-Clause License
 // ========================================================================== //
-#ifndef _TEST_UTILS_HPP
-#define _TEST_UTILS_HPP
+#ifndef _TEST_UTILS_HPP_INCLUDED
+#define _TEST_UTILS_HPP_INCLUDED
 // ========================================================================== //
+
+// ============================== PREAMBLE ================================== //
 // C++ standard library
 #include <iostream>
 #include <random>
 #include <string>
 // Project sources
 #include "bit.hpp"
+// Third-party libraries
 
 /**
  * Creates a length n string of the character '0' repeated
@@ -166,4 +169,6 @@ NumericType string_as_bits(std::string str) {
   return num;
 }
 
-#endif // _TEST_UTILS_HPP
+// ========================================================================== //
+#endif // _TEST_UTILS_HPP_INCLUDED
+// ========================================================================== //

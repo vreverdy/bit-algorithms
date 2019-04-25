@@ -8,6 +8,8 @@
 // ========================================================================== //
 #ifndef _SET_SYMMETRIC_DIFFERENCE_HPP_INCLUDED
 #define _SET_SYMMETRIC_DIFFERENCE_HPP_INCLUDED
+// ========================================================================== //
+
 // ============================== PREAMBLE ================================== //
 // C++ standard library
 // Project sources

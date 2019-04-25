@@ -7,11 +7,15 @@
 //                 Collin Gress [2019]
 // License: BSD 3-Clause License
 // ========================================================================== //
-#ifndef _FILL_HPP
-#define _FILL_HPP
+#ifndef _FILL_HPP_INCLUDED
+#define _FILL_HPP_INCLUDED
+// ========================================================================== //
 
+// ============================== PREAMBLE ================================== //
+// C++ standard library
 // Project sources
-#include "alg_utils.hpp"
+#include "bit_algorithm_details.hpp"
+// Third-party libraries
 
 namespace bit {
 
@@ -42,6 +46,8 @@ void fill(bit_iterator<WrappedIter> first, bit_iterator<WrappedIter> last,
   }
 }
 
+// ========================================================================== //
 } // namespace bit
 
-#endif // _FILL_HPP
+#endif // _FILL_HPP_INCLUDED
+// ========================================================================== //

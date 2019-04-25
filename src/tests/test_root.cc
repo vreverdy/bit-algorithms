@@ -9,9 +9,14 @@
 // License: BSD 3-Clause License
 // ========================================================================== //
 
+// ============================== PREAMBLE ================================== //
+// C++ standard library
+// Project sources
 #include "alg_utils.hpp"
 #include "count.hpp"
 #include "reverse.hpp"
 #include "mismatch.hpp"
 #include "sample.hpp"
 #include "search.hpp"
+// Third party libraries
+// ========================================================================== //

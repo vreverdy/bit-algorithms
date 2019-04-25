@@ -7,9 +7,11 @@
 //                 Collin Gress [2019]
 // License: BSD 3-Clause License
 // ========================================================================== //
-#ifndef _SEARCH_TESTS_HPP
-#define _SEARCH_TESTS_HPP
+#ifndef _SEARCH_TESTS_HPP_INCLUDED
+#define _SEARCH_TESTS_HPP_INCLUDED
 // ========================================================================== //
+
+// ============================== PREAMBLE ================================== //
 // Project sources
 #include "test_utils.hpp"
 // Third party libraries
@@ -34,4 +36,6 @@ TEMPLATE_TEST_CASE("Single number: finds a simple pattern", "[search]",
     REQUIRE(res != h_end);
 }
 
-#endif // _SEARCH_TESTS_HPP
+// ========================================================================== //
+#endif // _SEARCH_TESTS_HPP_INCLUDED
+// ========================================================================== //

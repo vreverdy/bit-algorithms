@@ -8,6 +8,8 @@
 // ========================================================================== //
 #ifndef _TRANSFORM_EXCLUSIVE_SCAN_HPP_INCLUDED
 #define _TRANSFORM_EXCLUSIVE_SCAN_HPP_INCLUDED
+// ========================================================================== //
+
 // ============================== PREAMBLE ================================== //
 // C++ standard library
 // Project sources

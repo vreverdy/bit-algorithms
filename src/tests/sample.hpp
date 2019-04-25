@@ -7,9 +7,11 @@
 //                 Collin Gress [2019]
 // License: BSD 3-Clause License
 // ========================================================================== //
-#ifndef _SAMPLE_TESTS_HPP
-#define _SAMPLE_TESTS_HPP
+#ifndef _SAMPLE_TESTS_HPP_INCLUDED
+#define _SAMPLE_TESTS_HPP_INCLUDED
 // ========================================================================== //
+
+// ============================== PREAMBLE ================================== //
 // Project sources
 #include "test_utils.hpp"
 // Third party libraries
@@ -52,4 +54,6 @@ TEMPLATE_TEST_CASE("Sampling bits of number where all bits set only returns 1s",
           [](bit::bit_value bv) { return bv == bit::bit1; })); 
 }
 
-#endif // _SAMPLE_TESTS_HPP
+// ========================================================================== //
+#endif // _SAMPLE_TESTS_HPP_INCLUDED
+// ========================================================================== //

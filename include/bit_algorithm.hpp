@@ -8,8 +8,10 @@
 //                  Collin Gress [2019]
 // License:         BSD 3-Clause License
 // ========================================================================== //
-#ifndef _BIT_ALGORITHM_HPP
-#define _BIT_ALGORITHM_HPP
+#ifndef _BIT_ALGORITHM_HPP_INCLUDED
+#define _BIT_ALGORITHM_HPP_INCLUDED
+// ========================================================================== //
+
 // ================================ PREAMBLE ================================ //
 #include "all_of.hpp"
 #include "any_of.hpp"
@@ -17,18 +19,14 @@
 #include "for_each.hpp"
 #include "for_each_n.hpp"
 #include "count.hpp"
-#include "count_if.hpp"
 #include "mismatch.hpp"
 #include "find.hpp"
-#include "find_if.hpp"
-#include "find_if_not.hpp"
 #include "find_end.hpp"
 #include "find_first_of.hpp"
 #include "adjacent_find.hpp"
 #include "search.hpp"
 #include "search_n.hpp"
 #include "copy.hpp"
-#include "copy_if.hpp"
 #include "copy_n.hpp"
 #include "copy_backward.hpp"
 #include "move.hpp"
@@ -39,13 +37,10 @@
 #include "generate.hpp"
 #include "generate_n.hpp"
 #include "remove.hpp"
-#include "remove_if.hpp"
 #include "remove_copy.hpp"
-#include "remove_copy_if.hpp"
 #include "replace.hpp"
 #include "replace_if.hpp"
 #include "replace_copy.hpp"
-#include "replace_copy_if.hpp"
 #include "swap.hpp"
 #include "swap_ranges.hpp"
 #include "iter_swap.hpp"
@@ -128,5 +123,6 @@
 #include "destroy_n.hpp"
 #include "qsort.hpp"
 #include "bsearch.hpp"
-
-#endif // _BIT_ALGORITHM_HPP
+// ========================================================================== //
+#endif // _BIT_ALGORITHM_HPP_INCLUDED
+// ========================================================================== //

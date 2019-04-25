@@ -7,9 +7,14 @@
 //                 Collin Gress [2019]
 // License: BSD 3-Clause License
 // ========================================================================== //
-#ifndef _ALG_UTILS_HPP
-#define _ALG_UTILS_HPP
+#ifndef _ALG_UTILS_HPP_INCLUDED
+#define _ALG_UTILS_HPP_INCLUDED
 // ========================================================================== //
+
+// ============================== PREAMBLE ================================== //
+// C++ standard library
+// Project sources
+// Third-party libraries
 
 namespace bit {
 /*
@@ -117,4 +122,6 @@ void set_in_range(BitIter begin, BitIter end,
 // ========================================================================== //
 } // namespace bit
 
-#endif // _ALG_UTILS_HPP
+#endif // _ALG_UTILS_HPP_INCLUDED
+// ========================================================================== //
+

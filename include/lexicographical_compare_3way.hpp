@@ -8,6 +8,8 @@
 // ========================================================================== //
 #ifndef _LEXICOGRAPHICAL_COMPARE_3WAY_HPP_INCLUDED
 #define _LEXICOGRAPHICAL_COMPARE_3WAY_HPP_INCLUDED
+// ========================================================================== //
+
 // ============================== PREAMBLE ================================== //
 // C++ standard library
 // Project sources

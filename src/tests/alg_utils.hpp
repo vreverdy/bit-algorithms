@@ -7,9 +7,12 @@
 //                 Collin Gress [2019] 
 // License: BSD 3-Clause License
 // ========================================================================== //
-#ifndef _ALG_UTILS_TESTS_HPP
-#define _ALG_UTILS_TESTS_HPP
+#ifndef _ALG_UTILS_TESTS_HPP_INCLUDED
+#define _ALG_UTILS_TESTS_HPP_INCLUDED
 // ========================================================================== //
+
+// ============================== PREAMBLE ================================== //
+// C++ standard library
 // Project sources
 #include "test_utils.hpp"
 // Third-party libraries
@@ -111,4 +114,5 @@ TEMPLATE_TEST_CASE("set_in_range does what you'd expect it to", "[set_in_range]"
     REQUIRE(word == 0);
 }
 // ========================================================================== //
-#endif // _ALG_UTILS_TESTS_HPP
+#endif // _ALG_UTILS_TESTS_HPP_INCLUDED
+// ========================================================================== //

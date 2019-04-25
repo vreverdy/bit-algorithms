@@ -7,10 +7,12 @@
 //                 Collin Gress [2019] 
 // License: BSD 3-Clause License
 // ========================================================================== //
-#ifndef _REVERSE_TESTS_HPP
-#define _REVERSE_TESTS_HPP
+#ifndef _REVERSE_TESTS_HPP_INCLUDED
+#define _REVERSE_TESTS_HPP_INCLUDED
 // ========================================================================== //
 
+// ============================== PREAMBLE ================================== //
+// C++ standard library
 // Project sources
 #include "test_utils.hpp"
 // Third party libraries
@@ -60,7 +62,7 @@ TEMPLATE_TEST_CASE("Single number: correct where all bits one", "[reverse]",
     REQUIRE(num == expected_after_reverse);
 }
 
-TEMPLATE_TEST_CASE("Single number: reverses only within the iteration range \ 
+TEMPLATE_TEST_CASE("Single number: reverses only within the iteration range \
     (first-half)", "[reverse]", unsigned short, unsigned int, unsigned long, 
     unsigned long long) {
 
@@ -81,7 +83,7 @@ TEMPLATE_TEST_CASE("Single number: reverses only within the iteration range \
     REQUIRE(num == expected_after_reverse);
 }
 
-TEMPLATE_TEST_CASE("Single number: reverses only within the iteration range \ 
+TEMPLATE_TEST_CASE("Single number: reverses only within the iteration range \
     (second-half)", "[reverse]", unsigned short, unsigned int,
     unsigned long, unsigned long long) {
 
@@ -119,5 +121,7 @@ TEMPLATE_TEST_CASE("Single number: does nothing if iteration range is empty",
     REQUIRE(num == expected_after_reverse);
 }
 
-#endif // _REVERSE_TESTS_HPP
+// ========================================================================== //
+#endif // _REVERSE_TESTS_HPP_INCLUDED
+// ========================================================================== //
 
