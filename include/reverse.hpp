@@ -1,9 +1,30 @@
+// =============================== reverse.hpp ================================= //
+// Project: The Experimental Bit Algorithms Library
+// Name: copy.hpp
+// Description: Implementation of reverse
+// Creator: Vincent Reverdy
+// Contributor: Vincent Reverdy [2019]
+// License: BSD 3-Clause License
+// ========================================================================== //
+#ifndef _REVERSE_HPP_INCLUDED
+#define _REVERSE_HPP_INCLUDED
 #pragma once
+// ========================================================================== //
 
+
+
+// ================================ PREAMBLE ================================ //
+// C++ standard library
+// Project sources
 #include "bit.hpp"
-
+// Third-party libraries
+// Miscellaneous
 namespace bit {
+// ========================================================================== //
 
+
+
+// --------------------------- Reverse Algorithms --------------------------- //
 template <class BidirIt>
 void reverse(
     bit_iterator<BidirIt> first,
@@ -48,7 +69,7 @@ void reverse(
             }
             *it <<= gap;
             it = first.base();
-            // Shift the underlying sequence to the right
+        // Shift the underlying sequence to the right
         } else if (first.position() > gap) {
             it = std::prev(last.base(), is_last_aligned);
             gap = first.position() - gap;
@@ -90,5 +111,11 @@ void reverse(
         );
     }
 }
+// -------------------------------------------------------------------------- //
 
-}
+
+
+// ========================================================================== //
+} // namespace bit
+#endif // _REVERSE_HPP_INCLUDED
+// ========================================================================== //

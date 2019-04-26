@@ -3,6 +3,7 @@
 #include "bit.hpp"
 #include "catch2.hpp"
 #include "test_utils.hpp"
+#include <list>
 
 TEMPLATE_TEST_CASE("Single number: full reverse correct", "[reverse]",
   unsigned short, unsigned int, unsigned long, unsigned long long) {
@@ -98,7 +99,24 @@ TEMPLATE_TEST_CASE("Single number: does nothing if iteration range is empty", "[
   REQUIRE(num == expected_after_reverse);
 }
 
-TEMPLATE_TEST_CASE("Vector: full reverse correct", "[reverse]", unsigned short,
-  unsigned int, unsigned long, unsigned long long) {
+TEMPLATE_PRODUCT_TEST_CASE("Vector: full reverse correct", 
+                           "[template][product]", 
+                           (std::vector, std::list), 
+                           (unsigned short, unsigned int, 
+                            unsigned long, unsigned long long)) {
 
+    using container_type = TestType;
+    using num_type = typename container_type::value_type;
+    auto container_size = 16;
+    container_type bitcont = make_random_container<container_type>
+                                     (container_size);
+    auto bfirst = bit::bit_iterator<decltype(std::begin(bitcont))>(std::begin(bitcont));
+    auto blast = bit::bit_iterator<decltype(std::end(bitcont))>(std::end(bitcont));
+    auto boolcont = bitcont_to_boolcont(bitcont);
+    auto bool_first = std::begin(boolcont);
+    auto bool_last = std::end(boolcont);
+    REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
+    reverse(bfirst, blast); 
+    std::reverse(bool_first, bool_last);
+    REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
 }
