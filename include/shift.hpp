@@ -1,14 +1,13 @@
-// =============================== shift.hpp ================================= //
-// Project: The Experimental Bit Algorithms Library
-// Name: shift.hpp
+// ================================ SHIFT ================================== //
+// Project:     The Experimental Bit Algorithms Library
+// Name:        shift.hpp
 // Description: Implementation of shift_left and shift_right 
-// Creator: Bryce Kille
+// Creator:     Vincent Reverdy
 // Contributor: Bryce Kille [2019]
-// License: BSD 3-Clause License
+// License:     BSD 3-Clause License
 // ========================================================================== //
 #ifndef _SHIFT_HPP_INCLUDED
 #define _SHIFT_HPP_INCLUDED
-#pragma once
 // ========================================================================== //
 
 
@@ -16,53 +15,12 @@
 // ================================ PREAMBLE ================================ //
 // C++ standard library
 //#include <algorithm>
-#include <iostream>
 // Project sources
 #include "bit.hpp"
 // Third-party libraries
 // Miscellaneous
 namespace bit {
 // ========================================================================== //
-
-
-
-// --------------------------- Utility Functions ---------------------------- //
-template <class ForwardIt>
-ForwardIt word_shift_left(ForwardIt first,
-                          ForwardIt last,
-                          typename ForwardIt::difference_type n
-)
-{
-    if (n <= 0 || n >= distance(first, last)) return last;
-    ForwardIt mid = first;
-    std::advance(mid, n);
-    for (; mid != last; ++first, ++mid) {
-        *first = *mid;
-        *mid = 0;
-    }
-    return first;
-}
-
-
-template <class ForwardIt>
-ForwardIt word_shift_right(ForwardIt first,
-                          ForwardIt last,
-                          typename ForwardIt::difference_type n
-)
-{
-    auto d = distance(first, last);
-    if (n <= 0 || n >= d) return first;
-    ForwardIt last2 = first;
-    ForwardIt d_first = first;
-    std::advance(last2, distance - n - 1);
-    std::advance(d_first, n);
-    std::copy(first, last2, d_first);
-    for (; first != d_first; ++first) {
-        *first = 0;
-    }
-    return first;
-}
-// -------------------------------------------------------------------------- //
 
 
 
@@ -78,7 +36,6 @@ bit_iterator<ForwardIt> shift_left(bit_iterator<ForwardIt> first,
 
     // Types and constants
     using word_type = typename bit_iterator<ForwardIt>::word_type;
-    using difference_type = typename bit_iterator<ForwardIt>::difference_type;
     using size_type = typename bit_iterator<ForwardIt>::size_type;
     constexpr size_type digits = binary_digits<word_type>::value;
 
@@ -97,7 +54,8 @@ bit_iterator<ForwardIt> shift_left(bit_iterator<ForwardIt> first,
                                          std::next(last.base(), 
                                                    !is_last_aligned
                                                    ),
-                                         word_shifts);
+                                         word_shifts
+    );
     last = bit_iterator<ForwardIt>(new_last_base, last.position());
     bit_iterator<ForwardIt> d_last;
     // Shift bit sequence to the left 
@@ -122,7 +80,6 @@ bit_iterator<ForwardIt> shift_left(bit_iterator<ForwardIt> first,
             *it = (*it & ((1 << last.position()) -1)) >> remaining_bitshifts;
             if (remaining_bitshifts > last.position()) 
             {
-                // TODO whats proper formatting for such long lines?
                 d_last = bit_iterator<ForwardIt>(it++, 
                             digits-(remaining_bitshifts - last.position())); 
             } else {
