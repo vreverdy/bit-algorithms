@@ -1,10 +1,30 @@
-#pragma once
+// ============================== COPY TESTS =============================== //
+// Project:         The Experimental Bit Algorithms Library
+// Name:            copy.hpp
+// Description:     Tests for copy, copy_if, copy_n and copy_backwards
+//                  algorithms
+// Creator:         Vincent Reverdy
+// Contributor(s):  Bryce Kille [2019]
+// License: BSD 3-Clause License
+// ========================================================================== //
+#ifndef _COPY_TESTS_HPP_INCLUDED
+#define _COPY_TESTS_HPP_INCLUDED
+// ========================================================================== //
 
+
+
+// =============================== PREAMBLE ================================= //
+// C++ standard library
+// Project sources
+#include "test_root.cc"
 #include "bit.hpp"
-#include "catch2.hpp"
-#include "test_utils.hpp"
-#include "list"
+// Third-party libraries
+// Miscellaneous
+// ========================================================================== //
 
+
+
+// ------------------------------- Copy Tests ------------------------------- //
 TEMPLATE_TEST_CASE("Copy: One word copy of same size", "[copy]",
   unsigned short, unsigned int, unsigned long, unsigned long long) {
   using num_type = TestType;
@@ -191,30 +211,16 @@ TEMPLATE_PRODUCT_TEST_CASE("Copy: same size not aligned copy correct",
     auto bool_last1_t = bool_last1;
     auto bool_last2_t = bool_last2;
     auto blast1_t = blast1;
-    std::cout << "\n\nSRC\n";
-    display(std::cout, bfirst1, blast1);
-    std::cout << "bitcont\n";
-    display(std::cout, bfirst2, blast2);
     copy(bfirst1_t, blast1_t, bfirst2_t);
-    display(std::cout, bfirst2, blast2);
 
-    std::cout << "Boolcont\n";
-    display(std::cout, bool_first2, bool_last2, digits);
     std::copy(bool_first1_t, bool_last1_t, bool_first2_t);
-    display(std::cout, bool_first2, bool_last2, digits);
     REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
 
     std::advance(bfirst1_t, 3);
     std::advance(bool_first1_t, 3);
-    std::cout << "\n\nbitcont\n";
-    display(std::cout, bfirst2, blast2);
     copy(bfirst1_t, blast1_t, bfirst2_t);
-    display(std::cout, bfirst2, blast2);
 
-    std::cout << "Boolcont\n";
-    display(std::cout, bool_first2, bool_last2, digits);
     std::copy(bool_first1_t, bool_last1_t, bool_first2_t);
-    display(std::cout, bool_first2, bool_last2, digits);
     REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
 
     bool_last1_t = bool_first1;
@@ -224,5 +230,11 @@ TEMPLATE_PRODUCT_TEST_CASE("Copy: same size not aligned copy correct",
     copy(bfirst1_t, blast1_t, bfirst2_t);
     std::copy(bool_first1_t, bool_last1_t, bool_first2_t);
     REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
-
 }
+// -------------------------------------------------------------------------- //
+
+
+
+// ========================================================================== //
+#endif // _COPY_TESTS_HPP_INCLUDED
+// ========================================================================== //

@@ -1,14 +1,14 @@
-// ============================ test_utils.hpp ============================== //
-// Project: The Experimental Bit Algorithms Library
-// Name: test_utils.hpp
-// Description: General utilities for testing
-// Creator: Collin Gress
-// Contributor(s): Vincent Reverdy [2019], Bryce Kille [2019], Collin Gress [2019]
+// ============================= TEST_UTILS ================================ //
+// Project:         The Experimental Bit Algorithms Library
+// Name:            test_utils.hpp
+// Description:     General utilities for testing
+// Creator:         Collin Gress
+// Contributor(s):  Bryce Kille [2019], 
+//                  Collin Gress [2019]
 // License: BSD 3-Clause License
 // ========================================================================== //
 #ifndef _TEST_UTILS_HPP_INCLUDED
 #define _TEST_UTILS_HPP_INCLUDED
-#pragma once
 // ========================================================================== //
 
 
@@ -130,7 +130,7 @@ Container make_random_container(
 
 
 
-// ------------------------------- DEPRECATED ------------------------------- //
+// ------------------------------- BIT_STRING ------------------------------- //
 std::string random_bit_str(std::size_t len) {
   std::random_device device;
   std::default_random_engine engine(device());
