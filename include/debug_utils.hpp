@@ -1,8 +1,8 @@
-// =========================== debug_utils.hpp ============================== //
-// Project: The Experimental Bit Algorithms Library
-// Name: debug_utils.hpp
+// =========================== DEBUG_UTILS ============================== //
+// Project:     The Experimental Bit Algorithms Library
+// Name:        debug_utils.hpp
 // Description: Utilities useful for debugging
-// Creator: Bryce Kille
+// Creator:     Vincent Reverdy
 // Contributor: Bryce Kille [2019]
 // License: BSD 3-Clause License
 // ========================================================================== //
