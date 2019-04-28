@@ -14,6 +14,7 @@
 // C++ standard library
 // Project sources
 // Third-party libraries
+// Miscellaneous
 
 namespace bit {
 

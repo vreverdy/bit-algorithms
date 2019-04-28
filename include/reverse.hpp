@@ -17,6 +17,7 @@
 // Project sources
 #include "bit.hpp"
 // Third-party libraries
+// Miscellaneous
 
 namespace bit {
 

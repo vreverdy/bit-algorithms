@@ -16,35 +16,39 @@
 // Project sources
 #include "bit_algorithm_details.hpp"
 // Third-party libraries
+// Miscellaneous
 
 namespace bit {
 
-template <class WrappedIter>
-void fill(bit_iterator<WrappedIter> first, bit_iterator<WrappedIter> last, 
+template <class ForwardIt>
+void fill(bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last, 
     bit::bit_value bv) {
-  bit_iterator<WrappedIter> cur = first;
+    bit_iterator<ForwardIt> cur = first;
 
-  using word_type = typename bit_iterator<WrappedIter>::word_type;
-  constexpr std::size_t num_digits = bit::binary_digits<word_type>::value;
+    using word_type = typename bit_iterator<ForwardIt>::word_type;
+    constexpr std::size_t num_digits = bit::binary_digits<word_type>::value;
 
-  while (cur != last) {
-    bit::range_type rt = bit::get_range_type(cur, last - 1);
-    if (rt == bit::range_type::FULL) {
-      if (bv == bit::bit1) {
-        *(cur.base()) = -1;
-      } else {
-        *(cur.base()) = 0;
-      }
-      std::advance(cur, num_digits);
-    } else if (rt == bit::range_type::POINT) {
-      *cur = bv;
-      ++cur;
-    } else {
-      bit::set_in_range(cur, last - 1, cur.base(), bv);
-      cur = last;
-    } 
-  }
+    while (cur != last) {
+        if (last - cur >= num_digits) { // at least a full word remains
+            if (bv == bit1) {
+                *(cur.base()) = -1;
+            } else {
+                *(cur.base()) = 0;
+            }
+        } else {
+            set_in_range(cur, last - 1, cur.base(), bv);
+            cur = last;
+        }
+    }
 }
+
+// TODO
+template <class ExecutionPolicy, class ForwardIt>
+void fill(ExecutionPolicy&& policy, bit_iterator<ForwardIt> first,
+    bit_iterator<ForwardIt> last, const bit_value& bv) {
+    (policy, first, last, bv);
+}
+
 
 // ========================================================================== //
 } // namespace bit

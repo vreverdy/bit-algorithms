@@ -12,7 +12,7 @@
 // ============================== PREAMBLE ================================== //
 // C++ standard library
 // Project sources
-#include "alg_utils.hpp"
+#include "bit_algorithm_details.hpp"
 #include "count.hpp"
 #include "reverse.hpp"
 #include "mismatch.hpp"

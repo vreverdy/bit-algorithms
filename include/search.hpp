@@ -16,6 +16,7 @@
 #include <iostream>
 // Project sources
 // Third-party libraries
+// Miscellaneous
 
 namespace bit {
 
@@ -27,7 +28,6 @@ constexpr bit_iterator<ForwardIt1> search(bit_iterator<ForwardIt1> first,
     last;
     s_first;
     s_last;
-
     return first;
 }
 
@@ -36,6 +36,7 @@ template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2>
 bit_iterator<ForwardIt1> search(ExecutionPolicy&& policy, 
     bit_iterator<ForwardIt1> first, bit_iterator<ForwardIt1> last,
     bit_iterator<ForwardIt2> s_first, bit_iterator<ForwardIt2> s_last) {
+    policy;
     last;
     s_first;
     s_last;

@@ -15,9 +15,11 @@
 // C++ standard library
 #include <iostream>
 #include <algorithm>
+#include <numeric>
 #include <vector>
 // Project sources
 // Third-party libraries
+// Miscellaneous
 
 namespace bit {
 

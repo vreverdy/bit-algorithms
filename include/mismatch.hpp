@@ -13,54 +13,121 @@
 
 // ============================== PREAMBLE ================================== //
 // C++ standard library
+#include <execution>
 #include <iostream>
 // Project sources
 #include "bit_algorithm_details.hpp"
 // Third-party libraries
+// Miscellaneous
 
 namespace bit {
 
-template <class WrappedIter1, class WrappedIter2>
-std::pair<bit_iterator<WrappedIter1>, bit_iterator<WrappedIter2>> mismatch(
-   bit_iterator<WrappedIter1> in1_beg, bit_iterator<WrappedIter1> in1_end,
-   bit_iterator<WrappedIter2> in2_beg, bit_iterator<WrappedIter2> in2_end
+// TODO
+template <class InputIt1, class InputIt2>
+constexpr std::pair<bit_iterator<InputIt1>, bit_iterator<InputIt2>> mismatch(
+    bit_iterator<InputIt1> first1, bit_iterator<InputIt1> last1,
+    bit_iterator<InputIt2> first2
 ) {
+    return std::make_pair(first1, first2);
+}
 
-  // we'll make reads of the smaller of the two word types. 
-  using word1_type = typename bit_iterator<WrappedIter1>::word_type;
-  using word2_type = typename bit_iterator<WrappedIter2>::word_type;
+// TODO
+template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2,
+         class = typename std::enable_if<std::is_execution_policy
+         <ExecutionPolicy>::value>::type>>
+std::pair<bit_iterator<ForwardIt1>, bit_iterator<ForwardIt2>> mismatch(
+    ExecutionPolicy&& policy, bit_iterator<ForwardIt1> first1,
+    bit_iterator<ForwardIt1> last1, bit_iterator<ForwardIt2> first2
+) {
+    return std::make_pair(first1, first2);
+}
 
-  constexpr std::size_t num_digits1 = bit::binary_digits<word1_type>::value;
-  constexpr std::size_t num_digits2 = bit::binary_digits<word2_type>::value;
+// TODO
+template <class InputIt1, class InputIt2, class BinaryPredicate>
+constexpr std::pair<bit_iterator<InputIt1>, bit_iterator<InputIt2>> mismatch(
+    bit_iterator<InputIt1> first1, bit_iterator<InputIt1> last1,
+    bit_iterator<InputIt2> first2, BinaryPredicate p
+) {
+  bool b = p(*first1, *first2); 
+  return std::make_pair(first1, first2);
+}
 
-  using word_type = typename std::conditional<
-    num_digits1 < num_digits2, word1_type, word2_type>::type;
+// TODO
+template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2,
+    class BinaryPredicate> std::pair<bit_iterator<ForwardIt1>, 
+    bit_iterator<ForwardIt2>> mismatch(ExecutionPolicy&& policy, 
+    bit_iterator<ForwardIt1> first1, bit_iterator<ForwardIt1> last1,
+    bit_iterator<ForwardIt2> first2, BinaryPredicate p) {
+    bool b = p(*first1, *first2);
+    return std::make_pair(first1, first2);
+} 
 
-  bit_iterator<WrappedIter1> in1 = in1_beg;
-  bit_iterator<WrappedIter2> in2 = in2_beg;
+template <class InputIt1, class InputIt2>
+std::pair<bit_iterator<InputIt1>, bit_iterator<InputIt2>> mismatch(
+   bit_iterator<InputIt1> first1, bit_iterator<InputIt1> last1,
+   bit_iterator<InputIt2> first2, bit_iterator<InputIt2> last2
+) {
+    // we'll make reads of the smaller of the two word types. 
+    using word1_type = typename bit_iterator<InputIt1>::word_type;
+    using word2_type = typename bit_iterator<InputIt2>::word_type;
 
-  while (true) {
-    word_type w1 = bit::read_word_raw<bit_iterator<WrappedIter1>, word_type>(in1, in1_end); 
-    word_type w2 = bit::read_word_raw<bit_iterator<WrappedIter2>, word_type>(in2, in2_end);
+    constexpr std::size_t num_digits1 = binary_digits<word1_type>::value;
+    constexpr std::size_t num_digits2 = binary_digits<word2_type>::value;
 
-    exit(1);
+    using word_type = typename std::conditional<
+      num_digits1 < num_digits2, word1_type, word2_type>::type;
 
-    if (w1 != w2) {
-      // the two words don't match. let's find the position of the mismatched bits
-      while (in1 != in1_end && in2 != in2_end && *in1 == *in2) {
-        ++in1;
-        ++in2;
-      }
-      break;
-    } else {
-      // the words match. advance the iterators by one word
-      std::advance(in1, bit::binary_digits<word_type>::value);
-      std::advance(in2, bit::binary_digits<word_type>::value);
+    bit_iterator<InputIt1> in1 = first1;
+    bit_iterator<InputIt2> in2 = first2;
+
+    while (true) {
+        word_type w1 = _read_word_raw<bit_iterator<InputIt1>, word_type>(in1, last1); 
+        word_type w2 = _read_word_raw<bit_iterator<InputIt2>, word_type>(in2, last2);
+
+        if (w1 != w2) {
+            // the two words don't match. let's find the position of the mismatched bits
+            while (in1 != last1 && in2 != last2 && *in1 == *in2) {
+              ++in1;
+              ++in2;
+            }
+            break;
+        } else {
+            // the words match. advance the iterators by one word
+            std::advance(in1, binary_digits<word_type>::value);
+            std::advance(in2, binary_digits<word_type>::value);
+        }
     }
-  }
-
-  return std::make_pair(in1, in2);
+    return std::make_pair(in1, in2);
 }  
+
+// TODO
+template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2>
+std::pair<bit_iterator<ForwardIt1>, bit_iterator<ForwardIt2>> mismatch(
+    ExecutionPolicy&& policy, bit_iterator<ForwardIt1> first1,
+    bit_iterator<ForwardIt1> last1, bit_iterator<ForwardIt2> first2,
+    bit_iterator<ForwardIt2> last2) {
+    return std::make_pair(first1, first2);
+} 
+
+// TODO
+template <class InputIt1, class InputIt2, class BinaryPredicate>
+constexpr std::pair<bit_iterator<InputIt1>, bit_iterator<InputIt2>> mismatch(
+    bit_iterator<InputIt1> first1, bit_iterator<InputIt1> last1,
+    bit_iterator<InputIt2> first2, bit_iterator<InputIt2> last2,
+    BinaryPredicate p) {
+    return std::make_pair(first1, first2);
+}
+
+// TODO
+template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2,
+    class BinaryPredicate> std::pair<bit_iterator<ForwardIt1>,
+    bit_iterator<ForwardIt2>> mismatch(ExecutionPolicy&& policy,
+    bit_iterator<ForwardIt1> first1, bit_iterator<ForwardIt1> last1,
+    bit_iterator<ForwardIt2> first2, bit_iterator<ForwardIt2> last2,
+    BinaryPredicate p) {
+    bool b = p(*first1, *first2);
+    return std::make_pair(first1, first2);
+}
 
 // ========================================================================== //
 } // namespace bit

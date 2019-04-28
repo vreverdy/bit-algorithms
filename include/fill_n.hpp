@@ -15,6 +15,7 @@
 // C++ standard library
 // Project sources
 // Third-party libraries
+// Miscellaneous
 
 namespace bit {
 
@@ -30,9 +31,7 @@ constexpr bit_iterator<OutputIt> fill_n(bit_iterator<OutputIt> first, Size count
 template <class ExecutionPolicy, class ForwardIt, class Size>
 bit_iterator<ForwardIt> fill_n(ExecutionPolicy&& policy, 
     bit_iterator<ForwardIt> first, Size count, const bit_value& bv) {
-  bv;
-  policy;
-  count;
+  (bv, policy, count);
   return first;
 }
 

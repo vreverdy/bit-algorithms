@@ -30,7 +30,7 @@ TEMPLATE_TEST_CASE("read_word_raw does not read past the guard", "[read_word_raw
     bit::bit_iterator<TestType*> start_read_pos(&arr[0], num_digits - 2); 
     bit::bit_iterator<TestType*> guard(&arr[1], 0);
     
-    TestType raw_word = read_word_raw(start_read_pos, guard); 
+    TestType raw_word = _read_word_raw(start_read_pos, guard); 
     TestType expected = static_cast<TestType>(3) << (num_digits - 2);
 
     REQUIRE(raw_word == expected);
@@ -47,7 +47,7 @@ TEMPLATE_TEST_CASE("read_word_raw has no problems reading a full word \
     bit::bit_iterator<TestType*> read_start(&arr[0], 0);
     bit::bit_iterator<TestType*> guard(&arr[0] + 1, 0);
 
-    TestType raw_word = read_word_raw(read_start, guard);
+    TestType raw_word = _read_word_raw(read_start, guard);
 
     REQUIRE(raw_word == static_cast<TestType>(-1));
 }
@@ -64,7 +64,7 @@ TEMPLATE_TEST_CASE("set_word_raw does not write past the gaurd", "[set_word_raw]
     bit::bit_iterator<TestType*> start_write_pos(&arr[0], num_digits - 2);
     bit::bit_iterator<TestType*> guard(&arr[1], 0);
 
-    bit::write_word_raw(start_write_pos, guard, static_cast<TestType>(-1));
+    bit::_write_word_raw(start_write_pos, guard, static_cast<TestType>(-1));
 
     REQUIRE(arr[0] == 3);
     REQUIRE(arr[1] == 0);
@@ -105,11 +105,11 @@ TEMPLATE_TEST_CASE("set_in_range does what you'd expect it to", "[set_in_range]"
     bit::bit_iterator<TestType*> begin(&word);
     bit::bit_iterator<TestType*> end(&word, 5);
 
-    set_in_range(begin, end, &word, bit::bit1); 
+    _set_within_word(begin, end, &word, bit::bit1); 
 
     REQUIRE(word == 31);
 
-    set_in_range(begin, end, &word, bit::bit0);
+    _set_within_word(begin, end, &word, bit::bit0);
 
     REQUIRE(word == 0);
 }

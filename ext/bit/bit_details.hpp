@@ -958,50 +958,6 @@ constexpr T _mulx(T src0, T src1, T* hi, X...) noexcept
     *hi = static_cast<T>(mi >> offset) + msbs0 * msbs1 + mcarry + lcarry;
     return lo;
 }
-// -------------------------------------------------------------------------- //
-
-enum range_type {
-  LEFT_ALIGNED,
-  RIGHT_ALIGNED,
-  INTERNAL,
-  FULL,
-  POINT
-};
-
-template <class WrappedIter>
-range_type get_range_type(bit_iterator<WrappedIter> lhs, bit_iterator<WrappedIter> rhs) {
-  if (lhs.base() == rhs.base()) {
-    if (lhs.position() == rhs.position() - 1) {
-      return range_type::POINT;
-    } else if (lhs.position() > 0) {
-      return range_type::INTERNAL;
-    } else {
-      return range_type::RIGHT_ALIGNED;
-    }
-  } else {
-    if (lhs.position() == 0) {
-      return range_type::FULL;
-    } else {
-      return range_type::LEFT_ALIGNED;
-    }
-  }
-}
-
-std::string to_string(range_type rt) {
-  if (rt == range_type::LEFT_ALIGNED) {
-    return "LEFT_ALIGNED";
-  } else if (rt == range_type::RIGHT_ALIGNED) {
-    return "RIGHT_ALIGNED";
-  } else if (rt == range_type::INTERNAL) {
-    return "INTERNAL";
-  } else if (rt == range_type::FULL) {
-    return "FULL";
-  } else {
-    return "POINT";
-  }
-}
-
-
 // ========================================================================== //
 } // namespace bit
 #endif // _BIT_DETAILS_HPP_INCLUDED
