@@ -11,6 +11,7 @@
 #define _ALG_UTILS_TESTS_HPP_INCLUDED
 // ========================================================================== //
 
+
 // ============================== PREAMBLE ================================== //
 // C++ standard library
 // Project sources
@@ -52,7 +53,7 @@ TEMPLATE_TEST_CASE("read_word_raw has no problems reading a full word \
     REQUIRE(raw_word == static_cast<TestType>(-1));
 }
 
-TEMPLATE_TEST_CASE("set_word_raw does not write past the gaurd", "[set_word_raw]",
+TEMPLATE_TEST_CASE("_write_word_raw does not write past the gaurd", "[_write_word_raw]",
     unsigned short, unsigned int, unsigned long, unsigned long long) {
 
     TestType arr[2];
@@ -70,8 +71,8 @@ TEMPLATE_TEST_CASE("set_word_raw does not write past the gaurd", "[set_word_raw]
     REQUIRE(arr[1] == 0);
 }
 
-TEMPLATE_TEST_CASE("shift_and_merge correctly builds a virtual word from two \
-    separate words", "[shift_and_merge]", unsigned short, unsigned int, 
+TEMPLATE_TEST_CASE("_shift_and_merge correctly builds a virtual word from two \
+    separate words", "[_shift_and_merge]", unsigned short, unsigned int, 
     unsigned long, unsigned long long) {
 
     TestType w1 = 0;
@@ -79,26 +80,26 @@ TEMPLATE_TEST_CASE("shift_and_merge correctly builds a virtual word from two \
 
     constexpr std::size_t position = bit::binary_digits<TestType>::value / 2;
 
-    TestType merged = bit::shift_and_merge(w1, w2, position);
+    TestType merged = bit::_shift_and_merge(w1, w2, position);
     TestType expected = static_cast<TestType>(-1) >> position;
 
     REQUIRE(merged == expected);
 }
 
-TEMPLATE_TEST_CASE("shift_and_merge is correct from the 0th position",
-    "[shift_and_merge]", unsigned short, unsigned int, unsigned long,
+TEMPLATE_TEST_CASE("_shift_and_merge is correct from the 0th position",
+    "[_shift_and_merge]", unsigned short, unsigned int, unsigned long,
     unsigned long long) {
 
     TestType w1 = static_cast<TestType>(1) 
       << (bit::binary_digits<TestType>::value - 1);
     TestType w2 = static_cast<TestType>(-1);
 
-    TestType merged = bit::shift_and_merge(w1, w2, 0);
+    TestType merged = bit::_shift_and_merge(w1, w2, 0);
     
     REQUIRE(merged == w1);
 }
 
-TEMPLATE_TEST_CASE("set_in_range does what you'd expect it to", "[set_in_range]",
+TEMPLATE_TEST_CASE("_set_within_word does what you'd expect it to", "[_set_within_word]",
     unsigned short, unsigned int, unsigned long, unsigned long long) {
     TestType word = 0;
 

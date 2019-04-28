@@ -13,7 +13,6 @@
 
 // ============================== PREAMBLE ================================== //
 // C++ standard library
-#include <execution>
 #include <iostream>
 // Project sources
 #include "bit_algorithm_details.hpp"
@@ -28,19 +27,20 @@ constexpr std::pair<bit_iterator<InputIt1>, bit_iterator<InputIt2>> mismatch(
     bit_iterator<InputIt1> first1, bit_iterator<InputIt1> last1,
     bit_iterator<InputIt2> first2
 ) {
+    (last1);
     return std::make_pair(first1, first2);
 }
 
+/*
 // TODO
-template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2,
-         class = typename std::enable_if<std::is_execution_policy
-         <ExecutionPolicy>::value>::type>>
+template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2>
 std::pair<bit_iterator<ForwardIt1>, bit_iterator<ForwardIt2>> mismatch(
     ExecutionPolicy&& policy, bit_iterator<ForwardIt1> first1,
     bit_iterator<ForwardIt1> last1, bit_iterator<ForwardIt2> first2
 ) {
     return std::make_pair(first1, first2);
 }
+*/
 
 // TODO
 template <class InputIt1, class InputIt2, class BinaryPredicate>
@@ -49,9 +49,11 @@ constexpr std::pair<bit_iterator<InputIt1>, bit_iterator<InputIt2>> mismatch(
     bit_iterator<InputIt2> first2, BinaryPredicate p
 ) {
   bool b = p(*first1, *first2); 
+  (b, last1);
   return std::make_pair(first1, first2);
 }
 
+/*
 // TODO
 template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2,
     class BinaryPredicate> std::pair<bit_iterator<ForwardIt1>, 
@@ -61,6 +63,7 @@ template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2,
     bool b = p(*first1, *first2);
     return std::make_pair(first1, first2);
 } 
+*/
 
 template <class InputIt1, class InputIt2>
 std::pair<bit_iterator<InputIt1>, bit_iterator<InputIt2>> mismatch(
@@ -106,6 +109,7 @@ std::pair<bit_iterator<ForwardIt1>, bit_iterator<ForwardIt2>> mismatch(
     ExecutionPolicy&& policy, bit_iterator<ForwardIt1> first1,
     bit_iterator<ForwardIt1> last1, bit_iterator<ForwardIt2> first2,
     bit_iterator<ForwardIt2> last2) {
+    (policy, last1, last2);
     return std::make_pair(first1, first2);
 } 
 
@@ -115,6 +119,7 @@ constexpr std::pair<bit_iterator<InputIt1>, bit_iterator<InputIt2>> mismatch(
     bit_iterator<InputIt1> first1, bit_iterator<InputIt1> last1,
     bit_iterator<InputIt2> first2, bit_iterator<InputIt2> last2,
     BinaryPredicate p) {
+    (last1, last2, p);
     return std::make_pair(first1, first2);
 }
 
@@ -126,6 +131,7 @@ template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2,
     bit_iterator<ForwardIt2> first2, bit_iterator<ForwardIt2> last2,
     BinaryPredicate p) {
     bool b = p(*first1, *first2);
+    (b, policy, last1, last2);
     return std::make_pair(first1, first2);
 }
 

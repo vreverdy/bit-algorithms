@@ -106,7 +106,6 @@ TEMPLATE_PRODUCT_TEST_CASE("Copy: copy to smaller words correct",
     auto bfirst1_t = bfirst1;
     auto bfirst2_t = bfirst2;
     auto bool_last1_t = bool_last1;
-    auto bool_last2_t = bool_last2;
     auto blast1_t = blast1;
     copy(bfirst1_t, blast1_t, bfirst2_t);
     std::copy(bool_first1_t, bool_last1_t, bool_first2_t);
@@ -157,7 +156,6 @@ TEMPLATE_PRODUCT_TEST_CASE("Copy: copy to larger words correct",
     auto bfirst1_t = bfirst1;
     auto bfirst2_t = bfirst2;
     auto bool_last1_t = bool_last1;
-    auto bool_last2_t = bool_last2;
     auto blast1_t = blast1;
     copy(bfirst1_t, blast1_t, bfirst2_t);
     std::copy(bool_first1_t, bool_last1_t, bool_first2_t);
@@ -209,7 +207,6 @@ TEMPLATE_PRODUCT_TEST_CASE("Copy: same size not aligned copy correct",
     auto bfirst1_t = bfirst1;
     auto bfirst2_t = bfirst2;
     auto bool_last1_t = bool_last1;
-    auto bool_last2_t = bool_last2;
     auto blast1_t = blast1;
     copy(bfirst1_t, blast1_t, bfirst2_t);
 
