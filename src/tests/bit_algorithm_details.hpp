@@ -53,7 +53,7 @@ TEMPLATE_TEST_CASE("read_word_raw has no problems reading a full word \
     REQUIRE(raw_word == static_cast<TestType>(-1));
 }
 
-TEMPLATE_TEST_CASE("_write_word_raw does not write past the gaurd", "[_write_word_raw]",
+TEMPLATE_TEST_CASE("_write_word_raw does not write past the gaurd", "[write_word_raw]",
     unsigned short, unsigned int, unsigned long, unsigned long long) {
 
     TestType arr[2];
@@ -72,7 +72,7 @@ TEMPLATE_TEST_CASE("_write_word_raw does not write past the gaurd", "[_write_wor
 }
 
 TEMPLATE_TEST_CASE("_shift_and_merge correctly builds a virtual word from two \
-    separate words", "[_shift_and_merge]", unsigned short, unsigned int, 
+    separate words", "[shift_and_merge]", unsigned short, unsigned int, 
     unsigned long, unsigned long long) {
 
     TestType w1 = 0;
@@ -87,7 +87,7 @@ TEMPLATE_TEST_CASE("_shift_and_merge correctly builds a virtual word from two \
 }
 
 TEMPLATE_TEST_CASE("_shift_and_merge is correct from the 0th position",
-    "[_shift_and_merge]", unsigned short, unsigned int, unsigned long,
+    "[shift_and_merge]", unsigned short, unsigned int, unsigned long,
     unsigned long long) {
 
     TestType w1 = static_cast<TestType>(1) 
@@ -99,7 +99,7 @@ TEMPLATE_TEST_CASE("_shift_and_merge is correct from the 0th position",
     REQUIRE(merged == w1);
 }
 
-TEMPLATE_TEST_CASE("_set_within_word does what you'd expect it to", "[_set_within_word]",
+TEMPLATE_TEST_CASE("_set_within_word does what you'd expect it to", "[set_within_word]",
     unsigned short, unsigned int, unsigned long, unsigned long long) {
     TestType word = 0;
 
