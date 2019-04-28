@@ -65,6 +65,7 @@ template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2,
 } 
 */
 
+// TODO
 template <class InputIt1, class InputIt2>
 std::pair<bit_iterator<InputIt1>, bit_iterator<InputIt2>> mismatch(
    bit_iterator<InputIt1> first1, bit_iterator<InputIt1> last1,
