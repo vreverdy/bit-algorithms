@@ -1,4 +1,4 @@
-// =============================== BIT ALGORITHM DETAILS  =============================== //
+// ========================= BIT ALGORITHM DETAILS  ========================= //
 // Project: The Experimental Bit Algorithms Library
 // Name: bit_algorithm_details.hpp
 // Description: A set of utilities to assist in writing algorithms 
@@ -68,31 +68,6 @@ T _read_word_raw(WrappedIter start, WrappedIter guard) {
     return _shift_and_merge(lhs, rhs, start.position());
   }
 } 
-
-/*
- * This function writes a T's worth of bits starting from wherever
- * the start bit_iterator is pointing. This means that we might be writing
- * bits spanning multiple words.
- *
- * @param start the bit_iterator to start writing from
- * @param guard the furthest position to write to, ensuring there are not
- * memory access violations
- * @param word the word to be written at start
- */ 
-template <class WrappedIter, class T = typename WrappedIter::word_type>
-void _write_word_raw(WrappedIter start, WrappedIter guard, T word) {
-  const unsigned long dist = std::distance(start, guard);
-
-    if (dist < bit::binary_digits<T>::value) {
-        /* we don't have enough room to write the whole word so
-         * so just write however many we can starting from MSB */
-        *(start.base()) |= word >> start.position();
-    } else {
-        *(start.base()) |= word >> start.position(); 
-        *(start.base() + 1) |= word << 
-          (bit::binary_digits<T>::value - start.position()); 
-    }
-}
 
 /*
  * Allows the user to set or unset bits in range [begin, end) of the word at base

@@ -53,24 +53,6 @@ TEMPLATE_TEST_CASE("read_word_raw has no problems reading a full word \
     REQUIRE(raw_word == static_cast<TestType>(-1));
 }
 
-TEMPLATE_TEST_CASE("_write_word_raw does not write past the gaurd", "[write_word_raw]",
-    unsigned short, unsigned int, unsigned long, unsigned long long) {
-
-    TestType arr[2];
-    arr[0] = 0;
-    arr[1] = 0;
-    
-    constexpr std::size_t num_digits = bit::binary_digits<TestType>::value;
-
-    bit::bit_iterator<TestType*> start_write_pos(&arr[0], num_digits - 2);
-    bit::bit_iterator<TestType*> guard(&arr[1], 0);
-
-    bit::_write_word_raw(start_write_pos, guard, static_cast<TestType>(-1));
-
-    REQUIRE(arr[0] == 3);
-    REQUIRE(arr[1] == 0);
-}
-
 TEMPLATE_TEST_CASE("_shift_and_merge correctly builds a virtual word from two \
     separate words", "[shift_and_merge]", unsigned short, unsigned int, 
     unsigned long, unsigned long long) {
