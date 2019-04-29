@@ -18,6 +18,75 @@
 
 namespace bit {
 
+// TODO
+template <class InputIt1, class InputIt2>
+constexpr bool equal(bit_iterator<InputIt1> first1, bit_iterator<InputIt1> last, 
+    bit_iterator<InputIt2> first2) {
+    (first1, last, first2); 
+    return true;
+}
+
+// TODO
+template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2>
+bool equal(ExecutionPolicy&& policy, bit_iterator<ForwardIt1> first1,
+    bit_iterator<ForwardIt1> last1, bit_iterator<ForwardIt2> first2) {
+    (policy, first1, last1, first2);
+    return true;
+}
+
+// TODO
+template <class InputIt1, class InputIt2, class BinaryPredicate>
+constexpr bool equal(bit_iterator<InputIt1> first1, bit_iterator<InputIt1> last1,
+    bit_iterator<InputIt2> first2, BinaryPredicate p) {
+    (first1, last1, first2, p);
+    return true;
+}
+
+// TODO
+template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2,
+    class BinaryPredicate> bool equal(ExecutionPolicy&& policy,
+    bit_iterator<ForwardIt1> first1, bit_iterator<ForwardIt1> last1,
+    BinaryPredicate p) {
+    (policy, first1, last1, p);
+    return true;
+}
+
+// TODO
+template <class InputIt1, class InputIt2>
+constexpr bool equal(bit_iterator<InputIt1> first1, bit_iterator<InputIt1> last1,
+    bit_iterator<InputIt2> first2, bit_iterator<InputIt2> last2) {
+    (first1, last1, first2, last2);
+    return true;
+}
+
+// TODO
+template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2>
+bool equal(ExecutionPolicy&& policy, bit_iterator<ForwardIt1> first1,
+    bit_iterator<ForwardIt1> last1, bit_iterator<ForwardIt2> first2,
+    bit_iterator<ForwardIt2> last2) {
+    (policy, first1, last1, first2, last2); 
+    return true;
+} 
+
+// TODO
+template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2,
+    class BinaryPredicate> constexpr bool equal(bit_iterator<ForwardIt1> first1,
+    bit_iterator<ForwardIt1> last1, bit_iterator<ForwardIt2> first2,
+    bit_iterator<ForwardIt2> last2, BinaryPredicate p) {
+    (first1, last1, first2, last2, p);
+    return true;
+} 
+
+// TODO
+template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2,
+    class BinaryPredicate> bool equal(ExecutionPolicy&& policy,
+    bit_iterator<ForwardIt1> first1, bit_iterator<ForwardIt1> last1,
+    bit_iterator<ForwardIt2> first2, bit_iterator<ForwardIt2> last2,
+    BinaryPredicate p) {
+    (policy, first1, last1, first2, last2, p);
+    return true;
+}
+
 // ========================================================================== //
 } // namespace bit
 

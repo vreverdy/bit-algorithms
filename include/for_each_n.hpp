@@ -18,6 +18,23 @@
 
 namespace bit {
 
+// TODO
+template <class InputIt, class Size, class UnaryFunction>
+constexpr bit_iterator<InputIt> for_each_n(bit_iterator<InputIt> first,
+    Size n, UnaryFunction f) {
+    (n, f);
+    return first;
+}
+
+// TODO
+template <class ExecutionPolicy, class ForwardIt, class Size, 
+    class UnaryFunction2> bit_iterator<ForwardIt> for_each_n (
+    ExecutionPolicy&& policy, bit_iterator<ForwardIt> first, Size n,
+    UnaryFunction2 f) {
+    (policy, n, f); 
+    return first;
+}
+
 // ========================================================================== //
 } // namespace bit
 

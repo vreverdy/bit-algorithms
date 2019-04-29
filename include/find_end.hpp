@@ -18,6 +18,43 @@
 
 namespace bit {
 
+// TODO
+template <class ForwardIt1, class ForwardIt2>
+constexpr bit_iterator<ForwardIt1> find_end(bit_iterator<ForwardIt1> first,
+    bit_iterator<ForwardIt1> last, bit_iterator<ForwardIt2> s_first,
+    bit_iterator<ForwardIt2> s_last) {
+    (last, s_first, s_last); 
+    return first;
+}
+
+// TODO
+template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2>
+bit_iterator<ForwardIt1> find_end(ExecutionPolicy&& policy,
+    bit_iterator<ForwardIt1> first, bit_iterator<ForwardIt1> last,
+    bit_iterator<ForwardIt2> s_first, bit_iterator<ForwardIt2> s_last) {
+    (policy, last, s_first, s_last); 
+    return first;
+}
+
+// TODO
+template <class ForwardIt1, class ForwardIt2,  class BinaryPredicate>
+constexpr bit_iterator<ForwardIt1> find_end(bit_iterator<ForwardIt1> first,
+    bit_iterator<ForwardIt1> last, bit_iterator<ForwardIt2> s_first,
+    bit_iterator<ForwardIt2> s_last, BinaryPredicate p) {
+    (last, s_first, s_last, p); 
+    return first;
+}
+
+// TODO
+template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2,
+    class BinaryPredicate> bit_iterator<ForwardIt1> find_end(
+    ExecutionPolicy&& policy, bit_iterator<ForwardIt1> first,
+    bit_iterator<ForwardIt1> last, bit_iterator<ForwardIt2> s_first,
+    bit_iterator<ForwardIt2> s_last, BinaryPredicate p) {
+    (policy, last, s_first, s_last, p); 
+    return first;
+} 
+
 // ========================================================================== //
 } // namespace bit
 

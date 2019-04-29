@@ -18,6 +18,22 @@
 
 namespace bit {
 
+// TODO
+template <class ForwardIt, class T>
+constexpr bool binary_search(bit_iterator<ForwardIt> first, 
+    bit_iterator<ForwardIt> last, const T& value) {
+    (first, last, value);
+    return true;
+}
+
+// TODO
+template <class ForwardIt, class T, class Compare>
+constexpr bool binary_search(bit_iterator<ForwardIt> first,
+    bit_iterator<ForwardIt> last, const T& value, Compare comp) {
+    (first, last, value, comp);
+    return true;
+}
+
 // ========================================================================== //
 } // namespace bit
 

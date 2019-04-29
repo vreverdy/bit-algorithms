@@ -20,6 +20,7 @@
 
 namespace bit {
 
+// TODO
 template <class ForwardIt>
 void fill(bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last, 
     bit::bit_value bv) {

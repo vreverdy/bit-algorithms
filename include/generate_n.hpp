@@ -18,6 +18,22 @@
 
 namespace bit {
 
+// TODO
+template <class OutputIt, class Size, class Generator>
+constexpr bit_iterator<OutputIt> generate_n(bit_iterator<OutputIt> first,
+    Size count, Generator g) {
+    (count, g); 
+    return first;
+}
+
+// TODO
+template <class ExecutionPolicy, class ForwardIt, class Size, class Generator>
+bit_iterator<ForwardIt> generate_n(ExecutionPolicy&& policy,
+    bit_iterator<ForwardIt> first, Size count, Generator g) {
+    (policy, count, g); 
+    return first;
+}
+
 // ========================================================================== //
 } // namespace bit
 

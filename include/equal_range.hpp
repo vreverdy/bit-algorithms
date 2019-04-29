@@ -18,6 +18,23 @@
 
 namespace bit {
 
+// TODO
+template <class ForwardIt, class T>
+constexpr std::pair<bit_iterator<ForwardIt>, bit_iterator<ForwardIt>> equal_range (
+    bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last, const T& value) {
+    (value);
+    return std::make_pair(first, last);
+}
+
+// TODO
+template <class ForwardIt, class T, class Compare>
+constexpr std::pair<bit_iterator<ForwardIt>, bit_iterator<ForwardIt>> equal_range ( 
+    bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last, const T& value,
+    Compare comp) {
+    (value, comp); 
+    return std::make_pair(first, last);
+}
+
 // ========================================================================== //
 } // namespace bit
 

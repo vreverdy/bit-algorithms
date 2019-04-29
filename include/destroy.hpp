@@ -18,6 +18,19 @@
 
 namespace bit {
 
+// TODO
+template <class ForwardIt>
+void destroy(bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last) {
+    (first, last);
+}
+
+// TODO
+template <class ExecutionPolicy, class ForwardIt>
+void destroy(ExecutionPolicy&& policy, bit_iterator<ForwardIt> first,
+    bit_iterator<ForwardIt> last) {
+    (policy, first, last);
+}
+
 // ========================================================================== //
 } // namespace bit
 

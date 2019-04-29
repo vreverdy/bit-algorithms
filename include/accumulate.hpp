@@ -18,6 +18,21 @@
 
 namespace bit {
 
+// TODO
+template <class InputIt, class T>
+T accumulate(bit_iterator<InputIt> first, bit_iterator<InputIt> last, T init) {
+    (first, last);
+    return init;
+}
+
+// TODO
+template <class InputIt, class T, class BinaryOperation>
+T accumulate(bit_iterator<InputIt> first, bit_iterator<InputIt> last, T init,
+    BinaryOperation op) {
+    (first, last, op);
+    return init;
+}
+
 // ========================================================================== //
 } // namespace bit
 

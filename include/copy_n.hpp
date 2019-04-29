@@ -18,6 +18,22 @@
 
 namespace bit {
 
+// TODO
+template <class InputIt, class Size, class OutputIt>
+constexpr bit_iterator<OutputIt> copy_n(bit_iterator<InputIt> first,
+    Size count, bit_iterator<OutputIt> result) {
+    (first, count);
+    return result;
+}
+
+// TODO
+template <class ExecutionPolicy, class ForwardIt1, class Size, class ForwardIt2>
+bit_iterator<ForwardIt2> copy_n(ExecutionPolicy&& policy, 
+    bit_iterator<ForwardIt1> first, Size count, bit_iterator<ForwardIt2> result) {
+    (policy, first, count);
+    return result;
+}
+
 // ========================================================================== //
 } // namespace bit
 
