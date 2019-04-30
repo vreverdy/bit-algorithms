@@ -85,8 +85,8 @@ std::pair<bit_iterator<InputIt1>, bit_iterator<InputIt2>> mismatch(
     bit_iterator<InputIt2> in2 = first2;
 
     while (true) {
-        word_type w1 = _read_word_raw<bit_iterator<InputIt1>, word_type>(in1, last1); 
-        word_type w2 = _read_word_raw<bit_iterator<InputIt2>, word_type>(in2, last2);
+        word_type w1 = get_word(in1, binary_digits<word_type>::value);  
+        word_type w2 = get_word(in2, binary_digits<word_type>::value);
 
         if (w1 != w2) {
             // the two words don't match. let's find the position of the mismatched bits
