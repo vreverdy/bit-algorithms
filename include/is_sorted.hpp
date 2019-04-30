@@ -18,6 +18,39 @@
 
 namespace bit {
 
+// TODO
+template <class ForwardIt>
+constexpr bool is_sorted(bit_iterator<ForwardIt> first, 
+    bit_iterator<ForwardIt> last) {
+    (first, last); 
+    return true;
+}
+
+// TODO
+template <class ExecutionPolicy, class ForwardIt>
+bool is_sorted(ExecutionPolicy&& policy, bit_iterator<ForwardIt> first,
+    bit_iterator<ForwardIt> last) {
+    (policy, first, last);
+    return true;
+}
+
+// TODO
+template <class ForwardIt, class Compare>
+constexpr bool is_sorted(bit_iterator<ForwardIt> first,
+    bit_iterator<ForwardIt> last, Compare comp) {
+    (first, last, comp);
+    return true;
+}
+
+// TODO
+template <class ExecutionPolicy, class ForwardIt, class Compare>
+bool is_sorted(ExecutionPolicy&& policy, bit_iterator<ForwardIt> first,
+    bit_iterator<ForwardIt> last, Compare comp) {
+    (policy, first, last, comp);
+    return true;
+}
+
+
 // ========================================================================== //
 } // namespace bit
 

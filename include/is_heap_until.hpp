@@ -18,6 +18,38 @@
 
 namespace bit {
 
+// TODO
+template <class RandomIt>
+constexpr bit_iterator<RandomIt> is_heap_until(bit_iterator<RandomIt> first,
+    bit_iterator<RandomIt> last) {
+    (last);
+    return first;
+}
+
+// TODO
+template <class ExecutionPolicy, class RandomIt>
+bit_iterator<RandomIt> is_heap_until(ExecutionPolicy&& policy,
+    bit_iterator<RandomIt> first, bit_iterator<RandomIt> last) {
+    (policy, last);
+    return first;
+}
+
+// TODO
+template <class RandomIt, class Compare>
+constexpr bit_iterator<RandomIt> is_heap_until(bit_iterator<RandomIt> first,
+    bit_iterator<RandomIt> last, Compare comp) {
+    (last, comp);
+    return first;
+}
+
+// TODO
+template <class ExecutionPolicy, class RandomIt, class Compare>
+bit_iterator<RandomIt> is_heap_until(ExecutionPolicy&& policy,
+    bit_iterator<RandomIt> first, bit_iterator<RandomIt> last, Compare comp) {
+    (policy, last, comp);
+    return first;
+}
+
 // ========================================================================== //
 } // namespace bit
 

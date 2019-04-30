@@ -18,6 +18,34 @@
 
 namespace bit {
 
+// TODO
+template <class BidirIt>
+void inplace_merge(bit_iterator<BidirIt> first, bit_iterator<BidirIt> middle,
+    bit_iterator<BidirIt> last) {
+    (first, middle, last);
+}
+
+// TODO
+template <class ExecutionPolicy, class BidirIt>
+void inplace_merge(ExecutionPolicy&& policy, bit_iterator<BidirIt> first,
+    bit_iterator<BidirIt> middle, bit_iterator<BidirIt> last) {
+    (policy, first, middle, last);
+}
+
+// TODO
+template <class BidirIt, class Compare>
+void inplace_merge(bit_iterator<BidirIt> first, bit_iterator<BidirIt> middle,
+    bit_iterator<BidirIt> last, Compare comp) {
+    (first, middle, last, comp);
+}
+
+// TODO
+template <class ExecutionPolicy, class BidirIt, class Compare>
+void inplace_merge(ExecutionPolicy&& policy, bit_iterator<BidirIt> first,
+    bit_iterator<BidirIt> middle, bit_iterator<BidirIt> last, Compare comp) {
+    (policy, first, middle, last, comp);
+}
+
 // ========================================================================== //
 } // namespace bit
 

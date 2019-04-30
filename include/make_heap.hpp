@@ -18,6 +18,19 @@
 
 namespace bit {
 
+// TODO
+template <class RandomIt>
+constexpr void make_heap(bit_iterator<RandomIt> first, bit_iterator<RandomIt> last) {
+    (first, last);
+}
+
+// TODO
+template <class RandomIt, class Compare>
+constexpr void make_heap(bit_iterator<RandomIt> first, bit_iterator<RandomIt> last,
+    Compare comp) {
+    (first, last, comp);
+}
+
 // ========================================================================== //
 } // namespace bit
 
