@@ -1,28 +1,25 @@
-// ======================== BIT_ALGORITHM_DETAILS =========================== //
-// Project:     The Experimental Bit Algorithms Library
-// Name:        iterator_utils.hpp
-// Description: Implementation of algorithm-related utilities not present in 
-// 		        algorithms header.
-// Creator:     Vincent Reverdy
-// Contributor: Bryce Kille [2019]
-//              Collin Gress [2019]
-// License:     BSD 3-Clause License
+// ========================= BIT ALGORITHM DETAILS  ========================= //
+// Project: The Experimental Bit Algorithms Library
+// Name: bit_algorithm_details.hpp
+// Description: A set of utilities to assist in writing algorithms 
+// Creator: Vincent Reverdy
+// Contributor(s): Vincent Reverdy [2019]
+//                 Collin Gress [2019]
+//                 Bryce Kille [2019]
+// License: BSD 3-Clause License
 // ========================================================================== //
 #ifndef _BIT_ALGORITHM_DETAILS_HPP_INCLUDED
 #define _BIT_ALGORITHM_DETAILS_HPP_INCLUDED
 // ========================================================================== //
 
 
-
-// ================================ PREAMBLE ================================ //
+// ============================== PREAMBLE ================================== //
 // C++ standard library
 // Project sources
-#include "bit.hpp"
 // Third-party libraries
 // Miscellaneous
-namespace bit {
-// ========================================================================== //
 
+namespace bit {
 
 
 // -------------------------- Iterator Algorithms --------------------------- //
@@ -82,7 +79,6 @@ T get_word(bit_iterator<InputIt> first, T len=binary_digits<T>::value)
     constexpr T ret_digits = binary_digits<T>::value; 
     assert(ret_digits >= len);
     T offset = native_digits - first.position();
-    T pos = first.position();
     T ret_word = *first.base() >> first.position();
 
     // We've already assigned enough bits
@@ -156,11 +152,9 @@ ForwardIt word_shift_right(ForwardIt first,
     }
     return first;
 }
-// -------------------------------------------------------------------------- //
 
 
-
-// ========================================================================== //
 } // namespace bit
+
 #endif // _BIT_ALGORITHM_DETAILS_HPP_INCLUDED
 // ========================================================================== //

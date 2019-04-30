@@ -16,10 +16,14 @@
 #include <list>
 #include <forward_list>
 // Project sources
+#include "bit_algorithm_details.hpp"
 #include "test_utils.hpp"
 #include "count.hpp"
 #include "copy.hpp"
 #include "shift.hpp"
 #include "reverse.hpp"
+#include "mismatch.hpp"
+#include "sample.hpp"
+#include "search.hpp"
 // Third party libraries
 // ========================================================================== //
