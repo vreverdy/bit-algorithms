@@ -18,19 +18,16 @@
 
 namespace bit {
 
-// TODO
 template <class InputIt, class UnaryFunction>
 constexpr UnaryFunction for_each(bit_iterator<InputIt> first, 
     bit_iterator<InputIt> last, UnaryFunction f) {
-    (first, last); 
-    return f;
+    return std::for_each(first, last, f);
 }
 
-// TODO
 template <class ExecutionPolicy, class ForwardIt, class UnaryFunction2>
 void for_each(ExecutionPolicy&& policy, bit_iterator<ForwardIt> first,
     bit_iterator<ForwardIt> last, UnaryFunction2 f) {
-    (policy, first, last, f);
+    return std::for_each(std::forward<ExecutionPolicy>(policy), first, last, f);
 }
 
 // ========================================================================== //
