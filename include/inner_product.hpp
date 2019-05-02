@@ -18,6 +18,23 @@
 
 namespace bit {
 
+// TODO
+template <class InputIt1, class InputIt2, class T>
+T inner_product(bit_iterator<InputIt1> first1, bit_iterator<InputIt1> last1,
+    bit_iterator<InputIt2> first2, T init) {
+    (first1, last1, first2);
+    return init;
+}
+
+// TODO
+template <class InputIt1, class InputIt2, class T, class BinaryOperation1,
+    class BinaryOperation2> T inner_product(bit_iterator<InputIt1> first1,
+    bit_iterator<InputIt1> last1, bit_iterator<InputIt2> first2, T init, 
+    BinaryOperation1 op1, BinaryOperation2 op2) {
+    (first1, last1, first2, op1, op2);
+    return init;
+}
+
 // ========================================================================== //
 } // namespace bit
 

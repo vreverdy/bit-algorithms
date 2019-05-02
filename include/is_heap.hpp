@@ -18,6 +18,37 @@
 
 namespace bit {
 
+// TODO
+template <class RandomIt>
+constexpr bool is_heap(bit_iterator<RandomIt> first, bit_iterator<RandomIt> last) {
+    (first, last);
+    return true;
+}
+
+// TODO
+template <class ExecutionPolicy, class RandomIt>
+bool is_heap(ExecutionPolicy&& policy, bit_iterator<RandomIt> first,
+    bit_iterator<RandomIt> last) {
+    (policy, first, last); 
+    return true;
+}
+
+// TODO
+template <class RandomIt, class Compare>
+constexpr bool is_heap(bit_iterator<RandomIt> first, bit_iterator<RandomIt> last,
+    Compare comp) {
+    (first, last, comp);
+    return true;
+}
+
+// TODO
+template <class ExecutionPolicy, class RandomIt, class Compare>
+bool is_heap(ExecutionPolicy&& policy, bit_iterator<RandomIt> first,
+    bit_iterator<RandomIt> last, Compare comp) {
+    (policy, first, last, comp); 
+    return true;
+}
+
 // ========================================================================== //
 } // namespace bit
 

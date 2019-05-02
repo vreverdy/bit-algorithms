@@ -18,6 +18,38 @@
 
 namespace bit {
 
+// TODO
+template <class ForwardIt>
+constexpr bit_iterator<ForwardIt> min_element(bit_iterator<ForwardIt> first,
+    bit_iterator<ForwardIt> last) {
+    (last);
+    return first;
+}
+
+// TODO
+template <class ExecutionPolicy, class ForwardIt>
+bit_iterator<ForwardIt> min_element(ExecutionPolicy&& policy,
+    bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last) {
+    (policy, last);
+    return first;
+}
+
+// TODO
+template <class ForwardIt, class Compare>
+constexpr bit_iterator<ForwardIt> min_element(bit_iterator<ForwardIt> first,
+    bit_iterator<ForwardIt> last, Compare comp) {
+    (last, comp);
+    return first;
+}
+
+// TODO
+template <class ExecutionPolicy, class ForwardIt, class Compare>
+bit_iterator<ForwardIt> min_element(ExecutionPolicy&& policy, 
+    bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last, Compare comp) {
+    (policy, last, comp);
+    return first;
+}
+
 // ========================================================================== //
 } // namespace bit
 
