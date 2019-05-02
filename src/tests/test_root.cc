@@ -21,6 +21,7 @@
 #include "bit_algorithm_details.hpp"
 #include "for_each.hpp"
 #include "for_each_n.hpp"
+#include "find.hpp"
 #include "test_utils.hpp"
 #include "count.hpp"
 #include "copy.hpp"
