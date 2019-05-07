@@ -20,18 +20,101 @@
 // Miscellaneous
 // ========================================================================== //
 
-TEMPLATE_TEST_CASE("input_iteratorrr", "[input_iteratorrr]", 
+
+/* This class is essentially just a wrapper around another iterator.
+ * As such, we'll just perform some basic sanity checks to make sure
+ * we haven't made silly logical errors */
+
+TEMPLATE_TEST_CASE("input_iterator: equality is sane", "[input_iterator]", 
     unsigned short, unsigned int, unsigned long, unsigned long long) {
 
-    using vec_type = std::vector<int>;
-    using vec_iter_type = vec_type::iterator;
+    using vec_type = std::vector<TestType>;
+    using vec_iter_type = typename vec_type::iterator;
 
-    std::vector<int> vec = {1, 2, 3};
+    vec_type vec = {1, 2, 3};
 
     bit::input_iterator<vec_iter_type> in_iter_beg(vec.begin());
     bit::input_iterator<vec_iter_type> in_iter_end(vec.end());
 
     REQUIRE(in_iter_beg != in_iter_end);
+
+    bit::input_iterator<vec_iter_type> in_iter_beg2(vec.begin());
+    REQUIRE(in_iter_beg == in_iter_beg2);
+}
+
+TEMPLATE_TEST_CASE("input_iterator: dereference is sane", "[input_iterator]",
+    unsigned short, unsigned int, unsigned long, unsigned long long) {
+
+    using vec_type = std::vector<TestType>;
+    using vec_iter_type = typename vec_type::iterator;
+
+    vec_type vec = {1, 2, 3}; 
+
+    vec_iter_type beg = vec.begin();
+    vec_iter_type end = vec.end();
+
+    bit::input_iterator<vec_iter_type> in_iter_beg(beg);
+    bit::input_iterator<vec_iter_type> in_iter_end(end);
+
+    REQUIRE(*in_iter_beg == *beg);
+    REQUIRE(*in_iter_end == *end);
+}
+
+TEMPLATE_TEST_CASE("input_iterator: arrow operator is sane", "[input_iterator]",
+    unsigned short, unsigned int, unsigned long, unsigned long long) {
+
+    using vec_type = std::vector<TestType>;
+    using vec_iter_type = typename vec_type::iterator;
+
+    vec_type vec = {1, 2, 3};
+
+    vec_iter_type beg = vec.begin(); 
+    vec_iter_type end = vec.end();
+
+    bit::input_iterator<vec_iter_type> in_iter_beg(beg);
+    bit::input_iterator<vec_iter_type> in_iter_end(end);
+
+    REQUIRE(in_iter_beg.operator->() == beg.operator->()); 
+    REQUIRE((++in_iter_beg).operator->() == (++beg).operator->());
+    REQUIRE((++in_iter_end).operator->() == (++end).operator->());
+}
+
+TEMPLATE_TEST_CASE("input_iterator: prefix increment is sane", "[input_iterator]",
+    unsigned short, unsigned int, unsigned long, unsigned long long) {
+
+    using vec_type = std::vector<TestType>;
+    using vec_iter_type = typename vec_type::iterator;
+
+    vec_type vec = {1, 2, 3};
+
+    vec_iter_type beg = vec.begin();
+    bit::input_iterator<vec_iter_type> in_iter_beg(beg);
+
+    vec_iter_type& beg_plus_one = ++beg;
+
+    bit::input_iterator<vec_iter_type>& in_iter_beg_plus_one = ++in_iter_beg;
+
+    REQUIRE(*in_iter_beg_plus_one == 2);
+    REQUIRE(*beg_plus_one == *in_iter_beg_plus_one);
+}
+
+TEMPLATE_TEST_CASE("input_iterator: postfix increment is sane", "[input_iterator]",
+    unsigned short, unsigned int, unsigned long, unsigned long long) {
+
+    using vec_type = std::vector<TestType>;
+    using vec_iter_type = typename vec_type::iterator;
+
+    vec_type vec = {1, 2, 3};
+
+    vec_iter_type beg = vec.begin();
+    bit::input_iterator<vec_iter_type> in_iter_beg(beg);
+
+    vec_iter_type beg_copy = beg++;
+
+    bit::input_iterator<vec_iter_type> in_iter_beg_copy = in_iter_beg++; 
+
+    REQUIRE(*in_iter_beg_copy == *beg_copy);
+    REQUIRE(*beg == *in_iter_beg);
 }
 
 #endif
