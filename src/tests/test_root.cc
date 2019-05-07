@@ -23,6 +23,7 @@
 #include "for_each_n.hpp"
 #include "find.hpp"
 #include "equal.hpp"
+#include "input_iterator.hpp"
 #include "is_heap.hpp"
 #include "is_sorted.hpp"
 #include "test_utils.hpp"
