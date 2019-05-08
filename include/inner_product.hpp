@@ -18,13 +18,17 @@
 
 namespace bit {
 
-// TODO
+/* [Will not implement]
+ * Involves arithmetic of bit values which we don't support. 
+ * Use the overload below instead
+ *
 template <class InputIt1, class InputIt2, class T>
 T inner_product(bit_iterator<InputIt1> first1, bit_iterator<InputIt1> last1,
     bit_iterator<InputIt2> first2, T init) {
     (first1, last1, first2);
     return init;
 }
+*/
 
 // TODO
 template <class InputIt1, class InputIt2, class T, class BinaryOperation1,
