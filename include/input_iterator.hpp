@@ -11,15 +11,15 @@
 #define _INPUT_ITERATOR_HPP_INCLUDED
 // ========================================================================== //
 
+
 // ============================== PREAMBLE ================================== //
 // C++ standard library
+#include <iostream>
 // Project sources
 // Third-party libraries
 // Miscellaneous
-
-#include <iostream>
-
 namespace bit {
+// ========================================================================== //
 
 struct input_iterator_tag {};
 
@@ -74,5 +74,5 @@ public:
 } // namespace bit
 
 // ========================================================================== //
-#endif
+#endif // _INPUT_ITERATOR_HPP_INCLUDED
 // ========================================================================== //

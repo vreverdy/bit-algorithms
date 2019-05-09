@@ -1,4 +1,4 @@
-// ================================= ALL OF ================================= //
+// ============================ INPUT CONTAINER ============================= //
 // Project: The Experimental Bit Algorithms Library
 // Name: input_container.hpp
 // Description: Container adapter for input iterator
@@ -10,13 +10,14 @@
 #define _INPUT_CONTAINER_HPP_INCLUDED
 // ========================================================================== //
 
+
 // ============================== PREAMBLE ================================== //
 // C++ standard library
 // Project sources
 // Third-party libraries
 // Miscellaneous
-
 namespace bit {
+// ========================================================================== //
 
 template <class Container>
 class input_container {
