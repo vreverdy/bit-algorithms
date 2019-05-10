@@ -19,9 +19,11 @@
 namespace bit {
 // ========================================================================== //
 
+
+/* **************************** INPUT CONTAINER **************************** */
 template <class Container>
 class input_container {
-public:
+    public:
     using reference = typename Container::reference;
     using value_type = typename Container::value_type;
     using size_type = std::size_t;
@@ -30,10 +32,11 @@ public:
     using const_reference = typename Container::const_reference;
     using reverse_iterator = typename Container::reverse_iterator;
     using const_reverse_iterator = typename Container::const_reverse_iterator;
-private:
-    Container container_;
-public:
 
+    private:
+    Container container_;
+
+    public:
     input_container(Container& container)
       : container_(container) {}
 

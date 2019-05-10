@@ -21,20 +21,24 @@
 namespace bit {
 // ========================================================================== //
 
+
+/* ************************** INPUT ITERATOR ******************************* */
 struct input_iterator_tag {};
 
 template <class Iterator>
 class input_iterator {
-public:
+    public:
     using value_type = typename Iterator::value_type;
     using reference = typename Iterator::reference;
     using pointer = typename Iterator::pointer;
     using iterator_category = input_iterator_tag;
     using size_type = std::size_t;
     using difference_type = std::ptrdiff_t;
-private:
+
+    private:
     Iterator it_;
-public:
+
+    public:
     input_iterator(Iterator it)
       : it_(it) {}
 
