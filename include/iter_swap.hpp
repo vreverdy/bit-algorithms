@@ -15,10 +15,12 @@
 // Project sources
 // Third-party libraries
 // Miscellaneous
-
 namespace bit {
+// ========================================================================== //
 
-// TODO
+
+
+// Status: to do
 template <class ForwardIt1, class ForwardIt2>
 constexpr void iter_swap(bit_iterator<ForwardIt1> a, bit_iterator<ForwardIt2> b) {
     (a, b);

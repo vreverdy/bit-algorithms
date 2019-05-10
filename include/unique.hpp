@@ -15,8 +15,42 @@
 // Project sources
 // Third-party libraries
 // Miscellaneous
-
 namespace bit {
+// ========================================================================== //
+
+
+
+// Status: to do
+template <class ForwardIt>
+constexpr bit_iterator<ForwardIt> unique(bit_iterator<ForwardIt> first,
+    bit_iterator<ForwardIt> last) {
+    (last);
+    return first;
+}
+
+// Status: to do
+template <class ExecutionPolicy, class ForwardIt>
+bit_iterator<ForwardIt> unique(ExecutionPolicy&& policy, 
+    bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last) {
+    (policy, last);
+    return first;
+}
+
+// Status: complete
+template <class ForwardIt, class BinaryPredicate>
+constexpr bit_iterator<ForwardIt> unique(bit_iterator<ForwardIt> first,
+    bit_iterator<ForwardIt> last, BinaryPredicate p) {
+    return std::unique(first, last, p);
+}
+
+// Status: complete
+template <class ExecutionPolicy, class ForwardIt, class BinaryPredicate>
+bit_iterator<ForwardIt> unique(ExecutionPolicy&& policy, 
+    bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last,
+    BinaryPredicate p) {
+    return std::unique(std::forward<ExecutionPolicy>(policy), first, last, p);
+}
+
 
 // ========================================================================== //
 } // namespace bit

@@ -15,8 +15,17 @@
 // Project sources
 // Third-party libraries
 // Miscellaneous
-
 namespace bit {
+// ========================================================================== //
+
+
+
+// Status: to do 
+template <class RandomIt, class URBG>
+void shuffle(bit_iterator<RandomIt> first, bit_iterator<RandomIt> last,
+    URBG&& g) {
+    (first, last, g);
+}
 
 // ========================================================================== //
 } // namespace bit
