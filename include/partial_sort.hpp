@@ -18,6 +18,36 @@
 
 namespace bit {
 
+
+
+// Status: to do
+template <class RandomIt>
+constexpr void partial_sort(bit_iterator<RandomIt> first, bit_iterator<RandomIt> middle,
+    bit_iterator<RandomIt> last) {
+    (first, middle, last);
+}
+
+// Status: to do
+template <class ExecutionPolicy, class RandomIt>
+void partial_sort(ExecutionPolicy&& policy, bit_iterator<RandomIt> first,
+    bit_iterator<RandomIt> middle, bit_iterator<RandomIt> last) {
+    (policy, first, middle, last);
+}
+
+// Status: on hold 
+template <class RandomIt, class Compare>
+constexpr void partial_sort(bit_iterator<RandomIt> first, 
+    bit_iterator<RandomIt> middle, bit_iterator<RandomIt> last, Compare comp) {
+    (first, middle, last, comp);
+}
+
+// Status: on hold 
+template <class ExecutionPolicy, class RandomIt, class Compare>
+void partial_sort(ExecutionPolicy&& policy, bit_iterator<RandomIt> first,
+    bit_iterator<RandomIt> middle, bit_iterator<RandomIt> last, Compare comp) {
+    (policy, first, middle, last, comp);
+}
+
 // ========================================================================== //
 } // namespace bit
 

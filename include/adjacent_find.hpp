@@ -9,14 +9,17 @@
 #ifndef _ADJACENT_FIND_HPP_INCLUDED
 #define _ADJACENT_FIND_HPP_INCLUDED
 // ========================================================================== //
-
+// C++ standard library
 // Project sources
 // Third-party libraries
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
 
-// TODO
+
+
+// Status: to do
 template <class ForwardIt>
 constexpr bit_iterator<ForwardIt> adjacent_find(bit_iterator<ForwardIt> first,
     bit_iterator<ForwardIt> last) {
@@ -24,7 +27,7 @@ constexpr bit_iterator<ForwardIt> adjacent_find(bit_iterator<ForwardIt> first,
     return first;    
 }
 
-// TODO
+// Status: to do
 template <class ExecutionPolicy, class ForwardIt>
 bit_iterator<ForwardIt> adjacent_find(ExecutionPolicy&& policy,
     bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last) {
@@ -32,7 +35,7 @@ bit_iterator<ForwardIt> adjacent_find(ExecutionPolicy&& policy,
     return first;
 }
 
-// TODO
+// Status: on hold
 template <class ForwardIt, class BinaryPredicate>
 constexpr bit_iterator<ForwardIt> adjacent_find(bit_iterator<ForwardIt> first,
     bit_iterator<ForwardIt> last, BinaryPredicate p) {
@@ -40,7 +43,7 @@ constexpr bit_iterator<ForwardIt> adjacent_find(bit_iterator<ForwardIt> first,
     return first;
 }
 
-// TODO
+// Status: on hold
 template <class ExecutionPolicy, class ForwardIt, class BinaryPredicate>
 bit_iterator<ForwardIt> adjacent_find(ExecutionPolicy&&, 
     bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last,

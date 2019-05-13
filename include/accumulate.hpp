@@ -15,8 +15,10 @@
 // Project sources
 // Third-party libraries
 // Miscellaneous
-
 namespace bit {
+// ========================================================================== //
+
+
 
 // TODO
 template <class InputIt, class T>

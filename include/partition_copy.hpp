@@ -15,8 +15,19 @@
 // Project sources
 // Third-party libraries
 // Miscellaneous
-
 namespace bit {
+// ========================================================================== //
+
+
+// Status: on hold 
+template <class InputIt, class OutputIt1, class OutputIt2, class UnaryPredicate>
+constexpr std::pair<bit_iterator<OutputIt1>, bit_iterator<OutputIt2>>
+    partition_copy(bit_iterator<InputIt> first, bit_iterator<InputIt> last,
+    bit_iterator<OutputIt1> d_first_true, bit_iterator<OutputIt2> d_first_false,
+    UnaryPredicate p) {
+    (first, last, p);
+    return std::make_pair(d_first_true, d_first_false);
+}
 
 // ========================================================================== //
 } // namespace bit

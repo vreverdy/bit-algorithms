@@ -17,8 +17,11 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
 
-// TODO
+
+
+// Status: on hold
 template <class OutputIt, class Size, class Generator>
 constexpr bit_iterator<OutputIt> generate_n(bit_iterator<OutputIt> first,
     Size count, Generator g) {
@@ -26,7 +29,7 @@ constexpr bit_iterator<OutputIt> generate_n(bit_iterator<OutputIt> first,
     return first;
 }
 
-// TODO
+// Status: on hold 
 template <class ExecutionPolicy, class ForwardIt, class Size, class Generator>
 bit_iterator<ForwardIt> generate_n(ExecutionPolicy&& policy,
     bit_iterator<ForwardIt> first, Size count, Generator g) {

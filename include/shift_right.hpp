@@ -17,6 +17,27 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
+
+
+
+// Status: to do
+template <class ForwardIt>
+constexpr bit_iterator<ForwardIt> shift_right(bit_iterator<ForwardIt> first,
+    bit_iterator<ForwardIt> last, typename bit_iterator<ForwardIt>::difference_type n) {
+    (last, n);
+    return first;
+}
+
+// Status: to do
+template <class ExecutionPolicy, class ForwardIt>
+bit_iterator<ForwardIt> shift_right(ExecutionPolicy&& policy,
+    bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last,
+    typename bit_iterator<ForwardIt>::difference_type n) {
+    (policy, last, n); 
+    return first;
+}
+
 
 // ========================================================================== //
 } // namespace bit

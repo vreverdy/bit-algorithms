@@ -18,12 +18,7 @@
 
 namespace bit {
 
-template <class InputIt, class T>
-constexpr bit_iterator<InputIt> find(bit_iterator<InputIt> first,
-    bit_iterator<InputIt> last, const T& value) {
-    return std::find(first, last, value); 
-}
-
+// Status: needs revisions
 template <class InputIt>
 constexpr bit_iterator<InputIt> find(bit_iterator<InputIt> first,
     bit_iterator<InputIt> last, bit::bit_value bv) {
@@ -56,15 +51,15 @@ constexpr bit_iterator<InputIt> find(bit_iterator<InputIt> first,
     return first + bits_scanned;
 }
 
-template <class InputIt>
+// Status: complete
+template <class InputIt, class T>
 constexpr bit_iterator<InputIt> find(bit_iterator<InputIt> first,
-    bit_iterator<InputIt> last, 
-    bit_reference<typename bit_iterator<InputIt>::word_type> ref) {
-    return bit::find(first, last, static_cast<bit::bit_value>(ref));
+    bit_iterator<InputIt> last, const T& value) {
+    return bit::find(first, last, value); 
 }
 
 
-// TODO
+// Status: to do
 template <class ExecutionPolicy, class ForwardIt, class T>
 bit_iterator<ForwardIt> find(ExecutionPolicy&& policy, 
     bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last, const T& value) {
@@ -72,7 +67,7 @@ bit_iterator<ForwardIt> find(ExecutionPolicy&& policy,
     return first;
 }
 
-// TODO
+// Status: on hold
 template <class InputIt, class UnaryPredicate>
 constexpr bit_iterator<InputIt> find_if(bit_iterator<InputIt> first,
     bit_iterator<InputIt> last, UnaryPredicate p) {
@@ -80,7 +75,7 @@ constexpr bit_iterator<InputIt> find_if(bit_iterator<InputIt> first,
     return first;
 }
 
-// TODO
+// Status: on hold
 template <class ExecutionPolicy, class ForwardIt, class UnaryPredicate>
 bit_iterator<ForwardIt> find_if(ExecutionPolicy&& policy, 
     bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last,
@@ -89,7 +84,7 @@ bit_iterator<ForwardIt> find_if(ExecutionPolicy&& policy,
     return first;
 }
 
-// TODO
+// Status: on hold
 template <class InputIt, class UnaryPredicate>
 constexpr bit_iterator<InputIt> find_if_not(bit_iterator<InputIt> first,
     bit_iterator<InputIt> last, UnaryPredicate q) {
@@ -97,7 +92,7 @@ constexpr bit_iterator<InputIt> find_if_not(bit_iterator<InputIt> first,
     return first;
 }
 
-// TODO
+// Status: on hold
 template <class ExecutionPolicy, class ForwardIt, class UnaryPredicate>
 bit_iterator<ForwardIt> find_if_not(ExecutionPolicy&& policy,
     bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last,

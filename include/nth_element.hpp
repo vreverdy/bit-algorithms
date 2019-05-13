@@ -17,6 +17,38 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
+
+
+
+// Status: to do
+template <class RandomIt>
+constexpr void nth_element(bit_iterator<RandomIt> first, bit_iterator<Randomit> nth,
+    bit_iterator<RandomIt> last) {
+    (first, nth, last);
+}
+
+// Status: to do
+template <class ExecutionPolicy, class RandomIt>
+void nth_element(ExecutionPolicy&& policy, bit_iterator<RandomIt> first,
+    bit_iterator<RandomIt> nth, bit_iterator<RandomIt> last) {
+    (policy, first, nth, last);
+}
+
+// Status: on hold
+template <class RandomIt, class Compare>
+void nth_element(bit_iterator<RandomIt> first, bit_iterator<RandomIt> nth,
+    bit_iterator<RandomIt> last, Compare comp) {
+    (first, nth, last, comp);
+}
+
+
+// Status: on hold
+template <class ExecutionPolicy, class RandomIt, class Compare>
+void nth_element(ExecutionPolicy&& policy, bit_iterator<RandomIt> first,
+    bit_iterator<RandomIt> nth, bit_iterator<RandomIt> last, Compare comp) {
+    (policy, first, nth, last, comp);
+}
 
 // ========================================================================== //
 } // namespace bit

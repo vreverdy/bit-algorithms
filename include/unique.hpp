@@ -36,19 +36,21 @@ bit_iterator<ForwardIt> unique(ExecutionPolicy&& policy,
     return first;
 }
 
-// Status: complete
+// Status: on hold 
 template <class ForwardIt, class BinaryPredicate>
 constexpr bit_iterator<ForwardIt> unique(bit_iterator<ForwardIt> first,
     bit_iterator<ForwardIt> last, BinaryPredicate p) {
-    return std::unique(first, last, p);
+    (last, p);
+    return first;
 }
 
-// Status: complete
+// Status: on hold 
 template <class ExecutionPolicy, class ForwardIt, class BinaryPredicate>
 bit_iterator<ForwardIt> unique(ExecutionPolicy&& policy, 
     bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last,
     BinaryPredicate p) {
-    return std::unique(std::forward<ExecutionPolicy>(policy), first, last, p);
+    (policy, last, p);
+    return first;
 }
 
 

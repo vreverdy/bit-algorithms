@@ -14,6 +14,7 @@
 // ========================================================================== //
 
 // ================================ PREAMBLE ================================ //
+#include "input_container.hpp"
 #include "input_iterator.hpp"
 #include "debug_utils.hpp" //TODO does this belong somewhere else?
 #include "bit_algorithm_details.hpp"
@@ -44,7 +45,6 @@
 #include "remove.hpp"
 #include "remove_copy.hpp"
 #include "replace.hpp"
-#include "replace_if.hpp"
 #include "replace_copy.hpp"
 #include "swap.hpp"
 #include "swap_ranges.hpp"
