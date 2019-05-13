@@ -20,14 +20,14 @@ namespace bit {
 
 
 
-// TODO
+// Status: will not implement?
 template <class InputIt, class T>
 T accumulate(bit_iterator<InputIt> first, bit_iterator<InputIt> last, T init) {
     (first, last);
     return init;
 }
 
-// TODO
+// Status: on hold
 template <class InputIt, class T, class BinaryOperation>
 T accumulate(bit_iterator<InputIt> first, bit_iterator<InputIt> last, T init,
     BinaryOperation op) {

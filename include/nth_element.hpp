@@ -23,7 +23,7 @@ namespace bit {
 
 // Status: to do
 template <class RandomIt>
-constexpr void nth_element(bit_iterator<RandomIt> first, bit_iterator<Randomit> nth,
+constexpr void nth_element(bit_iterator<RandomIt> first, bit_iterator<RandomIt> nth,
     bit_iterator<RandomIt> last) {
     (first, nth, last);
 }
