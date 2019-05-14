@@ -140,21 +140,22 @@ ForwardIt word_shift_right(ForwardIt first,
                           typename ForwardIt::difference_type n
 )
 {
+    using word_type = typename ForwardIt::value_type;
     auto d = distance(first, last);
     if (n <= 0 || n >= d) return first;
-    ForwardIt last2 = first;
-    ForwardIt d_first = first;
-    std::advance(last2, distance - n - 1);
-    std::advance(d_first, n);
-    std::copy(first, last2, d_first);
-    for (; first != d_first; ++first) {
-        *first = 0;
-    }
-    return first;
+    auto it = first;
+    std::advance(it, d-n);
+    std::rotate(first, it, last);
+    it = first;
+    std::advance(it, n);
+    std::fill(first, it, 0); 
+    return it;
 }
+// -------------------------------------------------------------------------- //
 
 
+
+// ========================================================================== //
 } // namespace bit
-
 #endif // _BIT_ALGORITHM_DETAILS_HPP_INCLUDED
 // ========================================================================== //
