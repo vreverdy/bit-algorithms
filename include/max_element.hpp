@@ -17,8 +17,11 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
 
-// TODO
+
+
+// Status: to do
 template <class ForwardIt>
 constexpr bit_iterator<ForwardIt> max_element(bit_iterator<ForwardIt> first,
     bit_iterator<ForwardIt> last) {
@@ -26,7 +29,7 @@ constexpr bit_iterator<ForwardIt> max_element(bit_iterator<ForwardIt> first,
     return first;
 }
 
-// TODO
+// Status: to do 
 template <class ExecutionPolicy, class ForwardIt>
 bit_iterator<ForwardIt> max_element(ExecutionPolicy&& policy,
     bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last) {
@@ -34,7 +37,7 @@ bit_iterator<ForwardIt> max_element(ExecutionPolicy&& policy,
     return first;
 }
 
-// TODO
+// Status: on hold
 template <class ForwardIt, class Compare>
 constexpr bit_iterator<ForwardIt> max_element(bit_iterator<ForwardIt> first,
     bit_iterator<ForwardIt> last, Compare comp) {
@@ -42,7 +45,7 @@ constexpr bit_iterator<ForwardIt> max_element(bit_iterator<ForwardIt> first,
     return first;
 }
 
-// TODO
+// Status: on hold
 template <class ExecutionPolicy, class ForwardIt, class Compare>
 bit_iterator<ForwardIt> max_element(ExecutionPolicy&& policy, 
     bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last, Compare comp) {

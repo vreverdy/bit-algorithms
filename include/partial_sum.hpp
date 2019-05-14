@@ -17,6 +17,26 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
+
+
+
+// Status: will not implement?
+template <class InputIt, class OutputIt>
+bit_iterator<OutputIt> partial_sum(bit_iterator<InputIt> first,
+    bit_iterator<InputIt> last, bit_iterator<OutputIt> d_first) {
+    (first, last);
+    return d_first;
+}
+
+// Status: on hold
+template <class InputIt, class OutputIt, class BinaryOperation>
+bit_iterator<OutputIt> partial_sum(bit_iterator<InputIt> first,
+    bit_iterator<InputIt> last, bit_iterator<OutputIt> d_first,
+    BinaryOperation op) {
+    (first, last, op); 
+    return d_first;
+}
 
 // ========================================================================== //
 } // namespace bit

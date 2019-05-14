@@ -18,10 +18,13 @@
 
 namespace bit {
 // ========================================================================== //
+
+
+
+// Status: complete
 template <class ForwardIt>
-bit_iterator<ForwardIt> shift_left(bit_iterator<ForwardIt> first,
-                                   bit_iterator<ForwardIt> last,
-                                   typename bit_iterator<ForwardIt>::difference_type n
+constexpr bit_iterator<ForwardIt> shift_left(bit_iterator<ForwardIt> first,
+    bit_iterator<ForwardIt> last, typename bit_iterator<ForwardIt>::difference_type n
 )
 {
     // Assertions
@@ -101,6 +104,16 @@ bit_iterator<ForwardIt> shift_left(bit_iterator<ForwardIt> first,
     }
     return d_last;
 }
+
+// Status: to do
+template <class ExecutionPolicy, class ForwardIt>
+bit_iterator<ForwardIt> shift_left(ExecutionPolicy&& policy,
+    bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last,
+    typename bit_iterator<ForwardIt>::difference_type n) {
+    (policy, last, n);
+    return first;
+}
+
 
 // ========================================================================== //
 } // namespace bit

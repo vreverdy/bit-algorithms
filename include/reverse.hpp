@@ -25,8 +25,9 @@ namespace bit {
 
 
 // --------------------------- Reverse Algorithms --------------------------- //
+// Status: complete
 template <class BidirIt>
-void reverse(
+constexpr void reverse(
     bit_iterator<BidirIt> first,
     bit_iterator<BidirIt> last
 )
@@ -111,6 +112,15 @@ void reverse(
         );
     }
 }
+
+// Status: to do
+template <class ExecutionPolicy, class BidirIt>
+void reverse(ExecutionPolicy&& policy, bit_iterator<BidirIt> first,
+    bit_iterator<BidirIt> last) {
+    (policy, first, last);
+}
+
+
 // -------------------------------------------------------------------------- //
 
 

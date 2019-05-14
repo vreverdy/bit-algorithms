@@ -19,8 +19,11 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
 
-// TODO
+
+
+// Status: needs revisions
 template <class ForwardIt>
 void fill(bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last, 
     bit::bit_value bv) {
@@ -43,7 +46,7 @@ void fill(bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last,
     }
 }
 
-// TODO
+// Status: to do
 template <class ExecutionPolicy, class ForwardIt>
 void fill(ExecutionPolicy&& policy, bit_iterator<ForwardIt> first,
     bit_iterator<ForwardIt> last, const bit_value& bv) {

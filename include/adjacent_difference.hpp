@@ -17,8 +17,11 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
 
-// TODO
+
+
+// Status: will not implement? 
 template <class InputIt, class OutputIt>
 constexpr OutputIt adjacent_difference(bit_iterator<InputIt> first,
     bit_iterator<InputIt> last, OutputIt d_first) {
@@ -26,7 +29,7 @@ constexpr OutputIt adjacent_difference(bit_iterator<InputIt> first,
     return d_first;
 }
 
-// TODO
+// Status: on hold 
 template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2>
 bit_iterator<ForwardIt2> adjacent_difference(ExecutionPolicy&& policy,
     bit_iterator<ForwardIt1> first, bit_iterator<ForwardIt1> last,

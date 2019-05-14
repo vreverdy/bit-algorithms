@@ -18,6 +18,39 @@
 
 namespace bit {
 
+// Status: to do
+template <class ForwardIt, class Size, class T>
+constexpr bit_iterator<ForwardIt> search_n(bit_iterator<ForwardIt> first,
+    bit_iterator<ForwardIt> last, Size count, bit_value value) {
+    (last, count, value);
+    return first;
+}
+
+// Status: to do
+template <class ExecutionPolicy, class ForwardIt, class Size, class T>
+bit_iterator<ForwardIt> search_n(ExecutionPolicy&& policy, bit_iterator<ForwardIt> first,
+    bit_iterator<ForwardIt> last, Size count, bit_value value) {
+    (policy, last, count, value);
+    return first;
+}
+
+// Status: on hold
+template <class ForwardIt, class Size, class T, class BinaryPredicate>
+constexpr bit_iterator<ForwardIt> search_n(bit_iterator<ForwardIt> first,
+    bit_iterator<ForwardIt> last, Size count, bit_value value, BinaryPredicate p) {
+    (last, count, value, p);
+    return first;
+}
+
+// Status: on hold
+template <class ExecutionPolicy, class ForwardIt, class Size, class T,
+    class BinaryPredicate> bit_iterator<ForwardIt> search_n(ExecutionPolicy&& policy,
+    bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last, Size count,
+    bit_value value, BinaryPredicate p) {
+    (policy, last, count, value, p); 
+    return first;
+}
+
 // ========================================================================== //
 } // namespace bit
 

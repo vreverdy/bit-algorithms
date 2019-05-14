@@ -18,7 +18,7 @@
 
 namespace bit {
 
-// TODO
+// Status: to do
 template <class InputIt, class ForwardIt>
 constexpr bit_iterator<InputIt> find_first_of(bit_iterator<InputIt> first,
     bit_iterator<InputIt> last, bit_iterator<ForwardIt> s_first,
@@ -27,7 +27,7 @@ constexpr bit_iterator<InputIt> find_first_of(bit_iterator<InputIt> first,
     return first;
 }
 
-// TODO
+// Status: to do
 template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2>
 bit_iterator<ForwardIt1> find_first_of(ExecutionPolicy&& policy,
     bit_iterator<ForwardIt1> first, bit_iterator<ForwardIt1> last,
@@ -36,7 +36,7 @@ bit_iterator<ForwardIt1> find_first_of(ExecutionPolicy&& policy,
     return first;
 }
 
-// TODO
+// Status: on hold
 template <class InputIt, class ForwardIt, class BinaryPredicate>
 constexpr bit_iterator<InputIt> find_first_of(bit_iterator<InputIt> first,
     bit_iterator<InputIt> last, bit_iterator<ForwardIt> s_first,
@@ -45,7 +45,7 @@ constexpr bit_iterator<InputIt> find_first_of(bit_iterator<InputIt> first,
     return first;
 }
 
-// TODO
+// Status: on hold
 template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2,
     class BinaryPredicate> bit_iterator<ForwardIt1> find_first_of(
     ExecutionPolicy&& policy, bit_iterator<ForwardIt1> first,

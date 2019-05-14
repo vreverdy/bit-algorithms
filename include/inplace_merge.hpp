@@ -17,29 +17,32 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
 
-// TODO
+
+
+// Status: to do 
 template <class BidirIt>
 void inplace_merge(bit_iterator<BidirIt> first, bit_iterator<BidirIt> middle,
     bit_iterator<BidirIt> last) {
     (first, middle, last);
 }
 
-// TODO
+// Status: to do 
 template <class ExecutionPolicy, class BidirIt>
 void inplace_merge(ExecutionPolicy&& policy, bit_iterator<BidirIt> first,
     bit_iterator<BidirIt> middle, bit_iterator<BidirIt> last) {
     (policy, first, middle, last);
 }
 
-// TODO
+// Status: on hold
 template <class BidirIt, class Compare>
 void inplace_merge(bit_iterator<BidirIt> first, bit_iterator<BidirIt> middle,
     bit_iterator<BidirIt> last, Compare comp) {
     (first, middle, last, comp);
 }
 
-// TODO
+// Status: on hold
 template <class ExecutionPolicy, class BidirIt, class Compare>
 void inplace_merge(ExecutionPolicy&& policy, bit_iterator<BidirIt> first,
     bit_iterator<BidirIt> middle, bit_iterator<BidirIt> last, Compare comp) {

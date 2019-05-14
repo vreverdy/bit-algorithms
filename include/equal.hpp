@@ -17,8 +17,11 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
 
-// TODO
+
+
+// Status: to do
 template <class InputIt1, class InputIt2>
 constexpr bool equal(bit_iterator<InputIt1> first1, bit_iterator<InputIt1> last, 
     bit_iterator<InputIt2> first2) {
@@ -26,7 +29,7 @@ constexpr bool equal(bit_iterator<InputIt1> first1, bit_iterator<InputIt1> last,
     return true;
 }
 
-// TODO
+// Status: to do
 template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2>
 bool equal(ExecutionPolicy&& policy, bit_iterator<ForwardIt1> first1,
     bit_iterator<ForwardIt1> last1, bit_iterator<ForwardIt2> first2) {
@@ -34,7 +37,7 @@ bool equal(ExecutionPolicy&& policy, bit_iterator<ForwardIt1> first1,
     return true;
 }
 
-// TODO
+// Status: on hold
 template <class InputIt1, class InputIt2, class BinaryPredicate>
 constexpr bool equal(bit_iterator<InputIt1> first1, bit_iterator<InputIt1> last1,
     bit_iterator<InputIt2> first2, BinaryPredicate p) {
@@ -42,7 +45,7 @@ constexpr bool equal(bit_iterator<InputIt1> first1, bit_iterator<InputIt1> last1
     return true;
 }
 
-// TODO
+// Status: on hold
 template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2,
     class BinaryPredicate> bool equal(ExecutionPolicy&& policy,
     bit_iterator<ForwardIt1> first1, bit_iterator<ForwardIt1> last1,
@@ -51,7 +54,7 @@ template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2,
     return true;
 }
 
-// TODO
+// Status: on hold
 template <class InputIt1, class InputIt2>
 constexpr bool equal(bit_iterator<InputIt1> first1, bit_iterator<InputIt1> last1,
     bit_iterator<InputIt2> first2, bit_iterator<InputIt2> last2) {
@@ -59,7 +62,7 @@ constexpr bool equal(bit_iterator<InputIt1> first1, bit_iterator<InputIt1> last1
     return true;
 }
 
-// TODO
+// Status: to do
 template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2>
 bool equal(ExecutionPolicy&& policy, bit_iterator<ForwardIt1> first1,
     bit_iterator<ForwardIt1> last1, bit_iterator<ForwardIt2> first2,
@@ -68,7 +71,7 @@ bool equal(ExecutionPolicy&& policy, bit_iterator<ForwardIt1> first1,
     return true;
 } 
 
-// TODO
+// Status: on hold
 template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2,
     class BinaryPredicate> constexpr bool equal(bit_iterator<ForwardIt1> first1,
     bit_iterator<ForwardIt1> last1, bit_iterator<ForwardIt2> first2,
@@ -77,7 +80,7 @@ template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2,
     return true;
 } 
 
-// TODO
+// Status: on hold
 template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2,
     class BinaryPredicate> bool equal(ExecutionPolicy&& policy,
     bit_iterator<ForwardIt1> first1, bit_iterator<ForwardIt1> last1,

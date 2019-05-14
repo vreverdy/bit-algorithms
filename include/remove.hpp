@@ -17,6 +17,41 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
+
+
+
+// Status: to do
+template <class ForwardIt, class T>
+constexpr bit_iterator<ForwardIt> remove(bit_iterator<ForwardIt> first,
+    bit_iterator<ForwardIt> last, bit_value value) {
+    (last, value);
+    return first;
+}
+
+// Status: to do
+template <class ExecutionPolicy, class ForwardIt, class T>
+bit_iterator<ForwardIt> remove(ExecutionPolicy&& policy, bit_iterator<ForwardIt> first,
+    bit_iterator<ForwardIt> last, bit_value value) {
+    (policy, last, value);
+    return first;
+}
+
+// Status: on hold
+template <class ForwardIt, class UnaryPredicate>
+constexpr bit_iterator<ForwardIt> remove_if(bit_iterator<ForwardIt> first,
+    bit_iterator<ForwardIt> last, UnaryPredicate p) {
+    (last, p);
+    return first;
+}
+
+// Status: on hold
+template <class ExecutionPolicy, class ForwardIt, class UnaryPredicate>
+bit_iterator<ForwardIt> remove_if(ExecutionPolicy&& policy, 
+    bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last, UnaryPredicate p) {
+    (policy, last, p);
+    return first;
+} 
 
 // ========================================================================== //
 } // namespace bit
