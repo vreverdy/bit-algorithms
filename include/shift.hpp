@@ -1,10 +1,10 @@
 // ================================ SHIFT ================================== //
-// Project:     The Experimental Bit Algorithms Library
-// Name:        shift.hpp
-// Description: Implementation of shift_left and shift_right 
-// Creator:     Vincent Reverdy
-// Contributor: Bryce Kille [2019]
-// License:     BSD 3-Clause License
+// Project:         The Experimental Bit Algorithms Library
+// Name:            shift.hpp
+// Description:     Implementation of shift_left and shift_right 
+// Creator:         Vincent Reverdy
+// Contributor(s):  Bryce Kille [2019]
+// License:         BSD 3-Clause License
 // ========================================================================== //
 #ifndef _SHIFT_HPP_INCLUDED
 #define _SHIFT_HPP_INCLUDED
@@ -14,9 +14,7 @@
 
 // ================================ PREAMBLE ================================ //
 // C++ standard library
-//#include <algorithm>
 // Project sources
-#include "../ext/bit/bit.hpp"
 // Third-party libraries
 // Miscellaneous
 namespace bit {
@@ -49,30 +47,30 @@ bit_iterator<ForwardIt> shift_right(bit_iterator<ForwardIt> first,
     if (n <= 0 || n >= d) return first;
     auto first_value = *first.base();
     auto last_value = !is_last_aligned ? *last.base() : 0;
-    
-    auto new_first_base = word_shift_right(first.base(), 
-                                           std::next(last.base(), 
-                                                     !is_last_aligned
-                                                     ),
-                                            word_shifts
+    word_type mask = is_first_aligned ? 
+        -1
+        : 
+        ((1 << (digits - first.position())) - 1) 
+            << first.position();
+    *first.base() = *first.base() & mask;
+    auto it = word_shift_right(first.base(), 
+                               std::next(last.base(), 
+                                         !is_last_aligned
+                                         ),
+                               word_shifts
     );
-    first = bit_iterator<ForwardIt>(new_first_base, first.position());
-    bit_iterator<ForwardIt> d_first;
+    auto d_first = bit_iterator<ForwardIt>(it, first.position());
     // Shift bit sequence to the msb 
     if (remaining_bitshifts) {
-        auto it = first.base();
-        word_type mask = ((1 << (digits - first.position())) - 1) 
-            << first.position();
-        *it = *it & mask;
         word_type temp_1 = *it;
         word_type temp_2;
-        *it <<= remaining_bitshifts;
-        std::advance(it, 1);
+        *it = *it << remaining_bitshifts;
+        it++;
         //TODO probably a way to do this with 1 temp or
         // at least no value swapping
-        while (it != std::next(last.base(), !is_last_aligned)) {
+        for (; it != std::next(last.base(), !is_last_aligned); ++it) {
             temp_2 = *it;
-            *it = _shld<word_type>(*it, *temp_1, remaining_bitshifts);
+            *it = _shld<word_type>(*it, temp_1, remaining_bitshifts);
             temp_1 = temp_2; 
         }
     }
@@ -138,6 +136,8 @@ bit_iterator<ForwardIt> shift_left(bit_iterator<ForwardIt> first,
     // Shift bit sequence to the lsb 
     if (remaining_bitshifts) {
         auto it = first.base();
+        // Desired last iterator may be one before the current last 
+        // so we need to keep track of the penultimate iterator.
         auto latent_it = it;
         // _shrd all words except the last
         for (; std::next(it, is_last_aligned) != new_last_base; ++it) {
