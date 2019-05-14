@@ -1,13 +1,13 @@
-// =========================== UNINITIALIZED COPY =========================== //
+// ==================== UNINITIALIZED VALUE CONSTRUCT ==================== //
 // Project: The Experimental Bit Algorithms Library
-// Name: uninitialized_copy.hpp
-// Description: bit_iterator overloads for std::uninitialized_copy
+// Name: uninitialized_value_construct.hpp
+// Description: bit_iterator overloads for std::uninitialized_value_construct
 // Creator: Vincent Reverdy
 // Contributor(s): 
 // License: BSD 3-Clause License
 // ========================================================================== //
-#ifndef _UNINITIALIZED_COPY_HPP_INCLUDED
-#define _UNINITIALIZED_COPY_HPP_INCLUDED
+#ifndef _UNINITIALIZED_VALUE_CONSTRUCT_HPP_INCLUDED
+#define _UNINITIALIZED_VALUE_CONSTRUCT_HPP_INCLUDED
 // ========================================================================== //
 
 // ============================== PREAMBLE ================================== //
@@ -22,24 +22,22 @@ namespace bit {
 
 
 // Status: to do
-template <class InputIt, class ForwardIt>
-bit_iterator<ForwardIt> uninitialized_copy(bit_iterator<InputIt> first,
-    bit_iterator<InputIt> last, bit_iterator<ForwardIt> d_first) {
-    (first, last);
-    return d_first;
-}
+template <class ForwardIt>
+void uninitialized_value_construct(bit_iterator<ForwardIt> first,
+    bit_iterator<ForwardIt> last) {
+    (first, last); 
+} 
 
 // Status: to do
-template <class ExecutionPolicy, class InputIt, class ForwardIt>
-bit_iterator<ForwardIt> uninitialized_copy(ExecutionPolicy&& policy,
-    bit_iterator<InputIt> first, bit_iterator<InputIt> last, 
-    bit_iterator<ForwardIt> d_first) {
+template <class ExecutionPolicy, class ForwardIt>
+void uninitialized_value_construct(ExecutionPolicy&& policy,
+    bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last) {
     (policy, first, last);
-    return d_first;
 }
+
 
 // ========================================================================== //
 } // namespace bit
 
-#endif // _UNINITIALIZED_COPY_HPP_INCLUDED
+#endif // _UNINITIALIZED_VALUE_CONSTRUCT_HPP_INCLUDED
 // ========================================================================== //

@@ -17,15 +17,18 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
 
-// TODO
+
+
+// Status: to do
 template <class ForwardIt, class Size>
 bit_iterator<ForwardIt> destroy_n(bit_iterator<ForwardIt> first, Size n) {
     (n); 
     return first;
 }
 
-// TODO
+// Status: to do
 template <class ExecutionPolicy, class ForwardIt, class Size>
 bit_iterator<ForwardIt> destroy_n(ExecutionPolicy&& policy,
     bit_iterator<ForwardIt> first, Size n) {
