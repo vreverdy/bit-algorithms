@@ -66,7 +66,7 @@ bit_iterator<ForwardIt> shift_left(bit_iterator<ForwardIt> first,
     if (remaining_bitshifts) {
         auto it = first.base();
         auto latent_it = it;
-        // Don't take anything from the last.base()
+        // _shrd all words except the last
         for (; std::next(it, is_last_aligned) != new_last_base; ++it) {
             *it = _shrd<word_type>(*it, *std::next(it), remaining_bitshifts);
             latent_it = it;
