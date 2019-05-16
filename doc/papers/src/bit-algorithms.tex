@@ -25,11 +25,14 @@
 \usepackage{titling}
 \usepackage{titlesec}
 \usepackage[sf=false]{libertine}
-\usepackage{cite}
-\usepackage{array}
+\usepackage{cite} \usepackage{array}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{float}
 \usepackage{fdsymbol}
 \usepackage{tabularx}
 \usepackage{epigraph}
@@ -79,6 +82,9 @@
 \newcommand{\cpp}{\acrolang{C++}}
 \newcommand{\clang}{\acrolang{C}}
 \newcommand{\typecell}[3]{\cellcolor{#1}\textcolor{blue}{#2}#3}
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 % ============================================================================ %
 
 
@@ -120,6 +126,117 @@ Vincent Reverdy%
 % ---------------------------------------------------------------------------- %
 \section{Introduction}
 \label{sec:introduction}
+% ---------------------------------------------------------------------------- %
+\section{Algorithms}
+\label{sec:algorithms}
+
+\paragraph{Notation}
+
+
+\subsection{Modifying Algorithms}
+\label{subsec:modifyingAlgs}
+
+\subsubsection{\texttt{copy}}
+\label{subsubsec:copy}
+\paragraph{Description}
+Copies all elements in the range [first, last) starting from first and 
+proceeding to last - 1. The behavior is undefined if d\_first is within the 
+range [first, last). In this case, std::copy\_backward may be used instead.
+
+\paragraph{Implementation}
+See psuedocode below:
+\begin{algorithm}[H]
+    \caption{Current copy implementation}
+    \begin{algorithmic}[1]
+        \Function{copy}{\texttt{first1, last1, first2}}
+        \If {!\texttt{is\_aligned}(\texttt{first2})}
+            \State Use \texttt{get\_word} to copy bits and align \texttt{first2}
+            \State Advance \texttt{first1} correspondingly.
+        \EndIf
+        \While {There are remaining bits to copy} 
+            \State Construct words of \texttt{dst\_word\_type}
+            from the source and assign to destination.
+        \EndWhile
+        \State If the last iterator is not aligned, copy the remaining bits to the
+            final word.
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+\paragraph{Comments}
+\begin{itemize}
+    \item Might be worth thinking about having separate implementations 
+        depending on the size of the words using \texttt{if constexpr}.
+\end{itemize}
+
+\subsubsection{\texttt{shift\_left} and \texttt{shift\_right}}
+\label{subsubsec:shift}
+\paragraph{Description}
+\begin{itemize}
+    \item[\texttt{shift\_left}] Shifts the elements towards the beginning of the 
+            range. If $n \leq 0 || n \geq last - first$, there are no effects. 
+            Otherwise, for every integer $i$ in $[0, last - first - n)$, moves the 
+            element originally at position $first + n + i$ to position $first + i$. 
+            The moves are performed in increasing order of i starting from.
+    \item[\texttt{shift\_right}] Shifts the elements towards the end of the 
+        range. If $n \leq 0 || n \geq last - first$, there are no effects. Otherwise, 
+        for every integer $i$ in $[0, last - first - n)$, moves the element 
+        originally at position $first + i$ to position $first + n + i$. If ForwardIt 
+        meets the LegacyBidirectionalIterator requirements, then the moves are 
+        performed in decreasing order of $i$ starting from $last - first - n - 1$.
+\end{itemize}
+
+\paragraph{Implementation}
+For both left and right shift, let $N$ be the number of total word shifts and 
+$n'$ be the remainder of needed bit shifts i.e.
+$$N=\floor*{\frac{n}{|\texttt{word\_type}|}}$$ $$n'=n-N*|\texttt{word\_type}|$$
+\subparagraph{\texttt{shift\_left}}
+
+\begin{algorithm}[H]
+    \caption{Current \texttt{shift\_left} implementation}
+    \begin{algorithmic}[1]
+        \Function {shift\_left}{\texttt{first, last, n}}
+            \State Save first and last words if not aligned.
+            \State Unset bits in first word that are not part of 
+            the range.
+            \State Use STL version to shift words by $N$.
+            \State Create latent iterator to keep track of penultimate word.
+            \State \texttt{\_shrd} each word and the next by $n'$ until we 
+            reach the last word
+            \State Right shift the last word by $n'$.
+            \State Put back the out of range bits if necessary.
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+    \caption{Current \texttt{shift\_right} implementation}
+    \begin{algorithmic}[1]
+        \Function {shift\_left}{\texttt{first, last, n}}
+            \State Save first and last words if not aligned.
+            \State Unset bits in last word that are not part of 
+            the range.
+            \State Use STL version to shift words by $N$.
+            \State Create two temporary variables \texttt{T1} and \texttt{T2}
+            \State \texttt{T1 = *first.base()}
+            \State \texttt{*first.base() <<= n'}
+            \For {\texttt{it=first.base(), it <= last, it++}}
+                \State \texttt{T2 = *it}
+                \State \texttt{*it = \_shld(*it, T1, n')}
+                \State \texttt{T1 = T2}
+            \EndFor
+            \State Put back the out of range bits if necessary.
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
+\paragraph{Comments}
+\begin{itemize}
+    \item \texttt{shift\_right} even with a ForwardIt may be able to avoid
+        having \textbf{two} temporary variables.
+    \item If we have a bidiriectional iterator, \texttt{shift\_right} 
+        can avoid temporary variables and just use \texttt{\_shld} starting 
+        from last and going to first.
+\end{itemize}
 % ---------------------------------------------------------------------------- %
 \bibliography{bit-algorithms}
 % ---------------------------------------------------------------------------- %
