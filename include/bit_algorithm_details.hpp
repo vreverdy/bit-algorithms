@@ -51,24 +51,6 @@ void advance(bit_iterator<InputIt>& first, Distance n)
 
 
 // --------------------------- Utility Functions ---------------------------- //
-// Left shifts dst by cnt bits, filling the lsbs of dst by the msbs of src
-template <class T1, class T2, class SizeT>
-constexpr T1 _shld2(T1 dst, T2 src, SizeT cnt) noexcept
-{
-    static_assert(binary_digits<T1>::value, "");
-    static_assert(binary_digits<T2>::value, "");
-    constexpr T1 dst_digits = binary_digits<T1>::value;
-    constexpr T1 src_digits = binary_digits<T2>::value;
-
-
-    if (cnt < src_digits) {
-        dst = ((dst << cnt) * (cnt < dst_digits)) | ((src >> (src_digits - cnt)));
-    } else {
-        dst = ((dst << cnt) * (cnt < dst_digits))
-            | ((src << (cnt - src_digits))*(cnt < src_digits+src_digits)); 
-    }
-    return dst;
-}
 
 // Get next len bits beginning at start and store them in a word of type T
 template <class T, class InputIt>
@@ -86,7 +68,7 @@ T get_word(bit_iterator<InputIt> first, T len=binary_digits<T>::value)
         return ret_word;
     } 
 
-    auto it = std::next(first.base());
+    InputIt it = std::next(first.base());
     len -= offset;
     // Fill up ret_word starting at bit [offset] using it
     while (len > native_digits) {
@@ -140,10 +122,9 @@ ForwardIt word_shift_right(ForwardIt first,
                           typename ForwardIt::difference_type n
 )
 {
-    using word_type = typename ForwardIt::value_type;
     auto d = distance(first, last);
     if (n <= 0 || n >= d) return first;
-    auto it = first;
+    ForwardIt it = first;
     std::advance(it, d-n);
     std::rotate(first, it, last);
     it = first;
