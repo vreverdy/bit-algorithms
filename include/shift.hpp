@@ -45,21 +45,22 @@ bit_iterator<ForwardIt> shift_right(bit_iterator<ForwardIt> first,
     const bool is_last_aligned = last.position() == 0;
     auto d = distance(first, last);
     if (n <= 0 || n >= d) return first;
-    auto first_value = *first.base();
-    auto last_value = !is_last_aligned ? *last.base() : 0;
+    word_type first_value = *first.base();
+    word_type last_value = !is_last_aligned ? *last.base() : 0;
     word_type mask = is_first_aligned ? 
-        -1
+        static_cast<word_type>(-1)
         : 
-        ((1 << (digits - first.position())) - 1) 
-            << first.position();
+        static_cast<word_type>(
+                (static_cast<word_type>(1) << (digits - first.position())) - 1
+        ) << first.position();
     *first.base() = *first.base() & mask;
-    auto it = word_shift_right(first.base(), 
+    ForwardIt it = word_shift_right(first.base(), 
                                std::next(last.base(), 
                                          !is_last_aligned
                                          ),
                                word_shifts
     );
-    auto d_first = bit_iterator<ForwardIt>(it, first.position());
+    bit_iterator<ForwardIt> d_first(it, first.position());
     // Shift bit sequence to the msb 
     if (remaining_bitshifts) {
         word_type temp_1 = *it;
@@ -117,28 +118,25 @@ bit_iterator<ForwardIt> shift_left(bit_iterator<ForwardIt> first,
     const bool is_last_aligned = last.position() == 0;
     auto d = distance(first, last);
     if (n <= 0 || n >= d) return first;
-    auto first_value = *first.base();
-    auto last_value = !is_last_aligned ? *last.base() : 0;
+    word_type first_value = *first.base();
+    word_type last_value = !is_last_aligned ? *last.base() : 0;
 
     // Shift words to the left using std::shift 
-    auto new_last_base = word_shift_left(first.base(), 
-                                         std::next(last.base(), 
-                                                   !is_last_aligned
-                                                   ),
+    ForwardIt new_last_base = word_shift_left(first.base(), 
+                                         last.base(), 
                                          word_shifts
     );
     // Mask out-of-range bits so that we don't incorporate them
     if (!is_last_aligned) {
-        *new_last_base &= (1 << last.position()) - 1; 
+        *new_last_base &= (static_cast<word_type>(1) << last.position()) - 1; 
     }
-    last = bit_iterator<ForwardIt>(new_last_base, last.position());
-    bit_iterator<ForwardIt> d_last;
+    bit_iterator<ForwardIt> d_last(new_last_base, last.position());
     // Shift bit sequence to the lsb 
     if (remaining_bitshifts) {
-        auto it = first.base();
+        ForwardIt it = first.base();
         // Desired last iterator may be one before the current last 
         // so we need to keep track of the penultimate iterator.
-        auto latent_it = it;
+        ForwardIt latent_it = it;
         // _shrd all words except the last
         for (; std::next(it, is_last_aligned) != new_last_base; ++it) {
             *it = _shrd<word_type>(*it, *std::next(it), remaining_bitshifts);
