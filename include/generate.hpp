@@ -17,15 +17,18 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
 
-// TODO
+
+
+// Status: on hold
 template <class ForwardIt, class Generator>
 constexpr void generate(bit_iterator<ForwardIt> first, 
     bit_iterator<ForwardIt> last, Generator g) {
     (first, last, g);
 }
 
-// TODO
+// Status: on hold 
 template <class ExecutionPolicy, class ForwardIt, class Generator>
 void generate(ExecutionPolicy&& policy, bit_iterator<ForwardIt> first,
     bit_iterator<ForwardIt> last, Generator g) {

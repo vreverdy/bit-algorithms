@@ -17,8 +17,11 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
 
-// TODO
+
+
+// Status: to do 
 template <class ForwardIt, class T>
 constexpr std::pair<bit_iterator<ForwardIt>, bit_iterator<ForwardIt>> equal_range (
     bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last, const T& value) {
@@ -26,7 +29,7 @@ constexpr std::pair<bit_iterator<ForwardIt>, bit_iterator<ForwardIt>> equal_rang
     return std::make_pair(first, last);
 }
 
-// TODO
+// Status: on hold 
 template <class ForwardIt, class T, class Compare>
 constexpr std::pair<bit_iterator<ForwardIt>, bit_iterator<ForwardIt>> equal_range ( 
     bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last, const T& value,

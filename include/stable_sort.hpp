@@ -17,6 +17,36 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
+
+
+
+// Status: to do
+template <class RandomIt>
+void stable_sort(bit_iterator<RandomIt> first, bit_iterator<RandomIt> last) {
+    (first, last);
+}
+
+// Status: to do
+template <class ExecutionPolicy, class RandomIt>
+void stable_sort(ExecutionPolicy&& policy, bit_iterator<RandomIt> first,
+    bit_iterator<RandomIt> last) {
+    (policy, first, last); 
+}
+
+// Status: on hold
+template <class RandomIt, class Compare>
+void stable_sort(bit_iterator<RandomIt> first, bit_iterator<RandomIt> last,
+    Compare comp) {
+    (first, last, comp);
+}
+
+// Status: on hold
+template <class ExecutionPolicy, class RandomIt, class Compare>
+void stable_sort(ExecutionPolicy&& policy, bit_iterator<RandomIt> first,
+    bit_iterator<RandomIt> last, Compare comp) {
+    (policy, first, last, comp);
+}
 
 // ========================================================================== //
 } // namespace bit

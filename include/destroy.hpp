@@ -17,14 +17,17 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
 
-// TODO
+
+
+// Status: to do 
 template <class ForwardIt>
 void destroy(bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last) {
     (first, last);
 }
 
-// TODO
+// Status: to do 
 template <class ExecutionPolicy, class ForwardIt>
 void destroy(ExecutionPolicy&& policy, bit_iterator<ForwardIt> first,
     bit_iterator<ForwardIt> last) {

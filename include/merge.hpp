@@ -17,8 +17,11 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
 
-// TODO
+
+
+// Status: to do 
 template <class InputIt1, class InputIt2, class OutputIt>
 constexpr bit_iterator<OutputIt> merge(bit_iterator<InputIt1> first1,
     bit_iterator<InputIt1> last1, bit_iterator<InputIt2> first2,
@@ -27,7 +30,7 @@ constexpr bit_iterator<OutputIt> merge(bit_iterator<InputIt1> first1,
     return d_first;
 }
 
-// TODO
+// Status: to do 
 template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2, 
     class ForwardIt3> bit_iterator<ForwardIt3> merge(ExecutionPolicy&& policy, 
     bit_iterator<ForwardIt1> first1, bit_iterator<ForwardIt1> last1,
@@ -37,7 +40,7 @@ template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2,
     return first3;
 }
 
-// TODO
+// Status: on hold 
 template <class InputIt1, class InputIt2, class OutputIt, class Compare>
 constexpr bit_iterator<OutputIt> merge(bit_iterator<InputIt1> first1,
     bit_iterator<InputIt1> last1, bit_iterator<InputIt2> first2,
@@ -47,7 +50,7 @@ constexpr bit_iterator<OutputIt> merge(bit_iterator<InputIt1> first1,
     return d_first;
 }
 
-// TODO
+// Status: on hold
 template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2,
     class ForwardIt3, class Compare> bit_iterator<ForwardIt3> merge(
     ExecutionPolicy&& policy, bit_iterator<ForwardIt1> first1,

@@ -17,6 +17,25 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
+
+
+
+// Status: to do
+template <class BidirIt>
+constexpr bool next_permutation(bit_iterator<BidirIt> first, 
+    bit_iterator<BidirIt> last) {
+    (first, last);
+    return true;
+}
+
+// Status: on hold
+template <class BidirIt, class Compare>
+constexpr bool next_permutation(bit_iterator<BidirIt> first, 
+    bit_iterator<BidirIt> last, Compare comp) {
+    (first, last, comp);
+    return true;
+} 
 
 // ========================================================================== //
 } // namespace bit

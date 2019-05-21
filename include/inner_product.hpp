@@ -17,8 +17,11 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
 
-// TODO
+
+
+// Status: will not implement? 
 template <class InputIt1, class InputIt2, class T>
 T inner_product(bit_iterator<InputIt1> first1, bit_iterator<InputIt1> last1,
     bit_iterator<InputIt2> first2, T init) {
@@ -26,7 +29,7 @@ T inner_product(bit_iterator<InputIt1> first1, bit_iterator<InputIt1> last1,
     return init;
 }
 
-// TODO
+// Status: on hold 
 template <class InputIt1, class InputIt2, class T, class BinaryOperation1,
     class BinaryOperation2> T inner_product(bit_iterator<InputIt1> first1,
     bit_iterator<InputIt1> last1, bit_iterator<InputIt2> first2, T init, 

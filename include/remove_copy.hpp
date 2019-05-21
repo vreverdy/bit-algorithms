@@ -15,8 +15,46 @@
 // Project sources
 // Third-party libraries
 // Miscellaneous
-
 namespace bit {
+// ========================================================================== //
+
+
+
+// Status: to do
+template <class InputIt, class OutputIt>
+constexpr bit_iterator<OutputIt> remove_copy(bit_iterator<InputIt> first,
+    bit_iterator<InputIt> last, bit_iterator<OutputIt> d_first, bit_value value) {
+    (first, last, value);
+    return d_first;
+}
+
+// Status: to do
+template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2>
+bit_iterator<ForwardIt2> remove_copy(ExecutionPolicy&& policy,
+    bit_iterator<ForwardIt1> first, bit_iterator<ForwardIt1> last,
+    bit_iterator<ForwardIt2> d_first, bit_value value) {
+    (policy, first, last, value);
+    return d_first;
+}
+
+// Status: on hold 
+template <class InputIt, class OutputIt, class UnaryPredicate>
+constexpr bit_iterator<OutputIt> remove_copy_if(bit_iterator<InputIt> first,
+    bit_iterator<InputIt> last, bit_iterator<OutputIt> d_first,
+    UnaryPredicate p) {
+    (first, last, p);
+    return d_first;
+}
+
+// Status: on hold 
+template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2,
+    class UnaryPredicate> bit_iterator<ForwardIt2> remove_copy_if(
+    ExecutionPolicy&& policy, bit_iterator<ForwardIt1> first, 
+    bit_iterator<ForwardIt1> last, bit_iterator<ForwardIt2> d_first,
+    UnaryPredicate p) {
+    (policy, first, last, p);
+    return d_first;
+}
 
 // ========================================================================== //
 } // namespace bit
