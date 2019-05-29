@@ -1,11 +1,12 @@
 // ============================= INPUT ITERATOR ============================= //
-// Project: The Experimental Bit Algorithms Library
-// Name: input_iterator.hpp
-// Description: input_iterator is a wrapper for normal iterators which constrains
-// the how we can use the wrapped iterator to match that of an InputIterator 
-// Creator: Vincent Reverdy
-// Contributor(s): Collin Gress [2019] 
-// License: BSD 3-Clause License
+// Project:         The Experimental Bit Algorithms Library
+// Name:            input_iterator.hpp
+// Description:     input_iterator is a wrapper for normal iterators which 
+//                  constrains how we can use the wrapped iterator to match 
+//                  that of an InputIterator 
+// Creator:         Vincent Reverdy
+// Contributor(s):  Collin Gress [2019] 
+// License:         BSD 3-Clause License
 // ========================================================================== //
 #ifndef _INPUT_ITERATOR_HPP_INCLUDED
 #define _INPUT_ITERATOR_HPP_INCLUDED
@@ -81,7 +82,5 @@ class input_iterator {
 
 // ========================================================================== //
 } // namespace bit
-
-// ========================================================================== //
 #endif // _INPUT_ITERATOR_HPP_INCLUDED
 // ========================================================================== //

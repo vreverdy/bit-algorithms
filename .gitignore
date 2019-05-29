@@ -2,3 +2,14 @@ build
 **/*.swp
 **/*.swo
 .gdb_history
+.ycm_extra_conf.py
+out.txt
+doc/papers/src/**/*.log
+doc/papers/src/**/*.fls
+doc/papers/src/**/*.aux
+doc/papers/src/**/*.bbl
+doc/papers/src/**/*.blg
+doc/papers/src/**/*.fdb_latexmk
+doc/papers/src/**/*.out
+doc/papers/src/**/*.pdf
+doc/papers/src/**/*.synctex.gz
