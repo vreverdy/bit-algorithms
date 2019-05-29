@@ -27,7 +27,6 @@ constexpr bit_iterator<ForwardIt> max_element(bit_iterator<ForwardIt> first,
     bit_iterator<ForwardIt> last) {
 
     using word_type = typename bit_iterator<ForwardIt>::word_type;
-    constexpr std::size_t num_digits = bit::binary_digits<word_type>::value; 
 
     bit_iterator<ForwardIt> cursor = first;
 
@@ -44,7 +43,7 @@ constexpr bit_iterator<ForwardIt> max_element(bit_iterator<ForwardIt> first,
             return first;
         }
 
-        std::advance(cursor, num_digits - cursor.position());
+        cursor = bit_iterator(std::next(cursor.base()));
     }
 
     // full words
@@ -55,7 +54,7 @@ constexpr bit_iterator<ForwardIt> max_element(bit_iterator<ForwardIt> first,
             std::size_t cur_set_bit_position = _tzcnt(cur_word);
             return cursor + (cur_set_bit_position - cursor.position());
         }
-        std::advance(cursor, num_digits);
+        cursor = bit_iterator(std::next(cursor.base()));
     }
 
     if (cursor == last) {
