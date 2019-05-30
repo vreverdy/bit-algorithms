@@ -4,6 +4,7 @@
 // Description:     Provides common implementation details and helper classes
 // Creator:         Vincent Reverdy
 // Contributor(s):  Vincent Reverdy [2015-2017]
+//                  Bryce Kille [2019]
 // License:         BSD 3-Clause License
 // ========================================================================== //
 #ifndef _BIT_DETAILS_HPP_INCLUDED
