@@ -73,7 +73,7 @@ TEMPLATE_TEST_CASE("max_element: handles single word cases", "[max_element]",
 
 TEMPLATE_PRODUCT_TEST_CASE("max_element: handles multi word cases", 
                            "[template][product]", 
-                           (std::forward_list), 
+                           (std::vector, std::list, std::forward_list), 
                            (unsigned short, unsigned int, unsigned long)) {
     using container_type = TestType;
     using cont_iter_type = typename container_type::iterator;
