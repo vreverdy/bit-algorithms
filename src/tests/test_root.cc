@@ -19,6 +19,7 @@
 #include "all_of.hpp"
 #include "any_of.hpp"
 #include "bit_algorithm_details.hpp"
+#include "bit_details.hpp"
 #include "for_each.hpp"
 #include "for_each_n.hpp"
 #include "find.hpp"

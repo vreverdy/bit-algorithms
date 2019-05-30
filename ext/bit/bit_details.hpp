@@ -322,6 +322,14 @@ constexpr T _bitblend(T src0, T src1, T msk) noexcept;
 template <class T>
 constexpr T _bitblend(T src0, T src1, T start, T len) noexcept;
 
+// Bit exchange
+template <class T>
+constexpr void _bitexch(T& src0, T& src1, T msk) noexcept;
+template <class T>
+constexpr void _bitexch(T& src0, T& src1, T start, T len) noexcept;
+template <class T>
+constexpr void _bitexch(T& src0, T& src1, T start0, T start1, T len) noexcept;
+
 // Bit compare
 template <class T>
 constexpr T _bitcmp(T src0, T src1, T start0, T start1, T len) noexcept;
@@ -732,7 +740,7 @@ constexpr T _bitswap() noexcept
 
 
 // ------------ IMPLEMENTATION DETAILS: INSTRUCTIONS: BIT BLEND ------------- //
-// Replaces len bits of src0 by the ones of src1 where the mask is true
+// Replaces bits of src0 by the ones of src1 where the mask is true
 template <class T>
 constexpr T _bitblend(T src0, T src1, T msk) noexcept
 {
@@ -749,6 +757,78 @@ constexpr T _bitblend(T src0, T src1, T start, T len) noexcept
     constexpr T one = 1;
     const T msk = ((one << len) * (len < digits) - one) << start;
     return src0 ^ ((src0 ^ src1) & msk * (start < digits));
+}
+// -------------------------------------------------------------------------- //
+
+
+
+// ---------- IMPLEMENTATION DETAILS: INSTRUCTIONS: BIT EXCHANGE ------------ //
+// Exchanges/swaps bits of src0 by the ones of src1 where the mask is true
+template <class T>
+constexpr void _bitexch(T& src0, T& src1, T msk) noexcept
+{ 
+    src0 = src0 ^ static_cast<T>(src1 & msk);
+    src1 = src1 ^ static_cast<T>(src0 & msk);
+    src0 = src0 ^ static_cast<T>(src1 & msk);
+    return;
+}
+
+// Replaces len bits of src0 by the ones of src1 starting at start
+template <class T>
+constexpr void _bitexch(T& src0, T& src1, T start, T len) noexcept
+{
+    static_assert(binary_digits<T>::value, "");
+    constexpr T one = 1;
+    const T msk = ((one << len) - one) << start;
+    src0 = src0 ^ static_cast<T>(src1 & msk);
+    src1 = src1 ^ static_cast<T>(src0 & msk);
+    src0 = src0 ^ static_cast<T>(src1 & msk);
+    return;
+}
+
+// Replaces len bits of src0 by the ones of src1 starting at start0
+// in src0 and start1 in src1. 
+// len <= digits-max(start0, start1)
+template <class T>
+constexpr void _bitexch(T& src0, T& src1, T start0, T start1, T len) noexcept
+{
+    static_assert(binary_digits<T>::value, "");
+    constexpr T one = 1;
+    const T msk = ((one << len) - one);
+    if (start0 >= start1) {
+        src0 = src0 ^ (
+                static_cast<T>(src1 << (start0 - start1)) 
+                & 
+                static_cast<T>(msk << start0)
+        );
+        src1 = src1 ^ (
+                static_cast<T>(src0 >> (start0 - start1)) 
+                & 
+                static_cast<T>(msk << start1)
+        );
+        src0 = src0 ^ (
+                static_cast<T>(src1 << (start0 - start1)) 
+                & 
+                static_cast<T>(msk << start0)
+        );
+    } else {
+        src0 = src0 ^ (
+                static_cast<T>(src1 >> (start1 - start0)) 
+                & 
+                static_cast<T>(msk << start0)
+        );
+        src1 = src1 ^ (
+                static_cast<T>(src0 << (start1 - start0)) 
+                & 
+                static_cast<T>(msk << start1)
+        );
+        src0 = src0 ^ (
+                static_cast<T>(src1 >> (start1 - start0)) 
+                & 
+                static_cast<T>(msk << start0)
+        );
+    }
+    return;
 }
 // -------------------------------------------------------------------------- //
 
