@@ -49,8 +49,7 @@ constexpr bit_iterator<ForwardIt> max_element(bit_iterator<ForwardIt> first,
 
     ForwardIt word_cursor = cursor.base();
 
-    while (!(last.base() == word_cursor) || 
-        _is_one_past_last_bit(last, word_cursor)) {
+    while (word_cursor != last.base()) {
         word_type cur_word = *word_cursor;
         if (cur_word > 0) {
             std::size_t cur_set_bit_position = _tzcnt(cur_word);
