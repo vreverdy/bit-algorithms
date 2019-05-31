@@ -32,8 +32,6 @@ TEMPLATE_TEST_CASE("replace: handles single word cases", "[replace]",
   TestType t = 0;
   TestType all_ones = bit::_all_ones();
 
-  std::cout << "l38 test..." << std::endl;
-
   bit::bit_iterator<TestType*> beg(&t, 0);
   bit::bit_iterator<TestType*> end(&t + 1, 0);
   bit::replace(beg, end, bit::bit0, bit::bit1);
@@ -81,15 +79,32 @@ TEMPLATE_PRODUCT_TEST_CASE("replace: handles multi word cases",
     bit_iterator third(std::next(cont.begin(), 2));
     bit_iterator last(cont.end());
 
-    std::cout << __PRETTY_FUNCTION__ << std::endl;
-
-    std::cout << "about to replace" << std::endl;
-
     bit::replace(first, last, bit::bit0, bit::bit1);
 
-    std::cout << "finished replacement" << std::endl;
+    auto word_iter = cont.begin();
+    REQUIRE(*word_iter == all_ones);
+    REQUIRE(*std::next(word_iter) == all_ones); 
+    REQUIRE(*std::next(word_iter, 2) == all_ones);
 
-    REQUIRE(cont.front() == all_ones);
+    cont = {all_ones, all_ones, all_ones};
+    bit::replace(first, last, bit::bit1, bit::bit0);
+    REQUIRE(*word_iter == 0);
+    REQUIRE(*std::next(word_iter) == 0);
+    REQUIRE(*std::next(word_iter, 2) == 0);
+
+    constexpr std::size_t num_digits = bit::binary_digits<word_type>::value;
+    bit_iterator half_first = std::next(first, num_digits / 2);
+    bit_iterator half_second = std::next(second, num_digits / 2);
+
+    bit::replace(half_first, half_second, bit::bit0, bit::bit1);
+    REQUIRE(*word_iter == static_cast<word_type>(all_ones << (num_digits / 2))); 
+    REQUIRE(*std::next(word_iter) == static_cast<word_type>(all_ones >> (num_digits / 2)));
+
+    cont = {0, 0, 0};
+    bit::replace(half_second, third, bit::bit0, bit::bit1);
+    REQUIRE(*word_iter == 0);
+    REQUIRE(*std::next(word_iter) == static_cast<word_type>(all_ones << (num_digits / 2)));
+    REQUIRE(*std::next(word_iter, 2) == 0);
 }
 
 // -------------------------------------------------------------------------- //
