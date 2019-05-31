@@ -39,5 +39,6 @@
 #include "search.hpp"
 #include "max_element.hpp"
 #include "padded_read.hpp"
+#include "replace.hpp"
 // Third party libraries
 // ========================================================================== //
