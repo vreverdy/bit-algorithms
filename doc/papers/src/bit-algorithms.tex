@@ -148,6 +148,16 @@ If we arrive at a final, partial word, we again take a partial read of the bits 
 
 If we have scanned the entire range and no set bits were found, we simply return \texttt{first}.
 
+\subsubsection{\texttt{replace}}
+\paragraph{Description}
+Replaces 0s with 1s or vice versa in a range \texttt{[first, last)}.
+
+\paragraph{Implementation}
+Implementation follows a typical sequential processing of words in the range. First, the word pointed to by \texttt{first} is processed. Next, any full intermediary words within \texttt{[first, last)} are processed. Finally, if there is a remaining partial word bounded by \texttt{last}, it is handled.
+
+For full words, replacement is trivial. If we are replacing 0s with 1s, we simply set each word equal to -1. If we are replacing 1s with 0s, we set each word equal to 0. Partial words are slightly more complicated. For some processed partial word starting at bit index $i$ and ending at index $j$, we create a mask where bits are unset between $i$ and $j$ and set outside of the range. If we are replacing 0s with 1s, we do a bitwise or between the full word being processed and the mask. If we are replacing 1s with 0s, we do a bitwise and between the full word being processed and the XOR of the mask. This replaces bits within the bounds of the range while not modifying any bits outside the range.
+
+
 \subsection{Modifying Algorithms}
 \label{subsec:modifyingAlgs}
 
@@ -257,4 +267,5 @@ $$N=\floor*{\frac{n}{|\texttt{word\_type}|}}$$ $$n'=n-N*|\texttt{word\_type}|$$
 % ---------------------------------------------------------------------------- %
 \end{document}
 % ============================================================================ %
+
 
