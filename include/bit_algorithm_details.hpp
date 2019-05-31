@@ -150,9 +150,9 @@ bool _is_aligned_lsb(bit_iterator<It> iter) {
 }
 
 // checks that maybe_end is one position past the last bit of base
-template <class NotIOIterator>
-bool _is_one_past_last_bit(bit_iterator<NotIOIterator> maybe_end, 
-    NotIOIterator base) {
+template <class ForwardIt>
+bool _is_one_past_last_bit(bit_iterator<ForwardIt> maybe_end, 
+    ForwardIt base) {
     return maybe_end.position() == 0 && std::next(base) == maybe_end.base(); 
 }
 
