@@ -17,6 +17,7 @@
 #include <forward_list>
 // Project sources
 #include "bit_algorithm_details.hpp"
+#include "bit_details.hpp"
 #include "test_utils.hpp"
 #include "input_container.hpp"
 #include "input_iterator.hpp"
