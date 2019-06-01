@@ -17,8 +17,11 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
 
-// TODO
+
+
+// Status: will not implement?
 template <class InputIt, class OutputIt, class T>
 bit_iterator<OutputIt> exclusive_scan(bit_iterator<InputIt> first,
     bit_iterator<InputIt> last, bit_iterator<OutputIt> d_first, T init) {
@@ -26,7 +29,7 @@ bit_iterator<OutputIt> exclusive_scan(bit_iterator<InputIt> first,
     return d_first;
 }
 
-// TODO
+// Status: will not implement?
 template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2, class T>
 bit_iterator<ForwardIt2> exclusive_scan(ExecutionPolicy&& policy,
     bit_iterator<ForwardIt1> first, bit_iterator<ForwardIt1> last,
@@ -35,7 +38,7 @@ bit_iterator<ForwardIt2> exclusive_scan(ExecutionPolicy&& policy,
     return d_first;
 }
 
-// TODO
+// Status: on hold
 template <class InputIt, class OutputIt, class T, class BinaryOperation>
 bit_iterator<OutputIt> exclusive_scan(bit_iterator<InputIt> first,
     bit_iterator<InputIt> last, bit_iterator<OutputIt> d_first, T init,
@@ -44,7 +47,7 @@ bit_iterator<OutputIt> exclusive_scan(bit_iterator<InputIt> first,
     return d_first;
 }
 
-// TODO
+// Status: on hold
 template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2, class T,
     class BinaryOperation> bit_iterator<ForwardIt2> exclusive_scan(
     ExecutionPolicy&& policy, bit_iterator<ForwardIt1> first,

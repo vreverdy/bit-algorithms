@@ -23,6 +23,7 @@ namespace bit {
 
 
 
+// Status: complete
 template <class InputIt, class Size, class UnaryFunction>
 constexpr bit_iterator<InputIt> for_each_n(bit_iterator<InputIt> first,
     Size n, UnaryFunction f) {
@@ -30,6 +31,7 @@ constexpr bit_iterator<InputIt> for_each_n(bit_iterator<InputIt> first,
     //return std::for_each_n(first, n, f);
 }
 
+// Status: complete
 template <class ExecutionPolicy, class ForwardIt, class Size, 
     class UnaryFunction2> bit_iterator<ForwardIt> for_each_n (
     ExecutionPolicy&& policy, bit_iterator<ForwardIt> first, Size n,

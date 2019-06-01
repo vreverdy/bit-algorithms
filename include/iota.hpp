@@ -17,8 +17,11 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
 
-// TODO
+
+
+// Status: to do
 template <class ForwardIt, class T>
 void iota(bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last, T value) {
     (first, last, value);

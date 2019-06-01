@@ -1,10 +1,10 @@
 // ============================== MAX ELEMENT ============================== //
-// Project: The Experimental Bit Algorithms Library
-// Name: max_element.hpp
-// Description: bit_iterator overloads for std::max_element
-// Creator: Vincent Reverdy
-// Contributor(s): 
-// License: BSD 3-Clause License
+// Project:        The Experimental Bit Algorithms Library
+// Name:           max_element.hpp
+// Description:    bit_iterator overloads for std::max_element
+// Creator:        Vincent Reverdy 
+// Contributor(s): Collin Gress [2019] 
+// License:        BSD 3-Clause License
 // ========================================================================== //
 #ifndef _MAX_ELEMENT_HPP_INCLUDED
 #define _MAX_ELEMENT_HPP_INCLUDED
@@ -17,16 +17,66 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
 
-// TODO
+
+
+// Status: complete
 template <class ForwardIt>
 constexpr bit_iterator<ForwardIt> max_element(bit_iterator<ForwardIt> first,
     bit_iterator<ForwardIt> last) {
-    (last);
+
+    using word_type = typename bit_iterator<ForwardIt>::word_type;
+    constexpr std::size_t num_digits = binary_digits<word_type>::value;
+
+    bit_iterator<ForwardIt> cursor = first;
+
+    // handle misaligned first word. for example ^00100^101
+    if (!_is_aligned_lsb(cursor)) {
+
+        // if 0 > 1 (version with comparators) we'll need to do this differently
+        // maybe use _padded_read?
+        word_type shifted_first_word = _shift_towards_lsb(*(cursor.base()), 
+            cursor.position());
+
+        if (shifted_first_word > 0) {
+            std::size_t first_set_bit_position = _tzcnt(shifted_first_word);
+            return cursor + first_set_bit_position;
+        } 
+
+        cursor = bit_iterator(std::next(cursor.base()));
+    }
+
+    ForwardIt word_cursor = cursor.base();
+
+    while (word_cursor != last.base()) {
+        word_type cur_word = *word_cursor;
+        if (cur_word > 0) {
+            std::size_t cur_set_bit_position = _tzcnt(cur_word);
+            return bit_iterator(word_cursor, cur_set_bit_position);
+        } 
+        ++word_cursor;
+    }
+
+    cursor = bit_iterator(word_cursor);
+    if (cursor == last) {
+        return first;
+    }
+
+    // final, incomplete word
+    // if 0 > 1 (version with comparators) we'll need to do this differently
+    word_type shifted_last_word = _shift_towards_msb(*(cursor.base()),
+        num_digits - last.position()); 
+
+    if (shifted_last_word > 0) {
+        word_type last_set_bit_position = _tzcnt(shifted_last_word);
+        return cursor + (last_set_bit_position - (num_digits - last.position()));
+    } 
+
     return first;
 }
 
-// TODO
+// Status: to do 
 template <class ExecutionPolicy, class ForwardIt>
 bit_iterator<ForwardIt> max_element(ExecutionPolicy&& policy,
     bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last) {
@@ -34,7 +84,7 @@ bit_iterator<ForwardIt> max_element(ExecutionPolicy&& policy,
     return first;
 }
 
-// TODO
+// Status: on hold
 template <class ForwardIt, class Compare>
 constexpr bit_iterator<ForwardIt> max_element(bit_iterator<ForwardIt> first,
     bit_iterator<ForwardIt> last, Compare comp) {
@@ -42,7 +92,7 @@ constexpr bit_iterator<ForwardIt> max_element(bit_iterator<ForwardIt> first,
     return first;
 }
 
-// TODO
+// Status: on hold
 template <class ExecutionPolicy, class ForwardIt, class Compare>
 bit_iterator<ForwardIt> max_element(ExecutionPolicy&& policy, 
     bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last, Compare comp) {

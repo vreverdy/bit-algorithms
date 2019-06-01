@@ -132,6 +132,119 @@ ForwardIt word_shift_right(ForwardIt first,
     std::fill(first, it, 0); 
     return it;
 }
+
+// returns a word consisting of all one bits 
+constexpr auto _all_ones() {
+    return -1;
+} 
+
+// returns a word consisting of all zero bits
+constexpr auto _all_zeros() {
+    return 0;
+}
+
+// checks that the passed iterator points to the first bit of a word
+template <class It>
+bool _is_aligned_lsb(bit_iterator<It> iter) {
+    return iter.position() == 0;
+}
+
+// checks that maybe_end is one position past the last bit of base
+template <class ForwardIt>
+bool _is_one_past_last_bit(bit_iterator<ForwardIt> maybe_end, 
+    ForwardIt base) {
+    return maybe_end.position() == 0 && std::next(base) == maybe_end.base(); 
+}
+
+// checks that two bit iterators point to the same word
+template <class It>
+constexpr bool _in_same_word(bit_iterator<It> lhs, bit_iterator<It> rhs) {
+    return lhs.base() == rhs.base();
+}
+
+// simple alias for right shift
+template <class WordType>
+WordType _shift_towards_lsb(WordType word, std::size_t n) {
+    return word >> n; 
+} 
+
+// simple alias for left shift
+template <class WordType>
+WordType _shift_towards_msb(WordType word, std::size_t n) {
+    return word << n;
+}
+
+/* Used to read partial/full words and pad any missing digits. Will not
+ * read outside of the word pointed to by the first iterator (see case 4) 
+ *
+ * Case 0: 01011101
+ *        L       F
+ * Case 1: 01011101 -> padded with 0s -> 00001101
+ *            L   F
+ * Case 2: 01011101 -> padded with 1s -> 01011111 
+ *        L    F 
+ * Case 3: 01011101 -> padded with 0s -> 00011100
+ *           L  F
+ * Case 4: 01011101 11111111 -> treated as 01011101
+ *           F           L                L  F
+ *
+ * Note: word is read from [first, last), meaning the element pointed
+ * to by last is not included in the read. if first == last, behavior
+ * is undefined
+ */
+template <class It>
+typename bit_iterator<It>::word_type _padded_read(bit_iterator<It> first, 
+    bit_iterator<It> last, const bit::bit_value bv) {
+
+    using word_type = typename bit_iterator<It>::word_type;
+
+    constexpr std::size_t num_digits = binary_digits<word_type>::value;
+    const std::size_t first_position = first.position();
+    const std::size_t last_position = last.position();
+    const word_type read = *(first.base());
+    constexpr word_type all_ones = _all_ones();
+
+    word_type mask;
+
+    if (_is_aligned_lsb(first)) {
+        if (_in_same_word(first, last)) {
+            // Case 1
+            if (bv == bit0) {
+                mask = _shift_towards_lsb(all_ones, num_digits - last_position);
+                return read & mask;
+            } else {
+                mask = _shift_towards_msb(all_ones, last_position); 
+                return read | mask;
+            }
+        } else {
+            // Case 0
+            return read;
+        }
+    } else {
+        if (!_in_same_word(first, last)) {
+            // Case 2
+            if (bv == bit0) {
+                mask = _shift_towards_msb(all_ones, first_position); 
+                return read & mask;
+            } else {
+                mask = _shift_towards_lsb(all_ones, num_digits - first_position); 
+                return read | mask;
+            }
+        } else {
+            // Case 3
+            if (bv == bit0) {
+                mask = _shift_towards_msb(all_ones, first_position); 
+                mask &= _shift_towards_lsb(all_ones, num_digits - last_position);
+                return read & mask;
+            } else {
+                mask = _shift_towards_lsb(all_ones, num_digits - first_position);
+                mask |= _shift_towards_msb(all_ones, last_position);
+                return read | mask;
+            }
+        } 
+    }
+}
+
 // -------------------------------------------------------------------------- //
 
 

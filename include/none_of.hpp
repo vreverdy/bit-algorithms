@@ -18,12 +18,14 @@
 
 namespace bit {
 
+// Status: on hold (UnaryPredicate)
 template <class InputIt, class UnaryPredicate>
 constexpr bool none_of(bit_iterator<InputIt> first, bit_iterator<InputIt> last,
     UnaryPredicate p) {
     return std::none_of(first, last, p);
 }
 
+// Status: on hold (UnaryPredicate)
 template <class ExecutionPolicy, class ForwardIt, class UnaryPredicate>
 bool none_of(ExecutionPolicy&& policy, ForwardIt first, ForwardIt last,
     UnaryPredicate p) {

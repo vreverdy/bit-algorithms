@@ -17,8 +17,11 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
 
-// TODO
+
+
+// Status: to do  
 template <class ForwardIt, class T>
 constexpr bit_iterator<ForwardIt> lower_bound(bit_iterator<ForwardIt> first,
     bit_iterator<ForwardIt> last, const T& value) {
@@ -26,7 +29,7 @@ constexpr bit_iterator<ForwardIt> lower_bound(bit_iterator<ForwardIt> first,
     return first;
 }
 
-// TODO
+// Status: on hold 
 template <class ForwardIt, class T, class Compare>
 constexpr bit_iterator<ForwardIt> lower_bound(bit_iterator<ForwardIt> first,
     bit_iterator<ForwardIt> last, const T& value, Compare comp) {
