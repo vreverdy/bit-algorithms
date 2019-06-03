@@ -16,17 +16,20 @@
 #include <list>
 #include <forward_list>
 // Project sources
-#include "all_of.hpp"
-#include "any_of.hpp"
 #include "bit_algorithm_details.hpp"
 #include "bit_details.hpp"
+#include "test_utils.hpp"
+#include "input_container.hpp"
+#include "input_iterator.hpp"
+// Test sources
+#include "all_of.hpp"
+#include "any_of.hpp"
 #include "for_each.hpp"
 #include "for_each_n.hpp"
 #include "find.hpp"
 #include "equal.hpp"
 #include "is_heap.hpp"
 #include "is_sorted.hpp"
-#include "test_utils.hpp"
 #include "count.hpp"
 #include "copy.hpp"
 #include "shift.hpp"
@@ -35,5 +38,8 @@
 #include "none_of.hpp"
 #include "sample.hpp"
 #include "search.hpp"
+#include "max_element.hpp"
+#include "padded_read.hpp"
+#include "replace.hpp"
 // Third party libraries
 // ========================================================================== //

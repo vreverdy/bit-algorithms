@@ -17,6 +17,27 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
+
+
+
+// Status: to do
+template <class InputIt, class ForwardIt>
+bit_iterator<ForwardIt> uninitialized_move(bit_iterator<InputIt> first,
+    bit_iterator<InputIt> last, bit_iterator<ForwardIt> d_first) {
+    (first, last);
+    return d_first;
+}
+
+// Status: to do
+template <class ExecutionPolicy, class InputIt, class ForwardIt>
+bit_iterator<ForwardIt> uninitialized_move(ExecutionPolicy&& policy,
+    bit_iterator<InputIt> first, bit_iterator<InputIt> last,
+    bit_iterator<ForwardIt> d_first) {
+    (policy, first, last);
+    return d_first;
+}
+
 
 // ========================================================================== //
 } // namespace bit

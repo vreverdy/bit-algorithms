@@ -17,8 +17,11 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
 
-// TODO
+
+
+// Status: needs revisions 
 template <class ForwardIt>
 constexpr bool is_sorted(bit_iterator<ForwardIt> first, 
     bit_iterator<ForwardIt> last) {
@@ -57,7 +60,7 @@ constexpr bool is_sorted(bit_iterator<ForwardIt> first,
     return true;
 }
 
-// TODO
+// Status: to do 
 template <class ExecutionPolicy, class ForwardIt>
 bool is_sorted(ExecutionPolicy&& policy, bit_iterator<ForwardIt> first,
     bit_iterator<ForwardIt> last) {
@@ -65,7 +68,7 @@ bool is_sorted(ExecutionPolicy&& policy, bit_iterator<ForwardIt> first,
     return true;
 }
 
-// TODO
+// Status: on hold
 template <class ForwardIt, class Compare>
 constexpr bool is_sorted(bit_iterator<ForwardIt> first,
     bit_iterator<ForwardIt> last, Compare comp) {
@@ -73,7 +76,7 @@ constexpr bool is_sorted(bit_iterator<ForwardIt> first,
     return true;
 }
 
-// TODO
+// Status: on hold
 template <class ExecutionPolicy, class ForwardIt, class Compare>
 bool is_sorted(ExecutionPolicy&& policy, bit_iterator<ForwardIt> first,
     bit_iterator<ForwardIt> last, Compare comp) {

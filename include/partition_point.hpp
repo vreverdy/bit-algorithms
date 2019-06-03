@@ -17,6 +17,19 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
+
+
+
+// Status: on hold
+template <class ForwardIt, class UnaryPredicate>
+constexpr bit_iterator<ForwardIt> partition_point(bit_iterator<ForwardIt> first,
+    bit_iterator<ForwardIt> last, UnaryPredicate p) {
+    (last, p);
+    return first;
+}
+
+
 
 // ========================================================================== //
 } // namespace bit

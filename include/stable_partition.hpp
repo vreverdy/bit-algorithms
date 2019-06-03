@@ -17,6 +17,25 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
+
+
+
+// Status: on hold
+template <class BidirIt, class UnaryPredicate>
+bit_iterator<BidirIt> stable_partition(bit_iterator<BidirIt> first,
+    bit_iterator<BidirIt> last, UnaryPredicate p) {
+    (last, p);
+    return first;
+}
+
+// Status: on hold
+template <class ExecutionPolicy, class BidirIt, class UnaryPredicate>
+bit_iterator<BidirIt> stable_partition(ExecutionPolicy&& policy,
+    bit_iterator<BidirIt> first, bit_iterator<BidirIt> last, UnaryPredicate p) {
+    (policy, first, last, p); 
+    return first;
+}
 
 // ========================================================================== //
 } // namespace bit

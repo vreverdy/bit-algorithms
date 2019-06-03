@@ -133,6 +133,31 @@ Vincent Reverdy%
 \paragraph{Notation}
 
 
+\subsection{Non-modifying Algorithms}
+\label{subsec:nonmodifyingAlgs}
+\subsubsection{\texttt{max\_element}}
+\paragraph{Description}
+Locates the largest element in a range \texttt{[first, last)} and returns an iterator to the element.
+
+\paragraph{Implementation}
+Implementation is somewhat trivial. If \texttt{first} is LSB aligned (meaning it points to the 0th bit of a word) we perform a partial read from \text{first} to the closer of the MSB and the \text{last} iterator. Missing bits from the read are padded with 0 bits in the versions of the algorithm where a custom comparator is not passed. Next, we check the read word to see if it is greater than zero. If it is greater than zero, we know there is a set bit somewhere within the word. We can find the exact position of the set bit using \texttt{\_tzcnt} and return this position as an iterator. If \texttt{first} is not equal to \texttt{last}, we advance first to the 0th bit of the next word.
+
+While \texttt{first} is not equal to \texttt{last} and \texttt{last} is not in the same word as \texttt{first} (marking a final and partial word), we read whole words as normal and check for set bits as previously described.
+
+If we arrive at a final, partial word, we again take a partial read of the bits remaining in the range, padding any missing bits with 0. We check for set bits as normal and return an iterator if a set bit was found.
+
+If we have scanned the entire range and no set bits were found, we simply return \texttt{first}.
+
+\subsubsection{\texttt{replace}}
+\paragraph{Description}
+Replaces 0s with 1s or vice versa in a range \texttt{[first, last)}.
+
+\paragraph{Implementation}
+Implementation follows a typical sequential processing of words in the range. First, the word pointed to by \texttt{first} is processed. Next, any full intermediary words within \texttt{[first, last)} are processed. Finally, if there is a remaining partial word bounded by \texttt{last}, it is handled.
+
+For full words, replacement is trivial. If we are replacing 0s with 1s, we simply set each word equal to -1. If we are replacing 1s with 0s, we set each word equal to 0. Partial words are slightly more complicated. For some processed partial word starting at bit index $i$ and ending at index $j$, we create a mask where bits are unset between $i$ and $j$ and set outside of the range. If we are replacing 0s with 1s, we do a bitwise or between the full word being processed and the mask. If we are replacing 1s with 0s, we do a bitwise and between the full word being processed and the XOR of the mask. This replaces bits within the bounds of the range while not modifying any bits outside the range.
+
+
 \subsection{Modifying Algorithms}
 \label{subsec:modifyingAlgs}
 
@@ -242,3 +267,5 @@ $$N=\floor*{\frac{n}{|\texttt{word\_type}|}}$$ $$n'=n-N*|\texttt{word\_type}|$$
 % ---------------------------------------------------------------------------- %
 \end{document}
 % ============================================================================ %
+
+

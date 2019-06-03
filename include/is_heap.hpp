@@ -17,7 +17,11 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
 
+
+
+// Status: needs revisions
 template <class RandomIt>
 constexpr bool is_heap(bit_iterator<RandomIt> first, bit_iterator<RandomIt> last) {
     if (first.base() == last.base()) {
@@ -29,22 +33,28 @@ constexpr bool is_heap(bit_iterator<RandomIt> first, bit_iterator<RandomIt> last
     return std::is_heap(first, last);
 }
 
+// Status: to do
 template <class ExecutionPolicy, class RandomIt>
 bool is_heap(ExecutionPolicy&& policy, bit_iterator<RandomIt> first,
     bit_iterator<RandomIt> last) {
-    return std::is_heap(std::forward<ExecutionPolicy>(policy), first, last);
+    (policy, first, last);
+    return true;
 }
 
+// Status: on hold
 template <class RandomIt, class Compare>
 constexpr bool is_heap(bit_iterator<RandomIt> first, bit_iterator<RandomIt> last,
     Compare comp) {
-    return std::is_heap(first, last, comp);
+    (first, last, comp);
+    return true;
 }
 
+// Status: on hold
 template <class ExecutionPolicy, class RandomIt, class Compare>
 bool is_heap(ExecutionPolicy&& policy, bit_iterator<RandomIt> first,
     bit_iterator<RandomIt> last, Compare comp) {
-    return std::is_heap(std::forward<ExecutionPolicy>(policy), first, last, comp);
+    (policy, first, last, comp);
+    return true;
 }
 
 // ========================================================================== //

@@ -20,14 +20,16 @@
 // Project sources
 // Third-party libraries
 // Miscellaneous
-
 namespace bit {
+// ========================================================================== //
 
-// TODO
+
+
+// Status: to do 
 template <class PopulationIterator, class SampleIterator, class Distance, 
-         class URBG> SampleIterator sample(bit_iterator<PopulationIterator> first, 
-         bit_iterator<PopulationIterator> last, SampleIterator out, Distance n,
-         URBG&& g) {
+    class URBG> SampleIterator sample(bit_iterator<PopulationIterator> first, 
+    bit_iterator<PopulationIterator> last, SampleIterator out, Distance n,
+    URBG&& g) {
     (first, last, out, n, g);
     return out;
 }

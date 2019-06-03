@@ -17,8 +17,11 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
 
-// TODO
+
+
+// Status: to do
 template <class RandomIt>
 constexpr bit_iterator<RandomIt> is_heap_until(bit_iterator<RandomIt> first,
     bit_iterator<RandomIt> last) {
@@ -26,7 +29,7 @@ constexpr bit_iterator<RandomIt> is_heap_until(bit_iterator<RandomIt> first,
     return first;
 }
 
-// TODO
+// Status: to do 
 template <class ExecutionPolicy, class RandomIt>
 bit_iterator<RandomIt> is_heap_until(ExecutionPolicy&& policy,
     bit_iterator<RandomIt> first, bit_iterator<RandomIt> last) {
@@ -34,7 +37,7 @@ bit_iterator<RandomIt> is_heap_until(ExecutionPolicy&& policy,
     return first;
 }
 
-// TODO
+// Status: on hold
 template <class RandomIt, class Compare>
 constexpr bit_iterator<RandomIt> is_heap_until(bit_iterator<RandomIt> first,
     bit_iterator<RandomIt> last, Compare comp) {
@@ -42,7 +45,7 @@ constexpr bit_iterator<RandomIt> is_heap_until(bit_iterator<RandomIt> first,
     return first;
 }
 
-// TODO
+// Status: on hold
 template <class ExecutionPolicy, class RandomIt, class Compare>
 bit_iterator<RandomIt> is_heap_until(ExecutionPolicy&& policy,
     bit_iterator<RandomIt> first, bit_iterator<RandomIt> last, Compare comp) {

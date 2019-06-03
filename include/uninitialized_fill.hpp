@@ -17,6 +17,24 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
+
+
+
+// Status: to do
+template <class ForwardIt, class T>
+void uninitialized_fill(bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last,
+    bit_value value) {
+    (first, last, value);    
+}
+
+// Status: to do
+template <class ExecutionPolicy, class ForwardIt, class T>
+void uninitialized_fill(ExecutionPolicy&& policy, bit_iterator<ForwardIt> first,
+    bit_iterator<ForwardIt> last, bit_value value) {
+    (policy, first, last, value);
+}
+
 
 // ========================================================================== //
 } // namespace bit

@@ -17,6 +17,22 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
+
+
+
+// Status: to do
+template <class RandomIt>
+constexpr void pop_heap(bit_iterator<RandomIt> first, bit_iterator<RandomIt> last) {
+    (first, last);
+}
+
+// Status: on hold
+template <class RandomIt, class Compare>
+constexpr void pop_heap(bit_iterator<RandomIt> first, bit_iterator<RandomIt> last,
+    Compare comp) {
+    (first, last, comp);
+}
 
 // ========================================================================== //
 } // namespace bit

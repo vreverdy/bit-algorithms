@@ -15,8 +15,27 @@
 // Project sources
 // Third-party libraries
 // Miscellaneous
-
 namespace bit {
+// ========================================================================== //
+
+
+
+// Status: to do
+template <class BidirIt, class OutputIt>
+bit_iterator<OutputIt> reverse_copy(bit_iterator<BidirIt> first,
+    bit_iterator<BidirIt> last, bit_iterator<OutputIt> d_first) {
+    (first, last); 
+    return d_first;
+}
+
+// Status: to do
+template <class ExecutionPolicy, class BidirIt, class ForwardIt>
+bit_iterator<ForwardIt> reverse_copy(ExecutionPolicy&& policy,
+    bit_iterator<BidirIt> first, bit_iterator<BidirIt> last,
+    bit_iterator<ForwardIt> d_first) {
+    (policy, first, last);
+    return d_first;
+}
 
 // ========================================================================== //
 } // namespace bit

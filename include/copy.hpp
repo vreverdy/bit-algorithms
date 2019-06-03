@@ -24,8 +24,10 @@ namespace bit {
 
 
 // ---------------------------- Copy Algorithms ----------------------------- //
+
+// Status: complete
 template <class InputIt, class OutputIt>
-bit_iterator<OutputIt> copy(bit_iterator<InputIt> first,
+constexpr bit_iterator<OutputIt> copy(bit_iterator<InputIt> first,
                             bit_iterator<InputIt> last,
                             bit_iterator<OutputIt> d_first
 )
@@ -80,6 +82,35 @@ bit_iterator<OutputIt> copy(bit_iterator<InputIt> first,
     }
     return bit::bit_iterator<OutputIt>(it, total_bits_to_copy);
 }
+
+// Status: on hold
+template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2>
+bit_iterator<ForwardIt2> copy(ExecutionPolicy&& policy, 
+    bit_iterator<ForwardIt1> first, bit_iterator<ForwardIt1> last,
+    bit_iterator<ForwardIt2> d_first) {
+    (policy, first, last);    
+    return d_first;
+}
+
+// Status: on hold
+template <class InputIt, class OutputIt, class UnaryPredicate>
+constexpr bit_iterator<OutputIt> copy_if(bit_iterator<InputIt> first,
+    bit_iterator<InputIt> last, bit_iterator<OutputIt> d_first,
+    UnaryPredicate pred) {
+    (first, last, pred);
+    return d_first;
+}
+
+// Status: on hold
+template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2,
+    class UnaryPredicate> bit_iterator<ForwardIt2> copy_if(ExecutionPolicy&& policy,
+    bit_iterator<ForwardIt1> first, bit_iterator<ForwardIt1> last, 
+    bit_iterator<ForwardIt2> d_first, UnaryPredicate pred) {
+    (policy, first, last, pred);
+    return d_first; 
+}
+
+
 // -------------------------------------------------------------------------- //
 
 

@@ -17,6 +17,27 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
+
+
+
+// Status: to do
+template <class InputIt, class Size, class ForwardIt>
+std::pair<bit_iterator<InputIt>, bit_iterator<ForwardIt>> uninitialized_move_n(
+    bit_iterator<InputIt> first, Size count, bit_iterator<ForwardIt> d_first) {
+    (count);
+    return std::make_pair(first, d_first);
+}
+
+// Status: to do
+template <class ExecutionPolicy, class InputIt, class Size, class ForwardIt>
+std::pair<bit_iterator<InputIt>, bit_iterator<ForwardIt>> uninitialized_move_n(
+    ExecutionPolicy&& policy, bit_iterator<InputIt> first, Size count,
+    bit_iterator<ForwardIt> d_first) {
+    (policy, count);
+    return std::make_pair(first, d_first);
+}
+
 
 // ========================================================================== //
 } // namespace bit

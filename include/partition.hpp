@@ -15,8 +15,27 @@
 // Project sources
 // Third-party libraries
 // Miscellaneous
-
 namespace bit {
+// ========================================================================== //
+
+
+
+// Status: on hold
+template <class ForwardIt, class UnaryPredicate>
+constexpr bit_iterator<ForwardIt> partiion(bit_iterator<ForwardIt> first,
+    bit_iterator<ForwardIt> last, UnaryPredicate p) {
+    (last, p);
+    return first;
+}
+
+// Status: on hold 
+template <class ExecutionPolicy, class ForwardIt, class UnaryPredicate>
+bit_iterator<ForwardIt> partition(ExecutionPolicy&& policy,
+    bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last,
+    UnaryPredicate p) {
+    (policy, last, p);
+    return first;
+}
 
 // ========================================================================== //
 } // namespace bit

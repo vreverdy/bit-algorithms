@@ -17,8 +17,11 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
 
-// TODO
+
+
+// Status: to do 
 template <class InputIt1, class InputIt2>
 constexpr bool lexicographical_compare(bit_iterator<InputIt1> first1,
     bit_iterator<InputIt1> last1, bit_iterator<InputIt2> first2,
@@ -27,7 +30,7 @@ constexpr bool lexicographical_compare(bit_iterator<InputIt1> first1,
     return true;
 }
 
-// TODO
+// Status: to do 
 template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2>
 bool lexicographical_compare(ExecutionPolicy&& policy, 
     bit_iterator<ForwardIt1> first1, bit_iterator<ForwardIt1> last1,
@@ -36,7 +39,7 @@ bool lexicographical_compare(ExecutionPolicy&& policy,
     return true;
 }
 
-// TODO
+// Status: on hold 
 template <class InputIt1, class InputIt2, class Compare>
 constexpr bool lexicographical_compare(bit_iterator<InputIt1> first1,
     bit_iterator<InputIt1> last1, bit_iterator<InputIt2> first2,
@@ -45,7 +48,7 @@ constexpr bool lexicographical_compare(bit_iterator<InputIt1> first1,
     return true;
 } 
 
-// TODO
+// Status: on hold 
 template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2,
     class Compare> bool lexicographical_compare(ExecutionPolicy&& policy,
     bit_iterator<ForwardIt1> first1, bit_iterator<ForwardIt1> last1,

@@ -17,15 +17,18 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
 
-// TODO
+
+
+// Status: to do 
 template <class ForwardIt>
 constexpr std::pair<bit_iterator<ForwardIt>, bit_iterator<ForwardIt>>
 minmax_element(bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last) {
     return std::make_pair(first, last);
 }
 
-// TODO
+// Status: to do 
 template <class ExecutionPolicy, class ForwardIt>
 std::pair<bit_iterator<ForwardIt>, bit_iterator<ForwardIt>> minmax_element (
     ExecutionPolicy&& policy, bit_iterator<ForwardIt> first,
@@ -34,7 +37,7 @@ std::pair<bit_iterator<ForwardIt>, bit_iterator<ForwardIt>> minmax_element (
     return std::make_pair(first, last);
 }
 
-// TODO
+// Status: on hold 
 template <class ForwardIt, class Compare>
 constexpr std::pair<bit_iterator<ForwardIt>, bit_iterator<ForwardIt>>
     minmax_element(bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last,
@@ -43,7 +46,7 @@ constexpr std::pair<bit_iterator<ForwardIt>, bit_iterator<ForwardIt>>
     return std::make_pair(first, last);
 }
 
-// TODO
+// Status: to do 
 template <class ExecutionPolicy, class ForwardIt, class Compare>
 std::pair<bit_iterator<ForwardIt>, bit_iterator<ForwardIt>> minmax_element (
     ExecutionPolicy&& policy, bit_iterator<ForwardIt> first, 

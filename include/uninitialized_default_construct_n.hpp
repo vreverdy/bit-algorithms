@@ -17,6 +17,25 @@
 // Miscellaneous
 
 namespace bit {
+// ========================================================================== //
+
+
+
+// Status: to do
+template <class ForwardIt, class Size>
+bit_iterator<ForwardIt> uninitialized_default_construct_n(
+    bit_iterator<ForwardIt> first, Size n) {
+    (n);
+    return first;
+}
+
+// Status: to do
+template <class ExecutionPolicy, class ForwardIt, class Size>
+bit_iterator<ForwardIt> uninitialized_default_construct_n(ExecutionPolicy&& policy,
+    bit_iterator<ForwardIt> first, Size n) {
+    (policy, n);
+    return first;
+}
 
 // ========================================================================== //
 } // namespace bit
