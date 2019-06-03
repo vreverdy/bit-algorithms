@@ -13,13 +13,16 @@
 // ========================================================================== //
 
 
+
 // ============================== PREAMBLE ================================== //
 // C++ standard library
 // Project sources
+#include "../ext/bit/bit.hpp"
 // Third-party libraries
 // Miscellaneous
-
 namespace bit {
+// ========================================================================== //
+
 
 
 // -------------------------- Iterator Algorithms --------------------------- //
@@ -57,7 +60,7 @@ template <class T, class InputIt>
 T get_word(bit_iterator<InputIt> first, T len=binary_digits<T>::value)
 {
     using native_word_type = typename bit_iterator<InputIt>::word_type;
-    T native_digits = binary_digits<native_word_type>::value; 
+    constexpr T native_digits = binary_digits<native_word_type>::value; 
     constexpr T ret_digits = binary_digits<T>::value; 
     assert(ret_digits >= len);
     T offset = native_digits - first.position();
@@ -71,6 +74,7 @@ T get_word(bit_iterator<InputIt> first, T len=binary_digits<T>::value)
     InputIt it = std::next(first.base());
     len -= offset;
     // Fill up ret_word starting at bit [offset] using it
+    // TODO define a mask and use the _bitblend that takes in the extra mask
     while (len > native_digits) {
         ret_word = _bitblend(
                 ret_word,      
@@ -90,6 +94,136 @@ T get_word(bit_iterator<InputIt> first, T len=binary_digits<T>::value)
             len
     );
     return ret_word;
+}
+
+// Get next len bits beginning at start and store them in a word of type T
+// If we reach `last` before we get len bits, break and return the current word
+// bits_read will store the number of bits that we read.
+template <class T, class InputIt>
+T get_word(bit_iterator<InputIt> first, bit_iterator<InputIt> last,
+        T& bits_read, T len=binary_digits<T>::value
+        )
+{
+    using native_word_type = typename bit_iterator<InputIt>::word_type;
+    constexpr T native_digits = binary_digits<native_word_type>::value; 
+    constexpr T ret_digits = binary_digits<T>::value; 
+    assert(ret_digits >= len);
+    bits_read = native_digits - first.position();
+    T ret_word = *first.base() >> first.position();
+
+    // TODO vincent mentioned that we should aim for only 1 return function 
+    // per function. However I'm not sure how that can be accomplished here
+    // without suffering a minor performance loss
+   
+    // We have reached the last iterator
+    if (first.base() == last.base()) {
+        bits_read -= (native_digits - last.position());
+        return ret_word;
+    }
+    // We've already assigned enough bits
+    if (len <= bits_read) {
+        return ret_word;
+    } 
+
+    InputIt it = std::next(first.base());
+    len -= bits_read;
+    // Fill up ret_word starting at bit [bits_read] using it
+    // TODO define a mask and use the _bitblend that takes in the extra mask
+    while (len > native_digits && it != last.base()) {
+        ret_word = _bitblend(
+                ret_word,      
+                static_cast<T>(static_cast<T>(*it) << bits_read),   
+                bits_read,
+                native_digits
+        );
+        ++it;
+        bits_read += native_digits;
+        len -= native_digits;
+    }
+
+    // Assign remaining len bits of last word
+    if (it == last.base()) {
+        bits_read -= (native_digits - last.position());
+        ret_word = _bitblend(
+                ret_word,            
+                static_cast<T>(static_cast<T>(*it) << bits_read),   
+                bits_read,
+                last.position()
+        );
+    } else { 
+        ret_word = _bitblend(
+                ret_word,            
+                static_cast<T>(static_cast<T>(*it) << bits_read),   
+                bits_read,
+                len
+        );
+    }
+    return ret_word;
+}
+
+
+// Writes len bits from src beginning at dstIt
+template <class src_type, class OutputIt>
+void write_word(src_type src, bit_iterator<OutputIt> dst_bit_it, 
+        src_type len=binary_digits<src_type>::value
+        )
+{
+    using dst_type = typename bit_iterator<OutputIt>::word_type;
+    constexpr dst_type dst_digits = binary_digits<dst_type>::value; 
+    constexpr dst_type src_digits = binary_digits<src_type>::value; 
+
+    if constexpr (dst_digits >= src_digits) {
+        if (dst_bit_it.position() == 0 && len == dst_digits) {
+            *dst_bit_it.base() = src;
+        }
+        else {
+            *dst_bit_it.base() = _bitblend(
+                   *dst_bit_it.base(),
+                   src << dst_bit_it.position(),
+                   dst_bit_it.position(),
+                   std::min(
+                       dst_digits - dst_bit_it.position(), 
+                       len
+                   )
+            ); 
+            if (len > dst_digits - dst_bit_it.position()) {
+                OutputIt overflow_dst = std::next(dst_bit_it.base()); *overflow_dst = _bitblend(
+                        *overflow_dst,
+                        src >> (dst_digits - dst_bit_it.position()),
+                        (static_cast<dst_type>(1) << dst_bit_it.position()) - 1
+                    );
+            }
+        }
+    } else {
+        OutputIt it = dst_bit_it.base();
+        if (dst_bit_it.position() != 0) {
+            *it = _bitblend(
+                    *it,
+                    static_cast<dst_type>(src),
+                    static_cast<dst_type>(-1) << dst_bit_it.position()
+            );
+            len -= dst_digits - dst_bit_it.position();
+            // TODO would it be faster to jsut shift src every time it is
+            // passed as an argument and keep track of how much we need to
+            // shift?
+            src >>= dst_digits - dst_bit_it.position();
+            ++it;
+        }
+        while (len >= dst_digits) {
+            *it = static_cast<dst_type>(src);
+            src >>= dst_digits;
+            len -= dst_digits;
+            ++it;
+        }
+        if (len > 0 ) {
+            *it = _bitblend(
+                    *it,
+                    static_cast<dst_type>(src),
+                    (1 << dst_bit_it.position()) - 1
+            );
+        }
+    }
+    return;
 }
 
 
