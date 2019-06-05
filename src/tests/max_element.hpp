@@ -4,7 +4,7 @@
 // Description:     Tests for max_element function overloads for bits 
 // Creator:         Vincent Reverdy
 // Contributor(s):  Collin Gress [2019]
-// License: BSD 3-Clause License
+// License:         BSD 3-Clause License
 // ========================================================================== //
 #ifndef _MAX_ELEMENT_TESTS_HPP_INCLUDED
 #define _MAX_ELEMENT_TESTS_HPP_INCLUDED
