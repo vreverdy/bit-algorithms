@@ -326,10 +326,10 @@ constexpr T _bitblend(T src0, T src1, T start, T len) noexcept;
 // Bit exchange
 template <class T>
 constexpr void _bitexch(T& src0, T& src1, T msk) noexcept;
-template <class T>
-constexpr void _bitexch(T& src0, T& src1, T start, T len) noexcept;
-template <class T>
-constexpr void _bitexch(T& src0, T& src1, T start0, T start1, T len) noexcept;
+template <class T, class S>
+constexpr void _bitexch(T& src0, T& src1, S start, S len) noexcept;
+template <class T, class S>
+constexpr void _bitexch(T& src0, T& src1, S start0, S start1, S len) noexcept;
 
 // Bit compare
 template <class T>
@@ -775,8 +775,8 @@ constexpr void _bitexch(T& src0, T& src1, T msk) noexcept
 }
 
 // Replaces len bits of src0 by the ones of src1 starting at start
-template <class T>
-constexpr void _bitexch(T& src0, T& src1, T start, T len) noexcept
+template <class T, class S>
+constexpr void _bitexch(T& src0, T& src1, S start, S len) noexcept
 {
     static_assert(binary_digits<T>::value, "");
     constexpr T one = 1;
@@ -790,8 +790,8 @@ constexpr void _bitexch(T& src0, T& src1, T start, T len) noexcept
 // Replaces len bits of src0 by the ones of src1 starting at start0
 // in src0 and start1 in src1. 
 // len <= digits-max(start0, start1)
-template <class T>
-constexpr void _bitexch(T& src0, T& src1, T start0, T start1, T len) noexcept
+template <class T, class S>
+constexpr void _bitexch(T& src0, T& src1, S start0, S start1, S len) noexcept
 {
     static_assert(binary_digits<T>::value, "");
     constexpr T one = 1;
