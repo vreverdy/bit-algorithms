@@ -177,20 +177,22 @@ void write_word(src_type src, bit_iterator<OutputIt> dst_bit_it,
             *dst_bit_it.base() = src;
         }
         else {
-            *dst_bit_it.base() = _bitblend(
+            *dst_bit_it.base() = _bitblend<src_type>(
                    *dst_bit_it.base(),
                    src << dst_bit_it.position(),
                    dst_bit_it.position(),
-                   std::min(
+                   std::min<src_type>(
                        dst_digits - dst_bit_it.position(), 
                        len
                    )
             ); 
             if (len > dst_digits - dst_bit_it.position()) {
-                OutputIt overflow_dst = std::next(dst_bit_it.base()); *overflow_dst = _bitblend(
+                OutputIt overflow_dst = std::next(dst_bit_it.base()); 
+                *overflow_dst = _bitblend<src_type>(
                         *overflow_dst,
                         src >> (dst_digits - dst_bit_it.position()),
-                        (static_cast<dst_type>(1) << dst_bit_it.position()) - 1
+                        0,
+                        len - (dst_digits - dst_bit_it.position())
                     );
             }
         }
@@ -219,7 +221,7 @@ void write_word(src_type src, bit_iterator<OutputIt> dst_bit_it,
             *it = _bitblend(
                     *it,
                     static_cast<dst_type>(src),
-                    (1 << dst_bit_it.position()) - 1
+                    (1 << len) - 1
             );
         }
     }
