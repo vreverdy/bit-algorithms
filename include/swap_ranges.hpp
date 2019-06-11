@@ -22,7 +22,7 @@ namespace bit {
 // ========================================================================== //
 
 template< class ForwardIt1, class ForwardIt2 >
-bit_iterator<ForwardIt2> swap_ranges(
+constexpr bit_iterator<ForwardIt2> swap_ranges(
         bit_iterator<ForwardIt1> first1, 
         bit_iterator<ForwardIt1> last1,
         bit_iterator<ForwardIt2> first2) 
@@ -188,6 +188,16 @@ bit_iterator<ForwardIt2> swap_ranges(
             return bit_iterator(it2, first2.position());
         }
     }
+}
+
+
+// Status: to do
+template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2>
+bit_iterator<ForwardIt2> swap_ranges(ExecutionPolicy&& policy,
+    bit_iterator<ForwardIt1> first1, bit_iterator<ForwardIt1> last1,
+    bit_iterator<ForwardIt2> first2) {
+    (policy, first1, last1);
+    return first2;
 }
 
 // ========================================================================== //
