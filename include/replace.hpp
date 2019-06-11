@@ -41,7 +41,6 @@ constexpr void replace(bit_iterator<ForwardIt> first,
     word_type all_ones = _all_ones();
 
     if (!_is_aligned_lsb(cursor)) {
-        word_type first_word = *cursor.base();
         if (_in_same_word(cursor, last)) {
               // Case 2
               mask = _shift_towards_msb(all_ones, cursor.position());
