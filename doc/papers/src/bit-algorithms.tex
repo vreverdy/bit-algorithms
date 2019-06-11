@@ -157,6 +157,15 @@ Implementation follows a typical sequential processing of words in the range. Fi
 
 For full words, replacement is trivial. If we are replacing 0s with 1s, we simply set each word equal to -1. If we are replacing 1s with 0s, we set each word equal to 0. Partial words are slightly more complicated. For some processed partial word starting at bit index $i$ and ending at index $j$, we create a mask where bits are unset between $i$ and $j$ and set outside of the range. If we are replacing 0s with 1s, we do a bitwise or between the full word being processed and the mask. If we are replacing 1s with 0s, we do a bitwise and between the full word being processed and the XOR of the mask. This replaces bits within the bounds of the range while not modifying any bits outside the range.
 
+\subsubsection{\texttt{min\_element}}
+\paragraph{Description}
+Locates the smallest element in a range \texttt{[first, last)} and returns an iterator to the element.
+
+\paragraph{Implementation}
+Implementation follows a typical sequential processing of words in the range. First, the word pointed to by \texttt{first} is processed. Next, any full intermediary words within \texttt{[first, last)} are processed. Finally, if there is a remaining partial word bounded by \texttt{last}, it is handled.
+
+To locate 0's, we read words and pad any missing bits with 1s. We use a bitwise not to flip all of the bits so that we can use \texttt{\_tzcnt} (which counts the number of 0s from LSB to the first 1) to find the position of the first 0. We return an iterator to this position or \texttt{first} if no zero exists.
+
 
 \subsection{Modifying Algorithms}
 \label{subsec:modifyingAlgs}
@@ -267,5 +276,6 @@ $$N=\floor*{\frac{n}{|\texttt{word\_type}|}}$$ $$n'=n-N*|\texttt{word\_type}|$$
 % ---------------------------------------------------------------------------- %
 \end{document}
 % ============================================================================ %
+
 
 
