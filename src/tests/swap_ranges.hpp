@@ -16,7 +16,7 @@
 // C++ standard library
 // Project sources
 #include "test_root.cc"
-#include "bit.hpp"
+#include "../../ext/bit/bit.hpp"
 // Third-party libraries
 // Miscellaneous
 // ========================================================================== //
@@ -44,11 +44,9 @@ TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: single word",
     auto bfirst1 = bit::bit_iterator<decltype(std::begin(bitcont1))>(std::begin(bitcont1));
     auto blast1 = bit::bit_iterator<decltype(std::end(bitcont1))>(std::end(bitcont1));
     auto bfirst2 = bit::bit_iterator<decltype(std::begin(bitcont2))>(std::begin(bitcont2));
-    auto blast2 = bit::bit_iterator<decltype(std::end(bitcont2))>(std::end(bitcont2));
     auto bool_first1 = std::begin(boolcont1);
     auto bool_last1 = std::end(boolcont1);
     auto bool_first2 = std::begin(boolcont2);
-    auto bool_last2 = std::end(boolcont2);
     auto bool_first1_t = bool_first1;
     auto bool_first2_t = bool_first2;
     auto bfirst1_t = bfirst1;
@@ -101,11 +99,9 @@ TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: multiple words aligned",
     auto bfirst1 = bit::bit_iterator<decltype(std::begin(bitcont1))>(std::begin(bitcont1));
     auto blast1 = bit::bit_iterator<decltype(std::end(bitcont1))>(std::end(bitcont1));
     auto bfirst2 = bit::bit_iterator<decltype(std::begin(bitcont2))>(std::begin(bitcont2));
-    auto blast2 = bit::bit_iterator<decltype(std::end(bitcont2))>(std::end(bitcont2));
     auto bool_first1 = std::begin(boolcont1);
     auto bool_last1 = std::end(boolcont1);
     auto bool_first2 = std::begin(boolcont2);
-    auto bool_last2 = std::end(boolcont2);
     auto bool_first1_t = bool_first1;
     auto bool_first2_t = bool_first2;
     auto bfirst1_t = bfirst1;
@@ -166,11 +162,9 @@ TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: multiple words unaligned",
     auto bfirst1 = bit::bit_iterator<decltype(std::begin(bitcont1))>(std::begin(bitcont1));
     auto blast1 = bit::bit_iterator<decltype(std::end(bitcont1))>(std::end(bitcont1));
     auto bfirst2 = bit::bit_iterator<decltype(std::begin(bitcont2))>(std::begin(bitcont2));
-    auto blast2 = bit::bit_iterator<decltype(std::end(bitcont2))>(std::end(bitcont2));
     auto bool_first1 = std::begin(boolcont1);
     auto bool_last1 = std::end(boolcont1);
     auto bool_first2 = std::begin(boolcont2);
-    auto bool_last2 = std::end(boolcont2);
     auto bool_first1_t = bool_first1;
     auto bool_first2_t = bool_first2;
     auto bfirst1_t = bfirst1;
