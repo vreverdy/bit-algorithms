@@ -33,6 +33,7 @@
 #include "count.hpp"
 #include "copy.hpp"
 #include "shift.hpp"
+#include "swap_ranges.hpp"
 #include "reverse.hpp"
 #include "mismatch.hpp"
 #include "none_of.hpp"
@@ -41,5 +42,6 @@
 #include "max_element.hpp"
 #include "padded_read.hpp"
 #include "replace.hpp"
+#include "rotate.hpp"
 // Third party libraries
 // ========================================================================== //
