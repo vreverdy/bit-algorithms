@@ -63,6 +63,29 @@ bit_iterator<ForwardIt> next(
 
 // --------------------------- Utility Functions ---------------------------- //
 
+// Returns (last - first) <= n
+template <class InputIt>
+bool is_within(
+        bit_iterator<InputIt> first,
+        bit_iterator<InputIt> last,
+        typename InputIt::difference_type n
+) {
+    using word_type = typename bit_iterator<InputIt>::word_type;
+    using size_type = typename bit_iterator<InputIt>::size_type;
+    constexpr size_type digits = binary_digits<word_type>::value;
+
+    short int dist = last.position() - first.position(); 
+    InputIt it = first.base();
+
+    while (dist <= n) {
+        if (it++ == last.base()) 
+            return true;
+        else 
+            dist += digits;
+    }
+    return false;
+}
+
 // Get next len bits beginning at start and store them in a word of type T
 template <class T, class InputIt>
 T get_word(bit_iterator<InputIt> first, T len=binary_digits<T>::value)
