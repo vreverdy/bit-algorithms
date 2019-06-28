@@ -111,8 +111,8 @@ bit_iterator<ForwardIt> __rotate_via_raw(
 ) {
     // Types and constants
     using word_type = typename bit_iterator<ForwardIt>::word_type;
-    using size_type = typename bit_iterator<ForwardIt>::size_type;
-    constexpr size_type digits = binary_digits<word_type>::value;
+    using difference_type = typename ForwardIt::difference_type;
+    constexpr difference_type digits = binary_digits<word_type>::value;
 
     // Initialization
     bit_iterator<ForwardIt> first2 = n_first;
@@ -149,7 +149,7 @@ bit_iterator<ForwardIt> __rotate_via_raw(
         first = bit_iterator<ForwardIt>(++it);
     }
     // 1c. Swap remaining chunk (which must be smaller than [digits]
-    size_type remainder = distance(first2, last);
+    difference_type remainder = distance(first2, last);
     if (distance(first, n_first) <= remainder)
         n_first = first2 + distance(first, n_first);
     first2 = std::swap_ranges(
@@ -206,7 +206,7 @@ bit_iterator<ForwardIt> __rotate_via_raw(
         while (first2 != last) {
             if (distance(first, n_first) < digits) {
                 if (distance(first2, last) < distance(first, n_first)) {
-                    size_type remainder = distance(first2, last);
+                    remainder = distance(first2, last);
                     first2 = std::swap_ranges(
                             first,
                             first + distance(first2, last),
@@ -226,7 +226,7 @@ bit_iterator<ForwardIt> __rotate_via_raw(
             }
             if (distance(first2, last) < digits) {
                 if (distance(first2, last) < distance(first, n_first)) {
-                    size_type remainder = distance(first2, last);
+                    remainder = distance(first2, last);
                     first2 = std::swap_ranges(
                             first,
                             first + distance(first2, last),
