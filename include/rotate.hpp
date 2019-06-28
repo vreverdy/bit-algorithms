@@ -205,7 +205,8 @@ bit_iterator<ForwardIt> __rotate_via_raw(
         first = bit_iterator<ForwardIt>(it);
         while (first2 != last) {
             if (distance(first, n_first) < digits) {
-                if (distance(first2, last) < distance(first, n_first)) {
+                if (distance(first2, last) < distance(first, n_first)) { 
+                    // We reach the last iterator
                     remainder = distance(first2, last);
                     first2 = std::swap_ranges(
                             first,
@@ -215,6 +216,7 @@ bit_iterator<ForwardIt> __rotate_via_raw(
                     first += remainder;
                     first2 = n_first;
                 } else {
+                    // We reach the n_first iterator
                     first2 = std::swap_ranges(
                             first,
                             first + distance(first, n_first),
@@ -224,17 +226,16 @@ bit_iterator<ForwardIt> __rotate_via_raw(
                     n_first = first2;
                 }
             }
-            if (distance(first2, last) < digits) {
-                if (distance(first2, last) < distance(first, n_first)) {
-                    remainder = distance(first2, last);
-                    first2 = std::swap_ranges(
-                            first,
-                            first + distance(first2, last),
-                            first2
-                    );
-                    first += remainder;
-                    first2 = n_first;
-                }
+            else if (distance(first2, last) < digits) {
+                // We reach the n_first iterator
+                remainder = distance(first2, last);
+                first2 = std::swap_ranges(
+                        first,
+                        first + distance(first2, last),
+                        first2
+                );
+                first += remainder;
+                first2 = n_first;
             }
             else {
                 first2 = swap_ranges(
