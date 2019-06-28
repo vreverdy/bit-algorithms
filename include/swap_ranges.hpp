@@ -48,11 +48,7 @@ constexpr bit_iterator<ForwardIt2> swap_ranges(
     if constexpr (digits1 == digits2) {
         // All bits in first1 range are in 1 word
         if (std::next(it1, is_last1_aligned) == last1.base()) {
-            size_type1 digits_to_copy = is_last1_aligned ? 
-                digits1 - first1.position()
-                : 
-                last1.position() - first1.position()
-            ;// Not really sure what proper formatting here is.
+            size_type1 digits_to_copy = distance(first1, last1); 
             if (first1.position() >= first2.position()) {
                 _bitexch(
                         *it1, 
@@ -62,7 +58,7 @@ constexpr bit_iterator<ForwardIt2> swap_ranges(
                         digits_to_copy
                 );
             } else {
-                size_type1 partial_digits_to_copy = std::max(
+                size_type1 partial_digits_to_copy = std::min(
                         digits_to_copy,
                         digits2 - first2.position()
                 );

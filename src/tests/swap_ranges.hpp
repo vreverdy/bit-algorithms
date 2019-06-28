@@ -56,17 +56,19 @@ TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: single word",
 
     std::advance(bfirst1_t, digits);
     std::advance(bool_first1_t, digits);
-    bit::swap_ranges(bfirst1, bfirst1_t, bfirst2);
-    std::swap_ranges(bool_first1, bool_first1_t, bool_first2);
+    auto bret = bit::swap_ranges(bfirst1, bfirst1_t, bfirst2);
+    auto bool_ret = std::swap_ranges(bool_first1, bool_first1_t, bool_first2);
     REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
 
     bfirst1_t = std::next(bfirst1, 2);
     bool_first1_t = std::next(bool_first1, 2);
     blast1_t = std::next(bfirst1, digits-2);
     bool_last1_t = std::next(bool_first1, digits-2);
-    bit::swap_ranges(bfirst1, blast1_t, bfirst2);
-    std::swap_ranges(bool_first1, bool_last1_t, bool_first2);
+    bret = bit::swap_ranges(bfirst1, blast1_t, bfirst2);
+    bool_ret = std::swap_ranges(bool_first1, bool_last1_t, bool_first2);
     REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
 
     bfirst1_t = std::next(bfirst1, 3);
     bool_first1_t = std::next(bool_first1, 3);
@@ -74,9 +76,10 @@ TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: single word",
     bool_last1_t = std::next(bool_first1, digits-2);
     bfirst2_t = std::next(bfirst1, 7);
     bool_first2_t = std::next(bool_first1, 7);
-    bit::swap_ranges(bfirst1, blast1_t, bfirst2);
-    std::swap_ranges(bool_first1, bool_last1_t, bool_first2);
+    bret = bit::swap_ranges(bfirst1, blast1_t, bfirst2);
+    bool_ret = std::swap_ranges(bool_first1, bool_last1_t, bool_first2);
     REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
 }
 
 TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: multiple words aligned", 
@@ -111,15 +114,17 @@ TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: multiple words aligned",
 
     blast1_t = std::next(bfirst1, digits*2);
     bool_last1_t = std::next(bool_first1, digits*2);
-    bit::swap_ranges(bfirst1_t, blast1_t, bfirst2_t);
-    std::swap_ranges(bool_first1_t, bool_last1_t, bool_first2_t);
+    auto bret = bit::swap_ranges(bfirst1_t, blast1_t, bfirst2_t);
+    auto bool_ret = std::swap_ranges(bool_first1_t, bool_last1_t, bool_first2_t);
     REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
 
     blast1_t = std::next(bfirst1, digits*2-5);
     bool_last1_t = std::next(bool_first1, digits*2-5);
-    bit::swap_ranges(bfirst1_t, blast1_t, bfirst2_t);
-    std::swap_ranges(bool_first1_t, bool_last1_t, bool_first2_t);
+    bret = bit::swap_ranges(bfirst1_t, blast1_t, bfirst2_t);
+    bool_ret = std::swap_ranges(bool_first1_t, bool_last1_t, bool_first2_t);
     REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
 
     bfirst1_t = std::next(bfirst1, 3);
     bool_first1_t = std::next(bool_first1, 3);
@@ -127,9 +132,10 @@ TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: multiple words aligned",
     bool_first2_t = std::next(bool_first2, 3);
     blast1_t = std::next(bfirst1, digits*2-5);
     bool_last1_t = std::next(bool_first1, digits*2-5);
-    bit::swap_ranges(bfirst1_t, blast1_t, bfirst2_t);
-    std::swap_ranges(bool_first1_t, bool_last1_t, bool_first2_t);
+    bret = bit::swap_ranges(bfirst1_t, blast1_t, bfirst2_t);
+    bool_ret = std::swap_ranges(bool_first1_t, bool_last1_t, bool_first2_t);
     REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
 
     bfirst1_t = std::next(bfirst1, digits-1);
     bool_first1_t = std::next(bool_first1, digits-1);
@@ -137,9 +143,10 @@ TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: multiple words aligned",
     bool_first2_t = std::next(bool_first2, digits-1);
     blast1_t = std::next(bfirst1, digits*4+1);
     bool_last1_t = std::next(bool_first1, digits*4+1);
-    bit::swap_ranges(bfirst1_t, blast1_t, bfirst2_t);
-    std::swap_ranges(bool_first1_t, bool_last1_t, bool_first2_t);
+    bret = bit::swap_ranges(bfirst1_t, blast1_t, bfirst2_t);
+    bool_ret = std::swap_ranges(bool_first1_t, bool_last1_t, bool_first2_t);
     REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
 }
 
 TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: multiple words unaligned", 
@@ -178,9 +185,10 @@ TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: multiple words unaligned",
     bool_first1_t = std::next(bool_first1, 2);
     bfirst2_t = std::next(bfirst2, 3);
     bool_first2_t = std::next(bool_first2, 3);
-    bit::swap_ranges(bfirst1_t, blast1_t, bfirst2_t);
-    std::swap_ranges(bool_first1_t, bool_last1_t, bool_first2_t);
+    auto bret = bit::swap_ranges(bfirst1_t, blast1_t, bfirst2_t);
+    auto bool_ret = std::swap_ranges(bool_first1_t, bool_last1_t, bool_first2_t);
     REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
 
     blast1_t = std::next(bfirst1, digits*2-5);
     bool_last1_t = std::next(bool_first1, digits*2-5);
@@ -188,9 +196,10 @@ TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: multiple words unaligned",
     bool_first1_t = std::next(bool_first1, 4);
     bfirst2_t = std::next(bfirst2, 3);
     bool_first2_t = std::next(bool_first2, 3);
-    bit::swap_ranges(bfirst1_t, blast1_t, bfirst2_t);
-    std::swap_ranges(bool_first1_t, bool_last1_t, bool_first2_t);
+    bret = bit::swap_ranges(bfirst1_t, blast1_t, bfirst2_t);
+    bool_ret = std::swap_ranges(bool_first1_t, bool_last1_t, bool_first2_t);
     REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
 
     bfirst1_t = std::next(bfirst1, digits-1);
     bool_first1_t = std::next(bool_first1, digits-1);
@@ -198,9 +207,10 @@ TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: multiple words unaligned",
     bool_first2_t = std::next(bool_first2, digits-2);
     blast1_t = std::next(bfirst1, digits*2-5);
     bool_last1_t = std::next(bool_first1, digits*2-5);
-    bit::swap_ranges(bfirst1_t, blast1_t, bfirst2_t);
-    std::swap_ranges(bool_first1_t, bool_last1_t, bool_first2_t);
+    bret = bit::swap_ranges(bfirst1_t, blast1_t, bfirst2_t);
+    bool_ret = std::swap_ranges(bool_first1_t, bool_last1_t, bool_first2_t);
     REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
 
     bfirst1_t = std::next(bfirst1, digits-2);
     bool_first1_t = std::next(bool_first1, digits-2);
@@ -208,9 +218,71 @@ TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: multiple words unaligned",
     bool_first2_t = std::next(bool_first2, digits-1);
     blast1_t = std::next(bfirst1, digits*4+1);
     bool_last1_t = std::next(bool_first1, digits*4+1);
-    bit::swap_ranges(bfirst1_t, blast1_t, bfirst2_t);
-    std::swap_ranges(bool_first1_t, bool_last1_t, bool_first2_t);
+    bret = bit::swap_ranges(bfirst1_t, blast1_t, bfirst2_t);
+    bool_ret = std::swap_ranges(bool_first1_t, bool_last1_t, bool_first2_t);
     REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
+}
+
+TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: multiple words unaligned same container", 
+                           "[template][product]", 
+                           (std::vector, std::list, std::forward_list), 
+                           (unsigned char)) {
+    //, unsigned int, 
+                            //unsigned long, unsigned long long)) {
+    using container_type = TestType;
+    using num_type = typename container_type::value_type;
+    auto container_size = 7;
+    auto digits = bit::binary_digits<num_type>::value;
+    container_type bitcont1 = make_random_container<container_type>
+                                     (container_size); //, 0, 0);
+    container_type bitcont2 = make_random_container<container_type, unsigned short>
+                                     (container_size); //, std::numeric_limits<num_type>::max(),
+                                      //std::numeric_limits<num_type>::max());
+    auto boolcont1 = bitcont_to_boolcont(bitcont1);
+    auto bfirst1 = bit::bit_iterator<decltype(std::begin(bitcont1))>(std::begin(bitcont1));
+    auto blast1 = bit::bit_iterator<decltype(std::end(bitcont1))>(std::end(bitcont1));
+    auto bool_first1 = std::begin(boolcont1);
+    auto bool_last1 = std::end(boolcont1);
+
+    auto bret = bit::swap_ranges(
+            bfirst1, 
+            std::next(bfirst1, digits), 
+            std::next(bfirst1, digits+4)
+    );
+    auto bool_ret = std::swap_ranges(
+            bool_first1, 
+            std::next(bool_first1, digits), 
+            std::next(bool_first1, digits+4)
+    );
+    REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::distance(bfirst1, bret) == std::distance(bool_first1, bool_ret));
+    
+    bret = bit::swap_ranges(
+            bfirst1, 
+            std::next(bfirst1, 4), 
+            std::next(bfirst1, 4)
+    );
+    bool_ret = std::swap_ranges(
+            bool_first1, 
+            std::next(bool_first1, 4), 
+            std::next(bool_first1, 4)
+    );
+    REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::distance(bfirst1, bret) == std::distance(bool_first1, bool_ret));
+
+    bret = bit::swap_ranges(
+            std::next(bfirst1, digits-3), 
+            std::next(bfirst1, digits+3), 
+            std::next(bfirst1, digits+4)
+    );
+    bool_ret = std::swap_ranges(
+            std::next(bool_first1, digits-3), 
+            std::next(bool_first1, digits+3), 
+            std::next(bool_first1, digits+4)
+    );
+    REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::distance(bfirst1, bret) == std::distance(bool_first1, bool_ret));
 }
 // -------------------------------------------------------------------------- //
 
