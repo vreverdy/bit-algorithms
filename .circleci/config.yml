@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  linux_gcc:
+  ubuntu_gcc_8:
     docker:
       - image: ubuntu:19.04
     steps:
@@ -9,7 +9,7 @@ jobs:
       - run: apt-get install -y make
       - run: apt-get install -y gcc g++
       - run: make CXX=g++ CXX_STANDARD=c++2a test
-  linux_clang:
+  ubuntu_clang_8:
     docker:
       - image: ubuntu:19.04
     steps:
@@ -18,14 +18,14 @@ jobs:
       - run: apt-get install -y make
       - run: apt-get install -y clang
       - run: make CXX=clang++ CXX_STANDARD=c++2a test
-  macos_gcc:
+  macos_gcc_8:
     macos:
       xcode: "10.0.0"
     steps:
       - checkout
       - run: brew install gcc@8
       - run: make CXX=/usr/local/bin/g++-8 CXX_STANDARD=c++2a test
-  macos_clang:
+  macos_apple_llvm_10_0:
     macos:
       xcode: "10.0.0"
     steps:
@@ -35,7 +35,7 @@ workflows:
   version: 2
   ci:
     jobs:
-      - linux_gcc
-      - linux_clang
-      - macos_gcc
-      - macos_clang
+      - ubuntu_gcc_8
+      - ubuntu_clang_8
+      - macos_gcc_8
+      - macos_apple_llvm_10_0
