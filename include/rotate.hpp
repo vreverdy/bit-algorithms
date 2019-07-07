@@ -1,7 +1,7 @@
 // ================================= ROTATE ================================= //
-// Project: The Experimental Bit Algorithms Library
-// Name: rotate.hpp
-// Description: bit_iterator overloads for std::rotate
+// Project:         The Experimental Bit Algorithms Library
+// Name:            rotate.hpp
+// Description:     bit_iterator overloads for std::rotate
 // Creator:         Vincent Reverdy
 // Contributor(s):  Bryce Kille [2019]
 // License:         BSD 3-Clause License
