@@ -21,19 +21,10 @@
 namespace bit {
 // ========================================================================== //
 
-template <class BidIt>
-bit_iterator<BidIt> __rotate_via_reverse(
-   bit_iterator<BidIt> first, 
-   bit_iterator<BidIt> n_first,
-   bit_iterator<BidIt> last,
-   std::bidirectional_iterator_tag
-) {
-    bit::reverse(first, n_first);
-    bit::reverse(n_first, last);
-    bit::reverse(first, last);
-    return first + distance(n_first, last);
-}
-
+// Rotates a range by copying [first...n_first) to the stack, then shifting 
+// the range to the left and appending the copied section to the end.
+//
+// Note: distance(first, n_first) <= 3*digits
 template <class ForwardIt>
 bit_iterator<ForwardIt> __rotate_via_copy_begin(
    bit_iterator<ForwardIt> first, 
@@ -46,6 +37,7 @@ bit_iterator<ForwardIt> __rotate_via_copy_begin(
     constexpr size_type digits = binary_digits<word_type>::value;
 
     size_type k = distance(first, n_first);
+    assert(k <= 3*digits);
     word_type copy_arr[3]; 
     copy_arr[0] = *first.base();
     ForwardIt it = ++first.base();
@@ -67,6 +59,10 @@ bit_iterator<ForwardIt> __rotate_via_copy_begin(
     return ret;
 }
 
+// Rotates a range by copying [n_first, last) to the stack, then shifting 
+// the range to the right and prepending the copied section to the beginning.
+//
+// Note: distance(n_first, last) <= 3*digits
 template <class ForwardIt>
 bit_iterator<ForwardIt> __rotate_via_copy_end(
    bit_iterator<ForwardIt> first, 
@@ -79,6 +75,7 @@ bit_iterator<ForwardIt> __rotate_via_copy_end(
     constexpr size_type digits = binary_digits<word_type>::value;
 
     size_type k = distance(n_first, last);
+    assert(k <= 3*digits);
     word_type copy_arr[3]; 
     copy_arr[0] = *n_first.base();
     ForwardIt it = ++n_first.base();
@@ -100,6 +97,8 @@ bit_iterator<ForwardIt> __rotate_via_copy_end(
     return ret;
 }
 
+// Rotates a range using forward iterators. Algorithm logic from the GCC
+// implementation
 template <class ForwardIt>
 bit_iterator<ForwardIt> __rotate_via_raw(
    bit_iterator<ForwardIt> first, 
@@ -255,6 +254,8 @@ bit_iterator<ForwardIt> __rotate_via_raw(
     return ret;
 }
 
+// Rotates a range using bidirectional iterators. Algorithm logic from the GCC
+// implementation
 template <class BidirectionalIt>
 bit_iterator<BidirectionalIt> __rotate_via_raw(
    bit_iterator<BidirectionalIt> first, 
@@ -262,11 +263,6 @@ bit_iterator<BidirectionalIt> __rotate_via_raw(
    bit_iterator<BidirectionalIt> last,
    std::bidirectional_iterator_tag
 ) {
-    // Types and constants
-    //using word_type = typename bit_iterator<BidirectionalIt>::word_type;
-    //using size_type = typename bit_iterator<BidirectionalIt>::size_type;
-    //constexpr size_type digits = binary_digits<word_type>::value;
-
     // first, ... , n_first-1, n_first, ... , last-1, last
     reverse(first, n_first);
     // n_first-1, ... , first, n_first, ... , last-1, last
@@ -288,6 +284,8 @@ bit_iterator<BidirectionalIt> __rotate_via_raw(
     }
 }
 
+// Rotates a range using random-access iterators. Algorithm logic from the GCC
+// implementation
 template <class RandomAccessIt>
 bit_iterator<RandomAccessIt> __rotate_via_raw(
    bit_iterator<RandomAccessIt> first, 
@@ -316,6 +314,8 @@ bit_iterator<RandomAccessIt> __rotate_via_raw(
     for (;;) {
         if (k < n - k) {
             if (k <= digits) {
+                // BENCHMARK NOTE: may be better to do k <= 3*digits and use
+                // the rotate_via_copy method.
                 word_type temp_word = get_word<word_type>(p, k);
                 bit_iterator<RandomAccessIt> temp_it = shift_left(p, p + n, k);
                 write_word<word_type>(temp_word, temp_it, k);
@@ -367,6 +367,7 @@ bit_iterator<RandomAccessIt> __rotate_via_raw(
     }
 }
 
+// Main function for implementing the bit overload of std::rotate.
 template <class ForwardIt>
 bit_iterator<ForwardIt> rotate(
    bit_iterator<ForwardIt> first, 
