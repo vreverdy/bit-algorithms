@@ -63,27 +63,44 @@ bit_iterator<ForwardIt> next(
 
 // --------------------------- Utility Functions ---------------------------- //
 
-// Returns (last - first) <= n
+// Returns distance(first, last) <= n
 template <class InputIt>
 bool is_within(
         bit_iterator<InputIt> first,
         bit_iterator<InputIt> last,
         typename InputIt::difference_type n
 ) {
+    //using word_type = typename bit_iterator<InputIt>::word_type;
+    //using size_type = typename bit_iterator<InputIt>::size_type;
+    //constexpr size_type digits = binary_digits<word_type>::value;
+
+    return distance(first, last) <= n;
+}
+
+template <int N, class InputIt>
+constexpr bool is_within(
+        bit_iterator<InputIt> first,
+        bit_iterator<InputIt> last
+) {
     using word_type = typename bit_iterator<InputIt>::word_type;
-    using size_type = typename bit_iterator<InputIt>::size_type;
-    constexpr size_type digits = binary_digits<word_type>::value;
+    //using size_type = typename bit_iterator<InputIt>::size_type;
+    constexpr int digits = binary_digits<word_type>::value;
+    constexpr int full_words = N / digits;
+    constexpr int remainder_bits = N % digits;
 
-    short int dist = last.position() - first.position(); 
-    InputIt it = first.base();
-
-    while (dist <= n) {
-        if (it++ == last.base()) 
-            return true;
-        else 
-            dist += digits;
+    if constexpr (full_words > 0) {
+        return (first.base() == last.base())
+            || (std::next(first.base()) == last.base() && first.position() >= last.position())
+            || is_within<N-digits>(first + digits, last)
+        ;
+    } else if (remainder_bits >= 0) {
+        return (first.base() == last.base() 
+                && first.position() + remainder_bits >= last.position()
+               ) || (std::next(first.base()) == last.base()
+                   && (static_cast<int>(first.position()) + remainder_bits - digits >= static_cast<int>(last.position()))
+               )
+        ;
     }
-    return false;
 }
 
 // Get next len bits beginning at start and store them in a word of type T
