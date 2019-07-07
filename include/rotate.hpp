@@ -14,8 +14,6 @@
 
 // ============================== PREAMBLE ================================== //
 // C++ standard library
-#include <list>
-#include <forward_list>
 // Project sources
 #include "../ext/bit/bit.hpp"
 // Third-party libraries
@@ -33,7 +31,7 @@ bit_iterator<BidIt> __rotate_via_reverse(
     bit::reverse(first, n_first);
     bit::reverse(n_first, last);
     bit::reverse(first, last);
-    return first + std::distance(n_first, last);
+    return first + distance(n_first, last);
 }
 
 template <class ForwardIt>
@@ -137,11 +135,11 @@ bit_iterator<ForwardIt> __rotate_via_raw(
     first = bit_iterator<ForwardIt>(it);
 
     // 1b. Swap chunks of size [digits] at a time, until no chunks remain.
-    while (distance(first2, last) >= digits) {
+    while (!is_within<digits-1>(first2, last)) {
         // Note 1b. If we swap past n_first, we need to update its location.
         if (distance(first, n_first) < digits) 
             n_first = first2 + distance(first, n_first);
-        first2 = swap_ranges(
+        first2 = std::swap_ranges(
                 first,
                 first + digits,
                 first2
@@ -150,14 +148,14 @@ bit_iterator<ForwardIt> __rotate_via_raw(
     }
     // 1c. Swap remaining chunk (which must be smaller than [digits]
     difference_type remainder = distance(first2, last);
-    if (distance(first, n_first) <= remainder)
+    if (is_within(first, n_first, remainder))
         n_first = first2 + distance(first, n_first);
     first2 = std::swap_ranges(
             first,
             first + remainder,
             first2
     );
-    first += remainder;
+    advance(first, remainder);
 
     bit_iterator<ForwardIt> ret = first;
     first2 = n_first;
@@ -171,21 +169,12 @@ bit_iterator<ForwardIt> __rotate_via_raw(
     // to n_first. 
     //
     // 2a. See if we can use our rotates that simply copy and shift
-    if (distance(first, n_first) <= 2*digits) {
+    // TODO maybe we should check this at every iteratoration?
+    if (is_within<2*digits>(first, n_first)) {
         __rotate_via_copy_begin(first, n_first, last);
-    } else if (distance(n_first, last) <= 2*digits) {
+    } else if (is_within<2*digits>(n_first, last)) {
         __rotate_via_copy_end(first, n_first, last);
     } else {
-        // 2b. Align the first iterator and use the same strategy as in 1b.
-        // TODO instead of copying whole words every time as in 1b, we only
-        // swap up to n_first or last, whichever occurs. This is because 
-        // n_first and last can be in the same word. In order to avoid the
-        // bookkeeping involved with updating both via one swap_ranges call, 
-        // I've decided to just swap chunks that don't overlap with 
-        // n_first or last (they can only start with n_first or last).
-        // This may be slower, since we're not always doing full word swaps
-        // anymore.
-        //
         // CORRESPONDING GCC CODE:
         //  while (first2 != last) {
         //      std::iter_swap(first, first2);
@@ -196,6 +185,8 @@ bit_iterator<ForwardIt> __rotate_via_raw(
         //      else if (first2 == last)
         //          first2 = n_first;
         //  }
+        //
+        // 2b. Align the first iterator and use the same strategy as in 1b.
         it = std::next(first.base());
         first2 = std::swap_ranges(
                 first,
@@ -204,8 +195,8 @@ bit_iterator<ForwardIt> __rotate_via_raw(
         );
         first = bit_iterator<ForwardIt>(it);
         while (first2 != last) {
-            if (distance(first, n_first) < digits) {
-                if (distance(first2, last) < distance(first, n_first)) { 
+            if (is_within<digits-1>(first, n_first)) {
+                if (is_within(first2, last, distance(first, n_first)-1)) { 
                     // We reach the last iterator
                     remainder = distance(first2, last);
                     first2 = std::swap_ranges(
@@ -225,8 +216,15 @@ bit_iterator<ForwardIt> __rotate_via_raw(
                     first += distance(first, n_first);
                     n_first = first2;
                 }
+                if (is_within<2*digits>(first, n_first)) {
+                    __rotate_via_copy_begin(first, n_first, last);
+                    break;
+                } else if (is_within<2*digits>(n_first, last)) {
+                    __rotate_via_copy_end(first, n_first, last);
+                    break;
+                }
             }
-            else if (distance(first2, last) < digits) {
+            else if (is_within<digits-1>(first2, last)) {
                 // We reach the n_first iterator
                 remainder = distance(first2, last);
                 first2 = std::swap_ranges(
@@ -234,11 +232,18 @@ bit_iterator<ForwardIt> __rotate_via_raw(
                         first + distance(first2, last),
                         first2
                 );
-                first += remainder;
+                advance(first, remainder);
                 first2 = n_first;
+                if (is_within<2*digits>(first, n_first)) {
+                    __rotate_via_copy_begin(first, n_first, last);
+                    break;
+                } else if (is_within<2*digits>(n_first, last)) {
+                    __rotate_via_copy_end(first, n_first, last);
+                    break;
+                }
             }
             else {
-                first2 = swap_ranges(
+                first2 = std::swap_ranges(
                         first,
                         first + digits,
                         first2
@@ -250,6 +255,118 @@ bit_iterator<ForwardIt> __rotate_via_raw(
     return ret;
 }
 
+template <class BidirectionalIt>
+bit_iterator<BidirectionalIt> __rotate_via_raw(
+   bit_iterator<BidirectionalIt> first, 
+   bit_iterator<BidirectionalIt> n_first,
+   bit_iterator<BidirectionalIt> last,
+   std::bidirectional_iterator_tag
+) {
+    // Types and constants
+    //using word_type = typename bit_iterator<BidirectionalIt>::word_type;
+    //using size_type = typename bit_iterator<BidirectionalIt>::size_type;
+    //constexpr size_type digits = binary_digits<word_type>::value;
+
+    // first, ... , n_first-1, n_first, ... , last-1, last
+    reverse(first, n_first);
+    // n_first-1, ... , first, n_first, ... , last-1, last
+    reverse(n_first, last);
+    // n_first-1, ... , first, last-1, ... , n_first, last
+    
+    // TODO need a partial reverse here...
+    while(first != n_first && n_first != last) {
+        std::iter_swap(first++, --last);
+    }
+    if (first == n_first) {
+        // first == n_first
+        reverse(n_first, last);
+        return last;
+    } else {
+        // n_first = last
+        reverse(first, n_first);
+        return first;
+    }
+}
+
+template <class RandomAccessIt>
+bit_iterator<RandomAccessIt> __rotate_via_raw(
+   bit_iterator<RandomAccessIt> first, 
+   bit_iterator<RandomAccessIt> n_first,
+   bit_iterator<RandomAccessIt> last,
+   std::random_access_iterator_tag
+) {
+    // Types and constants
+    using word_type = typename bit_iterator<RandomAccessIt>::word_type;
+    using size_type = typename bit_iterator<RandomAccessIt>::size_type;
+    using difference_type = 
+        typename bit_iterator<RandomAccessIt>::difference_type;
+    constexpr difference_type digits = binary_digits<word_type>::value;
+
+    difference_type k = n_first - first;
+    difference_type n = last - first;
+    
+    if (k == n - k) {
+        std::swap_ranges(first, n_first, n_first);
+        return n_first;
+    }
+
+    bit_iterator<RandomAccessIt> p = first;
+    bit_iterator<RandomAccessIt> ret = first + (last - n_first);
+
+    for (;;) {
+        if (k < n - k) {
+            if (k <= digits) {
+                word_type temp_word = get_word<word_type>(p, k);
+                bit_iterator<RandomAccessIt> temp_it = shift_left(p, p + n, k);
+                write_word<word_type>(temp_word, temp_it, k);
+                return ret;
+            }
+            bit_iterator<RandomAccessIt> q = p + k;
+            unsigned int full_swaps = (n - k) / k;
+            size_type remainder = (n - k) - full_swaps*k;
+            while (full_swaps > 0) {
+                std::swap_ranges(p, q, q);
+                p += k;
+                q += k;
+                --full_swaps;
+            }
+            std::swap_ranges(p, p + remainder, q);
+            p += remainder;
+            q += remainder;
+            n %= k;
+            if (n == 0)
+                return ret;
+            std::swap(n, k);
+            k = n - k;
+        } else {
+            k = n - k;
+            if (k <= digits) {
+                word_type temp_word = get_word<word_type>(p + n - k, k);
+                shift_right(p, p + n, k);
+                write_word<word_type>(temp_word, p, k);
+                return ret;
+            }
+            bit_iterator<RandomAccessIt> q = p + n;
+            p = q - k;
+            unsigned int full_swaps = (n - k) / k;
+            size_type remainder = (n - k) - full_swaps*k;
+            while (full_swaps > 0) {
+                p -= k;
+                q -= k;
+                std::swap_ranges(p, q, q);
+                --full_swaps;
+            }
+            p -= remainder;
+            q -= remainder;
+            std::swap_ranges(p, p + remainder, q);
+            n %= k;
+            if (n == 0)
+                return ret;
+            std::swap(n, k);
+        }
+    }
+}
+
 template <class ForwardIt>
 bit_iterator<ForwardIt> rotate(
    bit_iterator<ForwardIt> first, 
@@ -257,17 +374,20 @@ bit_iterator<ForwardIt> rotate(
    bit_iterator<ForwardIt> last
 ) {
     // Assertions
+    _assert_range_viability(first, n_first);
+    _assert_range_viability(n_first, last);
     _assert_range_viability(first, last);
     if (first == n_first) return n_first;
 
     // Types and constants
     using word_type = typename bit_iterator<ForwardIt>::word_type;
     using size_type = typename bit_iterator<ForwardIt>::size_type;
-    constexpr size_type digits = binary_digits<word_type>::value;
+    using difference_type = 
+        typename bit_iterator<ForwardIt>::difference_type;
+    constexpr difference_type digits = binary_digits<word_type>::value;
 
     // Initialization
     const bool is_first_aligned = first.position() == 0;
-    //const bool is_n_first_aligned = n_first.position() == 0;
     const bool is_last_aligned = last.position() == 0;
 
     // Within the same word
@@ -276,7 +396,9 @@ bit_iterator<ForwardIt> rotate(
             *first.base() = 
                 (*first.base() >> n_first.position())
                 | 
-                (*first.base() << (digits - n_first.position()));
+                static_cast<word_type>(
+                        *first.base() << (digits - n_first.position())
+            );
             return std::next(first, digits - n_first.position());
         } else {
             size_type last_pos = is_last_aligned ? digits : last.position();
@@ -286,7 +408,8 @@ bit_iterator<ForwardIt> rotate(
             
             word_type mask = ((1 << d) - 1) << first.position();
             word_type rotated = *first.base() & mask;
-            rotated = (rotated << k) | (rotated >> p);
+            rotated = static_cast<word_type>(rotated << k) 
+                | static_cast<word_type>(rotated >> p);
             *first.base() = _bitblend<word_type>(
                 *first.base(),
                 rotated,
@@ -298,14 +421,14 @@ bit_iterator<ForwardIt> rotate(
     }
 
     // Single word subcases 
-    if (is_within(first, n_first, digits)) {
-        size_type k = std::distance(first, n_first);
+    if (is_within<digits>(first, n_first)) {
+        size_type k = distance(first, n_first);
         word_type temp = get_word(first, k);
         bit_iterator<ForwardIt> new_last = shift_left(first, last, k);
         write_word<word_type, ForwardIt>(temp, new_last, static_cast<word_type>(k));
         return new_last;
-    } else if (is_within(n_first, last, digits)) {
-        size_type p = std::distance(n_first, last);
+    } else if (is_within<digits>(n_first, last)) {
+        size_type p = distance(n_first, last);
         word_type temp = get_word(n_first, p);
         auto new_last = shift_right(first, last, p);
         write_word(temp, first, static_cast<word_type>(p));

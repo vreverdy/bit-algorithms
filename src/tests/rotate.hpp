@@ -1,7 +1,7 @@
 // ============================= ROTATE TESTS =============================== //
 // Project:         The Experimental Bit Algorithms Library
 // Name:            rotate.hpp
-// Description:     Tests for shift_left and shift_right algorithms 
+// Description:     Tests for rotate algorithms 
 // Creator:         Vincent Reverdy
 // Contributor(s):  Bryce Kille [2019]
 // License:         BSD 3-Clause License
@@ -26,55 +26,41 @@
 // ----------------------------- Rotate Tests ------------------------------- //
 TEMPLATE_PRODUCT_TEST_CASE("Rotate: single_word", 
                            "[template][product]", 
-                           (std::vector, std::list), 
-                           (unsigned short)) {
+                           (std::vector, std::list, std::forward_list), 
+                           (unsigned char, unsigned short, 
+                            unsigned int, unsigned long)) {
 
     using container_type = TestType;
     using num_type = typename container_type::value_type;
     auto container_size = 4;
     auto digits = bit::binary_digits<num_type>::value;
-    container_type bitcont1 = make_random_container<container_type>
+    container_type bitcont = make_random_container<container_type>
                                      (container_size); 
-    auto boolcont1 = bitcont_to_boolcont(bitcont1);
-    auto bfirst1 = bit::bit_iterator<decltype(std::begin(bitcont1))>(std::begin(bitcont1));
-    auto blast1 = bit::bit_iterator<decltype(std::end(bitcont1))>(std::end(bitcont1));
-    auto bool_first1 = std::begin(boolcont1);
-    auto bool_last1 = std::end(boolcont1);
-    auto bool_first1_t = bool_first1;
-    auto bfirst1_t = bfirst1;
-    auto bool_last1_t = bool_last1;
-    auto blast1_t = blast1;
+    auto boolcont = bitcont_to_boolcont(bitcont);
+    auto bfirst = bit::bit_iterator<decltype(std::begin(bitcont))>(std::begin(bitcont));
+    auto blast = bit::bit_iterator<decltype(std::end(bitcont))>(std::end(bitcont));
+    auto bool_first = std::begin(boolcont);
+    auto bool_last = std::end(boolcont);
 
-    blast1_t = std::next(bfirst1, digits);
-    bool_last1_t = std::next(bool_first1, digits);
-    auto bret = bit::rotate(bfirst1_t, std::next(bfirst1_t, 3) , blast1_t);
-    auto bool_ret = std::rotate(bool_first1_t, std::next(bool_first1_t, 3), bool_last1_t);
-    REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
-    REQUIRE(std::distance(bfirst1, bret) == std::distance(bool_first1, bool_ret));
-
-    bfirst1_t = std::next(bfirst1, 4);
-    bool_first1_t = std::next(bool_first1, 4);
-    blast1_t = std::next(bfirst1, digits - 2);
-    bool_last1_t = std::next(bool_first1, digits - 2);
-    bret = bit::rotate(bfirst1_t, std::next(bfirst1_t, 5) , blast1_t);
-    bool_ret = std::rotate(bool_first1_t, std::next(bool_first1_t, 5), bool_last1_t);
-    REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
-    REQUIRE(std::distance(bfirst1, bret) == std::distance(bool_first1, bool_ret));
-
-    bfirst1_t = std::next(bfirst1, 2);
-    bool_first1_t = std::next(bool_first1, 2);
-    blast1_t = std::next(bfirst1, digits - 2);
-    bool_last1_t = std::next(bool_first1, digits - 2);
-    bret = bit::rotate(bfirst1_t, std::next(bfirst1_t, 6) , blast1_t);
-    bool_ret = std::rotate(bool_first1_t, std::next(bool_first1_t, 6), bool_last1_t);
-    REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
-    REQUIRE(std::distance(bfirst1, bret) == std::distance(bool_first1, bool_ret));
+    auto bret = bit::rotate(
+            bfirst, 
+            std::next(bfirst, 3), 
+            std::next(bfirst, digits)
+    );
+    auto bool_ret = std::rotate(
+            bool_first, 
+            std::next(bool_first, 3), 
+            std::next(bool_first, digits)
+    );
+    REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
+    REQUIRE(std::distance(bfirst, bret) == std::distance(bool_first, bool_ret));
 }
 
 TEMPLATE_PRODUCT_TEST_CASE("Rotate: multiple_word_subcases", 
                            "[template][product]", 
-                           (std::vector, std::list), 
-                           (unsigned short)) {
+                           (std::vector, std::list, std::forward_list), 
+                           (unsigned char, unsigned short, 
+                            unsigned int, unsigned long)) {
 
     using container_type = TestType;
     using num_type = typename container_type::value_type;
@@ -178,41 +164,11 @@ TEMPLATE_PRODUCT_TEST_CASE("Rotate: multiple_word_subcases",
     REQUIRE(std::distance(bfirst1, bret) == std::distance(bool_first1, bool_ret));
 }
 
-TEMPLATE_PRODUCT_TEST_CASE("Rotate: REV_multiple_word_main", 
-                           "[template][product]", 
-                           (std::vector, std::list), 
-                           (unsigned short)) {
-
-    using container_type = TestType;
-    using num_type = typename container_type::value_type;
-    auto container_size = 4;
-    auto digits = bit::binary_digits<num_type>::value;
-    container_type bitcont1 = make_random_container<container_type>
-                                     (container_size); 
-    auto boolcont1 = bitcont_to_boolcont(bitcont1);
-    auto bfirst1 = bit::bit_iterator<decltype(std::begin(bitcont1))>(std::begin(bitcont1));
-    auto blast1 = bit::bit_iterator<decltype(std::end(bitcont1))>(std::end(bitcont1));
-    auto bool_first1 = std::begin(boolcont1);
-    auto bool_last1 = std::end(boolcont1);
-
-    auto bret = bit::rotate(
-            std::next(bfirst1, digits+1), 
-            std::next(bfirst1, container_size*digits/2), 
-            std::next(bfirst1, container_size*digits)
-    );
-    auto bool_ret = std::rotate(
-            std::next(bool_first1, digits+1), 
-            std::next(bool_first1, container_size*digits/2), 
-            std::next(bool_first1, container_size*digits)
-     );
-    REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
-    REQUIRE(std::distance(bfirst1, bret) == std::distance(bool_first1, bool_ret));
-}
-
 TEMPLATE_PRODUCT_TEST_CASE("Rotate: STD_multiple_word_main at least 1 aligned", 
                            "[template][product]", 
-                           (std::vector, std::list), 
-                           (unsigned short)) {
+                           (std::vector, std::list, std::forward_list), 
+                           (unsigned char, unsigned short, 
+                            unsigned int, unsigned long)) {
 
     using container_type = TestType;
     using num_type = typename container_type::value_type;
@@ -286,8 +242,9 @@ TEMPLATE_PRODUCT_TEST_CASE("Rotate: STD_multiple_word_main at least 1 aligned",
 
 TEMPLATE_PRODUCT_TEST_CASE("Rotate: STD_multiple_word_main all unaligned and f.pos() != nf.pos()", 
                            "[template][product]", 
-                           (std::vector, std::list), 
-                           (unsigned char)) {
+                           (std::vector, std::list, std::forward_list), 
+                           (unsigned char, unsigned short, 
+                            unsigned int, unsigned long)) {
 
     using container_type = TestType;
     using num_type = typename container_type::value_type;
@@ -349,7 +306,8 @@ TEMPLATE_PRODUCT_TEST_CASE("Rotate: STD_multiple_word_main all unaligned and f.p
 TEMPLATE_PRODUCT_TEST_CASE("Rotate: STD_multiple_word_main one aligned", 
                            "[template][product]", 
                            (std::vector), 
-                           (unsigned char)) {
+                           (unsigned char, unsigned short, 
+                            unsigned int, unsigned long)) {
 
     using container_type = TestType;
     using num_type = typename container_type::value_type;
@@ -408,7 +366,7 @@ TEMPLATE_PRODUCT_TEST_CASE("Rotate: STD_multiple_word_main one aligned",
 
 TEMPLATE_PRODUCT_TEST_CASE("Rotate: via_copy_end", 
                            "[template][product]", 
-                           (std::vector, std::list), 
+                           (std::vector, std::list, std::forward_list), 
                            (unsigned short)) {
 
     using container_type = TestType;
@@ -487,8 +445,9 @@ TEMPLATE_PRODUCT_TEST_CASE("Rotate: via_copy_end",
 
 TEMPLATE_PRODUCT_TEST_CASE("Rotate: via_copy_begin", 
                            "[template][product]", 
-                           (std::vector, std::list), 
-                           (unsigned short)) {
+                           (std::vector, std::list, std::forward_list), 
+                           (unsigned char, unsigned short, 
+                            unsigned int, unsigned long)) {
 
     using container_type = TestType;
     using num_type = typename container_type::value_type;
@@ -559,5 +518,5 @@ TEMPLATE_PRODUCT_TEST_CASE("Rotate: via_copy_begin",
 
 
 // ========================================================================== //
-#endif // _SHIFT_TESTS_HPP_INCLUDED
+#endif // _ROTATE_TESTS_HPP_INCLUDED
 // ========================================================================== //
