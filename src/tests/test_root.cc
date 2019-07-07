@@ -10,15 +10,17 @@
 // License:         BSD 3-Clause License
 // ========================================================================== //
 
+
+
 // ============================== PREAMBLE ================================== //
 // C++ standard library
 #include <vector>
 #include <list>
 #include <forward_list>
 // Project sources
+#include "test_utils.hpp"
 #include "bit_algorithm_details.hpp"
 #include "bit_details.hpp"
-#include "test_utils.hpp"
 #include "input_container.hpp"
 #include "input_iterator.hpp"
 // Test sources
