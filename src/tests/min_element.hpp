@@ -29,7 +29,7 @@
 TEMPLATE_TEST_CASE("min_element: handles single word cases", "[min_element]",
     unsigned short, unsigned int, unsigned long, unsigned long long) {
 
-    constexpr std::size_t num_digits = bit::binary_digits<TestType>::value;
+    //constexpr std::size_t num_digits = bit::binary_digits<TestType>::value;
     constexpr TestType all_ones = bit::_all_ones(); 
     using bit_iterator_t = typename bit::bit_iterator<TestType*>;
 
