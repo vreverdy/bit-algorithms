@@ -137,38 +137,92 @@ Vincent Reverdy%
 \label{subsec:nonmodifyingAlgs}
 \subsubsection{\texttt{max\_element}}
 \paragraph{Description}
-Locates the largest element in a range \texttt{[first, last)} and returns an iterator to the element.
+Locates the largest element in a range \texttt{[first, last)} and returns an 
+iterator to the element.
 
 \paragraph{Implementation}
-Implementation is somewhat trivial. If \texttt{first} is LSB aligned (meaning it points to the 0th bit of a word) we perform a partial read from \text{first} to the closer of the MSB and the \text{last} iterator. Missing bits from the read are padded with 0 bits in the versions of the algorithm where a custom comparator is not passed. Next, we check the read word to see if it is greater than zero. If it is greater than zero, we know there is a set bit somewhere within the word. We can find the exact position of the set bit using \texttt{\_tzcnt} and return this position as an iterator. If \texttt{first} is not equal to \texttt{last}, we advance first to the 0th bit of the next word.
+Implementation is somewhat trivial. If \texttt{first} is LSB aligned (meaning 
+it points to the 0th bit of a word) we perform a partial read from \text{first} 
+to the closer of the MSB and the \text{last} iterator. Missing bits from the 
+read are padded with 0 bits in the versions of the algorithm where a custom 
+comparator is not passed. Next, we check the read word to see if it is greater 
+than zero. If it is greater than zero, we know there is a set bit somewhere 
+within the word. We can find the exact position of the set bit using 
+\texttt{\_tzcnt} and return this position as an iterator. If \texttt{first} is 
+not equal to \texttt{last}, we advance first to the 0th bit of the next word.
 
-While \texttt{first} is not equal to \texttt{last} and \texttt{last} is not in the same word as \texttt{first} (marking a final and partial word), we read whole words as normal and check for set bits as previously described.
+While \texttt{first} is not equal to \texttt{last} and \texttt{last} is not in 
+the same word as \texttt{first} (marking a final and partial word), we read 
+whole words as normal and check for set bits as previously described.
 
-If we arrive at a final, partial word, we again take a partial read of the bits remaining in the range, padding any missing bits with 0. We check for set bits as normal and return an iterator if a set bit was found.
+If we arrive at a final, partial word, we again take a partial read of the bits 
+remaining in the range, padding any missing bits with 0. We check for set bits 
+as normal and return an iterator if a set bit was found.
 
-If we have scanned the entire range and no set bits were found, we simply return \texttt{first}.
+If we have scanned the entire range and no set bits were found, we simply 
+return \texttt{first}.
 
 \subsubsection{\texttt{replace}}
 \paragraph{Description}
 Replaces 0s with 1s or vice versa in a range \texttt{[first, last)}.
 
 \paragraph{Implementation}
-Implementation follows a typical sequential processing of words in the range. First, the word pointed to by \texttt{first} is processed. Next, any full intermediary words within \texttt{[first, last)} are processed. Finally, if there is a remaining partial word bounded by \texttt{last}, it is handled.
+Implementation follows a typical sequential processing of words in the range. 
+First, the word pointed to by \texttt{first} is processed. Next, any full 
+intermediary words within \texttt{[first, last)} are processed. Finally, if 
+there is a remaining partial word bounded by \texttt{last}, it is handled.
 
-For full words, replacement is trivial. If we are replacing 0s with 1s, we simply set each word equal to -1. If we are replacing 1s with 0s, we set each word equal to 0. Partial words are slightly more complicated. For some processed partial word starting at bit index $i$ and ending at index $j$, we create a mask where bits are unset between $i$ and $j$ and set outside of the range. If we are replacing 0s with 1s, we do a bitwise or between the full word being processed and the mask. If we are replacing 1s with 0s, we do a bitwise and between the full word being processed and the XOR of the mask. This replaces bits within the bounds of the range while not modifying any bits outside the range.
+For full words, replacement is trivial. If we are replacing 0s with 1s, we 
+simply set each word equal to -1. If we are replacing 1s with 0s, we set each 
+word equal to 0. Partial words are slightly more complicated. For some processed 
+partial word starting at bit index $i$ and ending at index $j$, we create a mask 
+where bits are unset between $i$ and $j$ and set outside of the range. If we are 
+replacing 0s with 1s, we do a bitwise or between the full word being processed 
+and the mask. If we are replacing 1s with 0s, we do a bitwise and between the 
+full word being processed and the XOR of the mask. This replaces bits within 
+the bounds of the range while not modifying any bits outside the range.
 
 \subsubsection{\texttt{min\_element}}
 \paragraph{Description}
-Locates the smallest element in a range \texttt{[first, last)} and returns an iterator to the element.
+Locates the smallest element in a range \texttt{[first, last)} and returns an 
+iterator to the element.
 
 \paragraph{Implementation}
-Implementation follows a typical sequential processing of words in the range. First, the word pointed to by \texttt{first} is processed. Next, any full intermediary words within \texttt{[first, last)} are processed. Finally, if there is a remaining partial word bounded by \texttt{last}, it is handled.
+Implementation follows a typical sequential processing of words in the range. 
+First, the word pointed to by \texttt{first} is processed. Next, any full 
+intermediary words within \texttt{[first, last)} are processed. Finally, if 
+there is a remaining partial word bounded by \texttt{last}, it is handled.
 
-To locate 0's, we read words and pad any missing bits with 1s. We use a bitwise not to flip all of the bits so that we can use \texttt{\_tzcnt} (which counts the number of 0s from LSB to the first 1) to find the position of the first 0. We return an iterator to this position or \texttt{first} if no zero exists.
+To locate 0's, we read words and pad any missing bits with 1s. We use a 
+bitwise not to flip all of the bits so that we can use \texttt{\_tzcnt} 
+(which counts the number of 0s from LSB to the first 1) to find the position of 
+the first 0. We return an iterator to this position or \texttt{first} if no zero 
+exists.
 
 
 \subsection{Modifying Algorithms}
 \label{subsec:modifyingAlgs}
+
+\subsubsection{\texttt{swap_ranges}}
+\label{subsubsec:swap_ranges}
+\paragraph{Description}
+Swaps all elements in the range [first, last) starting from first and 
+proceeding to last - 1 to the second range beginning at first2. 
+The behavior is undefined if the sequences overlap.
+
+\paragraph{Implementation}
+    If \texttt{first1.position() == first2.position()} and they are of the same
+    word type, then we just perform swaps on entire words at a time. Otherwise,
+    let $n=\max(first1.position(), first2.position())$ and
+    $m = digits - n$. Then we first swap $m$ bits, which will align one of the
+    iterators. We then swap $n$ bits which will align the other iterator. We 
+    continue this until we reach the end. This gaurantees two swaps per word.
+
+\paragraph{Comments}
+\begin{itemize}
+    \item Not functional on ranges of different word types. 
+    \item It may be helpful to break the source code up into smaller functions. 
+\end{itemize}
 
 \subsubsection{\texttt{copy}}
 \label{subsubsec:copy}
@@ -191,8 +245,8 @@ See psuedocode below:
             \State Construct words of \texttt{dst\_word\_type}
             from the source and assign to destination.
         \EndWhile
-        \State If the last iterator is not aligned, copy the remaining bits to the
-            final word.
+        \State If the last iterator is not aligned, copy the remaining bits to 
+            the final word.
         \EndFunction
     \end{algorithmic}
 \end{algorithm}
@@ -208,15 +262,17 @@ See psuedocode below:
 \begin{itemize}
     \item[\texttt{shift\_left}] Shifts the elements towards the beginning of the 
             range. If $n \leq 0 || n \geq last - first$, there are no effects. 
-            Otherwise, for every integer $i$ in $[0, last - first - n)$, moves the 
-            element originally at position $first + n + i$ to position $first + i$. 
-            The moves are performed in increasing order of i starting from.
+            Otherwise, for every integer $i$ in $[0, last - first - n)$, moves 
+            the element originally at position $first + n + i$ to position 
+            $first + i$. The moves are performed in increasing order of i 
+            starting from.
     \item[\texttt{shift\_right}] Shifts the elements towards the end of the 
-        range. If $n \leq 0 || n \geq last - first$, there are no effects. Otherwise, 
-        for every integer $i$ in $[0, last - first - n)$, moves the element 
-        originally at position $first + i$ to position $first + n + i$. If ForwardIt 
-        meets the LegacyBidirectionalIterator requirements, then the moves are 
-        performed in decreasing order of $i$ starting from $last - first - n - 1$.
+        range. If $n \leq 0 || n \geq last - first$, there are no effects. 
+        Otherwise, for every integer $i$ in $[0, last - first - n)$, moves the 
+        element originally at position $first + i$ to position $first + n + i$. 
+        If ForwardIt meets the LegacyBidirectionalIterator requirements, then 
+        the moves are performed in decreasing order of $i$ starting from 
+        $last - first - n - 1$.
 \end{itemize}
 
 \paragraph{Implementation}
