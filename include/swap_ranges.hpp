@@ -45,12 +45,15 @@ constexpr bit_iterator<ForwardIt2> swap_ranges(
     ForwardIt1 it1 = first1.base();
     ForwardIt2 it2 = first2.base();
     
+    if (first1 == last1)
+        return first2;
+
     if constexpr (digits1 == digits2) {
         // All bits in first1 range are in 1 word
         if (std::next(it1, is_last1_aligned) == last1.base()) {
             size_type1 digits_to_copy = distance(first1, last1); 
             if (first1.position() >= first2.position()) {
-                _bitexch(
+                _bitexch<word_type1, size_type1>(
                         *it1, 
                         *it2, 
                         first1.position(), 
@@ -62,7 +65,7 @@ constexpr bit_iterator<ForwardIt2> swap_ranges(
                         digits_to_copy,
                         digits2 - first2.position()
                 );
-                _bitexch(
+                _bitexch<word_type1, size_type1>(
                         *it1, 
                         *it2, 
                         first1.position(), 
@@ -70,11 +73,11 @@ constexpr bit_iterator<ForwardIt2> swap_ranges(
                         partial_digits_to_copy
                 );
                 if (digits_to_copy > partial_digits_to_copy) {
-                    _bitexch(
+                    _bitexch<word_type1, size_type1>(
                             *it1, 
                             *(++it2), 
                             first1.position() + partial_digits_to_copy, 
-                            static_cast<size_type1>(0),
+                            0,
                             digits_to_copy - partial_digits_to_copy
                     );
                 }
@@ -84,7 +87,7 @@ constexpr bit_iterator<ForwardIt2> swap_ranges(
         // first1 range spans multiple words, 
         // but both ranges have same alignment    
         } else if (first1.position() == first2.position()) {
-            _bitexch<word_type1>(
+            _bitexch<word_type1, size_type1>(
                     *it1++, 
                     *it2++, 
                     first1.position(), 
@@ -94,10 +97,10 @@ constexpr bit_iterator<ForwardIt2> swap_ranges(
                 std::swap(*it1++, *it2++);
             }
             if (!is_last1_aligned) {
-                _bitexch(
+                _bitexch<word_type1, size_type1>(
                         *it1, 
                         *it2, 
-                        static_cast<size_type1>(0), 
+                        0,
                         last1.position()
                 );
             }
@@ -108,7 +111,7 @@ constexpr bit_iterator<ForwardIt2> swap_ranges(
             // 1. Align first1
             size_type1 digits_to_copy = digits1 - first1.position();
             if (first1.position() > first2.position()) {
-                _bitexch(
+                _bitexch<word_type1, size_type1>(
                         *it1++, 
                         *it2, 
                         first1.position(), 
@@ -117,18 +120,18 @@ constexpr bit_iterator<ForwardIt2> swap_ranges(
                 );
             } else {
                 size_type1 partial_digits_to_copy = digits2 - first2.position();
-                _bitexch(
+                _bitexch<word_type1, size_type1>(
                         *it1, 
                         *it2++, 
                         first1.position(), 
                         first2.position(),
                         partial_digits_to_copy
                 );
-                _bitexch(
+                _bitexch<word_type1, size_type1>(
                         *it1++, 
                         *it2, 
                         first1.position() + partial_digits_to_copy, 
-                        static_cast<size_type1>(0),
+                        0,
                         digits_to_copy - partial_digits_to_copy
                 );
             }
@@ -136,18 +139,18 @@ constexpr bit_iterator<ForwardIt2> swap_ranges(
             digits_to_copy = digits2 - first2.position();
             // 2. Exchange full words
             while (it1 != last1.base()) {
-                _bitexch(
+                _bitexch<word_type1, size_type1>(
                         *it1,
                         *it2++,
-                        static_cast<size_type1>(0),
+                        0,
                         first2.position(),
                         digits_to_copy
                 );
-                _bitexch(
+                _bitexch<word_type1, size_type1>(
                         *it1++,
                         *it2,
                         digits_to_copy,
-                        static_cast<size_type1>(0),
+                        0,
                         digits1 - digits_to_copy
                 );
             }
@@ -155,27 +158,27 @@ constexpr bit_iterator<ForwardIt2> swap_ranges(
             if (!is_last1_aligned) {
                 size_type2 partial_digits_to_copy = digits2 - first2.position();
                 if (last1.position() < partial_digits_to_copy) {
-                    _bitexch(
+                    _bitexch<word_type1, size_type1>(
                             *it1,
                             *it2,
-                            static_cast<size_type1>(0),
+                            0,
                             first2.position(),
                             last1.position()
                     );
                     return bit_iterator(it2, first2.position()) + last1.position();
                 } else {
-                    _bitexch(
+                    _bitexch<word_type1, size_type1>(
                             *it1,
                             *it2++,
-                            static_cast<size_type1>(0),
+                            0,
                             first2.position(),
                             partial_digits_to_copy
                     );
-                    _bitexch(
+                    _bitexch<word_type1, size_type1>(
                             *it1,
                             *it2,
                             partial_digits_to_copy,
-                            static_cast<size_type1>(0),
+                            0,
                             last1.position() - partial_digits_to_copy
                     );
                     return bit_iterator(it2, last1.position() - partial_digits_to_copy);
