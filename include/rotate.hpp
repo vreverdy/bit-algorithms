@@ -48,7 +48,7 @@ bit_iterator<ForwardIt> __rotate_via_copy_begin(
         bits_left_to_copy -= digits;
     }
     bit_iterator<ForwardIt> ret = shift_left(first, last, k);
-    std::copy(
+    copy(
         bit_iterator<word_type*>(copy_arr, first.position()), 
         bit_iterator<word_type*>(
                 copy_arr, 
@@ -86,7 +86,7 @@ bit_iterator<ForwardIt> __rotate_via_copy_end(
         bits_left_to_copy -= digits;
     }
     bit_iterator<ForwardIt> ret = shift_right(first, last, k);
-    std::copy(
+    copy(
         bit_iterator<word_type*>(copy_arr, n_first.position()), 
         bit_iterator<word_type*>(
                 copy_arr, 
@@ -126,7 +126,7 @@ bit_iterator<ForwardIt> __rotate_via_raw(
     //  } while (first2 != last);
     
     // 1a. Align first so that we are swapping a whole word
-    first2 = std::swap_ranges(
+    first2 = swap_ranges(
             first,
             bit_iterator<ForwardIt>(it),
             first2
@@ -138,7 +138,7 @@ bit_iterator<ForwardIt> __rotate_via_raw(
         // Note 1b. If we swap past n_first, we need to update its location.
         if (distance(first, n_first) < digits) 
             n_first = first2 + distance(first, n_first);
-        first2 = std::swap_ranges(
+        first2 = swap_ranges(
                 first,
                 first + digits,
                 first2
@@ -149,7 +149,7 @@ bit_iterator<ForwardIt> __rotate_via_raw(
     difference_type remainder = distance(first2, last);
     if (is_within(first, n_first, remainder))
         n_first = first2 + distance(first, n_first);
-    first2 = std::swap_ranges(
+    first2 = swap_ranges(
             first,
             first + remainder,
             first2
@@ -187,7 +187,7 @@ bit_iterator<ForwardIt> __rotate_via_raw(
         //
         // 2b. Align the first iterator and use the same strategy as in 1b.
         it = std::next(first.base());
-        first2 = std::swap_ranges(
+        first2 = swap_ranges(
                 first,
                 bit_iterator<ForwardIt>(it),
                 first2
@@ -198,7 +198,7 @@ bit_iterator<ForwardIt> __rotate_via_raw(
                 if (is_within(first2, last, distance(first, n_first)-1)) { 
                     // We reach the last iterator
                     remainder = distance(first2, last);
-                    first2 = std::swap_ranges(
+                    first2 = swap_ranges(
                             first,
                             first + distance(first2, last),
                             first2
@@ -207,7 +207,7 @@ bit_iterator<ForwardIt> __rotate_via_raw(
                     first2 = n_first;
                 } else {
                     // We reach the n_first iterator
-                    first2 = std::swap_ranges(
+                    first2 = swap_ranges(
                             first,
                             first + distance(first, n_first),
                             first2
@@ -226,7 +226,7 @@ bit_iterator<ForwardIt> __rotate_via_raw(
             else if (is_within<digits-1>(first2, last)) {
                 // We reach the n_first iterator
                 remainder = distance(first2, last);
-                first2 = std::swap_ranges(
+                first2 = swap_ranges(
                         first,
                         first + distance(first2, last),
                         first2
@@ -242,7 +242,7 @@ bit_iterator<ForwardIt> __rotate_via_raw(
                 }
             }
             else {
-                first2 = std::swap_ranges(
+                first2 = swap_ranges(
                         first,
                         first + digits,
                         first2
