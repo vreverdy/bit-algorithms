@@ -29,7 +29,6 @@ bit_iterator<ForwardIt> shift_right(bit_iterator<ForwardIt> first,
                                    typename bit_iterator<ForwardIt>::difference_type n
 )
 {
-
     // Assertions
      _assert_range_viability(first, last); 
 
@@ -44,7 +43,30 @@ bit_iterator<ForwardIt> shift_right(bit_iterator<ForwardIt> first,
     const bool is_first_aligned = first.position() == 0;
     const bool is_last_aligned = last.position() == 0;
     auto d = distance(first, last);
-    if (n <= 0 || n >= d) return first;
+
+    // Out of range cases
+    if (n <= 0) return first;
+    else if (n >= d) return last;
+
+    // Single word case
+    if (first.base() == last.base()) {
+        *first.base() = _bitblend<word_type>(
+                *first.base(),
+                (
+                    *first.base() & (
+                        static_cast<word_type>(-1) << first.position()
+                    )
+                ) << n,
+                first.position(),
+                last.position() - first.position()
+        );
+        return bit_iterator<ForwardIt>(
+                first.base(), 
+                first.position() +  n
+        );
+    }
+
+    // Multiple word case
     word_type first_value = *first.base();
     word_type last_value = !is_last_aligned ? *last.base() : 0;
     word_type mask = is_first_aligned ? 
@@ -54,6 +76,7 @@ bit_iterator<ForwardIt> shift_right(bit_iterator<ForwardIt> first,
                 (static_cast<word_type>(1) << (digits - first.position())) - 1
         ) << first.position();
     *first.base() = *first.base() & mask;
+    // Shift words to the right
     ForwardIt it = word_shift_right(first.base(), 
                                std::next(last.base(), 
                                          !is_last_aligned
@@ -93,8 +116,8 @@ bit_iterator<ForwardIt> shift_right(bit_iterator<ForwardIt> first,
                 digits - last.position()
         );
     }
-    std::advance(first, remaining_bitshifts);
-    return first;
+    std::advance(d_first, remaining_bitshifts);
+    return d_first;
 }
 
 template <class ForwardIt>
@@ -117,46 +140,57 @@ bit_iterator<ForwardIt> shift_left(bit_iterator<ForwardIt> first,
     const bool is_first_aligned = first.position() == 0;
     const bool is_last_aligned = last.position() == 0;
     auto d = distance(first, last);
-    if (n <= 0 || n >= d) return first;
+
+    // Out of range cases
+    if (n <= 0) return last;
+    if (n >= d) return first;
+
+
+    // Single word case
+    if (first.base() == last.base()) {
+        *first.base() = _bitblend<word_type>(
+                *first.base(),
+                ((
+                    *first.base() & (
+                        static_cast<word_type>(-1) >> (
+                            digits - last.position()
+                        )
+                    )
+                )) >> n,
+                first.position(),
+                last.position() - first.position()
+        );
+        return bit_iterator<ForwardIt>(
+                first.base(), 
+                first.position() + d - n
+        );
+    }
+
     word_type first_value = *first.base();
     word_type last_value = !is_last_aligned ? *last.base() : 0;
 
     // Shift words to the left using std::shift 
-    ForwardIt new_last_base = word_shift_left(first.base(), 
-                                         last.base(), 
-                                         word_shifts
-    );
     // Mask out-of-range bits so that we don't incorporate them
     if (!is_last_aligned) {
-        *new_last_base &= (static_cast<word_type>(1) << last.position()) - 1; 
+        *last.base() &= (static_cast<word_type>(1) << last.position()) - 1; 
     }
-    bit_iterator<ForwardIt> d_last(new_last_base, last.position());
+    ForwardIt new_last_base = word_shift_left(first.base(), 
+                                    last.base(),
+                                    word_shifts
+    );
+    if (!is_last_aligned) {
+        *new_last_base = *last.base();
+    }
     // Shift bit sequence to the lsb 
     if (remaining_bitshifts) {
         ForwardIt it = first.base();
-        // Desired last iterator may be one before the current last 
-        // so we need to keep track of the penultimate iterator.
-        ForwardIt latent_it = it;
         // _shrd all words except the last
         for (; std::next(it, is_last_aligned) != new_last_base; ++it) {
             *it = _shrd<word_type>(*it, *std::next(it), remaining_bitshifts);
-            latent_it = it;
+            //latent_it = it;
         }
         // For the last word simpy right shift
         *it >>= remaining_bitshifts;
-
-        if (is_last_aligned) {
-            d_last = bit_iterator<ForwardIt>(it, digits-remaining_bitshifts);
-        } else { // Otherwise, last word may be the word before new_last_word
-            if (remaining_bitshifts > last.position()) 
-            {
-                d_last = bit_iterator<ForwardIt>(latent_it, 
-                            digits-(remaining_bitshifts - last.position())); 
-            } else {
-                d_last = bit_iterator<ForwardIt>(it, 
-                            last.position() - remaining_bitshifts);
-            }
-        }
     }
     // Blend bits of the first element
     if (!is_first_aligned) {
@@ -176,6 +210,8 @@ bit_iterator<ForwardIt> shift_left(bit_iterator<ForwardIt> first,
                 digits - last.position()
         );
     }
+    //TODO is this more or less inefficient than having a latent iterator?
+    bit_iterator<ForwardIt> d_last = next(first, d-n);
     return d_last;
 }
 // -------------------------------------------------------------------------- //
