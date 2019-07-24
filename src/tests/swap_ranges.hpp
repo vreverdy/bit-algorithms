@@ -27,9 +27,8 @@
 TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: single word", 
                            "[template][product]", 
                            (std::vector, std::list, std::forward_list), 
-                           (unsigned short)) {
-    //, unsigned int, 
-                            //unsigned long, unsigned long long)) {
+                           (unsigned char, unsigned short, unsigned int,
+                            unsigned long)) {
     using container_type = TestType;
     using num_type = typename container_type::value_type;
     auto container_size = 4;
@@ -37,16 +36,18 @@ TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: single word",
     container_type bitcont1 = make_random_container<container_type>
                                      (container_size); //, 0, 0);
     container_type bitcont2 = make_random_container<container_type, unsigned short>
-                                     (container_size*8); //, std::numeric_limits<num_type>::max(),
+                                     (container_size); //, std::numeric_limits<num_type>::max(),
                                       //std::numeric_limits<num_type>::max());
     auto boolcont1 = bitcont_to_boolcont(bitcont1);
     auto boolcont2 = bitcont_to_boolcont(bitcont2);
     auto bfirst1 = bit::bit_iterator<decltype(std::begin(bitcont1))>(std::begin(bitcont1));
     auto blast1 = bit::bit_iterator<decltype(std::end(bitcont1))>(std::end(bitcont1));
     auto bfirst2 = bit::bit_iterator<decltype(std::begin(bitcont2))>(std::begin(bitcont2));
+    auto blast2 = bit::bit_iterator<decltype(std::end(bitcont2))>(std::end(bitcont2));
     auto bool_first1 = std::begin(boolcont1);
-    auto bool_last1 = std::end(boolcont1);
+    auto bool_last2 = std::end(boolcont2);
     auto bool_first2 = std::begin(boolcont2);
+    auto bool_last1 = std::end(boolcont1);
     auto bool_first1_t = bool_first1;
     auto bool_first2_t = bool_first2;
     auto bfirst1_t = bfirst1;
@@ -59,6 +60,7 @@ TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: single word",
     auto bret = bit::swap_ranges(bfirst1, bfirst1_t, bfirst2);
     auto bool_ret = std::swap_ranges(bool_first1, bool_first1_t, bool_first2);
     REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
     REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
 
     bfirst1_t = std::next(bfirst1, 2);
@@ -68,6 +70,7 @@ TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: single word",
     bret = bit::swap_ranges(bfirst1, blast1_t, bfirst2);
     bool_ret = std::swap_ranges(bool_first1, bool_last1_t, bool_first2);
     REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
     REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
 
     bfirst1_t = std::next(bfirst1, 3);
@@ -79,15 +82,15 @@ TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: single word",
     bret = bit::swap_ranges(bfirst1, blast1_t, bfirst2);
     bool_ret = std::swap_ranges(bool_first1, bool_last1_t, bool_first2);
     REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
     REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
 }
 
 TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: multiple words aligned", 
                            "[template][product]", 
                            (std::vector, std::list, std::forward_list), 
-                           (unsigned short)) {
-    //, unsigned int, 
-                            //unsigned long, unsigned long long)) {
+                           (unsigned char, unsigned short, unsigned int,
+                            unsigned long)) {
     using container_type = TestType;
     using num_type = typename container_type::value_type;
     auto container_size = 5;
@@ -102,9 +105,11 @@ TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: multiple words aligned",
     auto bfirst1 = bit::bit_iterator<decltype(std::begin(bitcont1))>(std::begin(bitcont1));
     auto blast1 = bit::bit_iterator<decltype(std::end(bitcont1))>(std::end(bitcont1));
     auto bfirst2 = bit::bit_iterator<decltype(std::begin(bitcont2))>(std::begin(bitcont2));
+    auto blast2 = bit::bit_iterator<decltype(std::end(bitcont2))>(std::end(bitcont2));
     auto bool_first1 = std::begin(boolcont1);
     auto bool_last1 = std::end(boolcont1);
     auto bool_first2 = std::begin(boolcont2);
+    auto bool_last2 = std::end(boolcont2);
     auto bool_first1_t = bool_first1;
     auto bool_first2_t = bool_first2;
     auto bfirst1_t = bfirst1;
@@ -117,6 +122,7 @@ TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: multiple words aligned",
     auto bret = bit::swap_ranges(bfirst1_t, blast1_t, bfirst2_t);
     auto bool_ret = std::swap_ranges(bool_first1_t, bool_last1_t, bool_first2_t);
     REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
     REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
 
     blast1_t = std::next(bfirst1, digits*2-5);
@@ -124,6 +130,7 @@ TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: multiple words aligned",
     bret = bit::swap_ranges(bfirst1_t, blast1_t, bfirst2_t);
     bool_ret = std::swap_ranges(bool_first1_t, bool_last1_t, bool_first2_t);
     REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
     REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
 
     bfirst1_t = std::next(bfirst1, 3);
@@ -135,6 +142,7 @@ TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: multiple words aligned",
     bret = bit::swap_ranges(bfirst1_t, blast1_t, bfirst2_t);
     bool_ret = std::swap_ranges(bool_first1_t, bool_last1_t, bool_first2_t);
     REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
     REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
 
     bfirst1_t = std::next(bfirst1, digits-1);
@@ -146,15 +154,15 @@ TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: multiple words aligned",
     bret = bit::swap_ranges(bfirst1_t, blast1_t, bfirst2_t);
     bool_ret = std::swap_ranges(bool_first1_t, bool_last1_t, bool_first2_t);
     REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
     REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
 }
 
 TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: multiple words unaligned", 
                            "[template][product]", 
                            (std::vector, std::list, std::forward_list), 
-                           (unsigned short)) {
-    //, unsigned int, 
-                            //unsigned long, unsigned long long)) {
+                           (unsigned char, unsigned short, unsigned int,
+                            unsigned long)) {
     using container_type = TestType;
     using num_type = typename container_type::value_type;
     auto container_size = 5;
@@ -169,9 +177,11 @@ TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: multiple words unaligned",
     auto bfirst1 = bit::bit_iterator<decltype(std::begin(bitcont1))>(std::begin(bitcont1));
     auto blast1 = bit::bit_iterator<decltype(std::end(bitcont1))>(std::end(bitcont1));
     auto bfirst2 = bit::bit_iterator<decltype(std::begin(bitcont2))>(std::begin(bitcont2));
+    auto blast2 = bit::bit_iterator<decltype(std::end(bitcont2))>(std::end(bitcont2));
     auto bool_first1 = std::begin(boolcont1);
     auto bool_last1 = std::end(boolcont1);
     auto bool_first2 = std::begin(boolcont2);
+    auto bool_last2 = std::end(boolcont2);
     auto bool_first1_t = bool_first1;
     auto bool_first2_t = bool_first2;
     auto bfirst1_t = bfirst1;
@@ -188,6 +198,7 @@ TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: multiple words unaligned",
     auto bret = bit::swap_ranges(bfirst1_t, blast1_t, bfirst2_t);
     auto bool_ret = std::swap_ranges(bool_first1_t, bool_last1_t, bool_first2_t);
     REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
     REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
 
     blast1_t = std::next(bfirst1, digits*2-5);
@@ -199,6 +210,7 @@ TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: multiple words unaligned",
     bret = bit::swap_ranges(bfirst1_t, blast1_t, bfirst2_t);
     bool_ret = std::swap_ranges(bool_first1_t, bool_last1_t, bool_first2_t);
     REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
     REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
 
     bfirst1_t = std::next(bfirst1, digits-1);
@@ -210,6 +222,7 @@ TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: multiple words unaligned",
     bret = bit::swap_ranges(bfirst1_t, blast1_t, bfirst2_t);
     bool_ret = std::swap_ranges(bool_first1_t, bool_last1_t, bool_first2_t);
     REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
     REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
 
     bfirst1_t = std::next(bfirst1, digits-2);
@@ -221,15 +234,15 @@ TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: multiple words unaligned",
     bret = bit::swap_ranges(bfirst1_t, blast1_t, bfirst2_t);
     bool_ret = std::swap_ranges(bool_first1_t, bool_last1_t, bool_first2_t);
     REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
     REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
 }
 
 TEMPLATE_PRODUCT_TEST_CASE("swap_ranges: multiple words unaligned same container", 
                            "[template][product]", 
                            (std::vector, std::list, std::forward_list), 
-                           (unsigned char)) {
-    //, unsigned int, 
-                            //unsigned long, unsigned long long)) {
+                           (unsigned char, unsigned short, unsigned int,
+                            unsigned long)) {
     using container_type = TestType;
     using num_type = typename container_type::value_type;
     auto container_size = 7;
