@@ -263,22 +263,68 @@ bit_iterator<BidirectionalIt> __rotate_via_raw(
    bit_iterator<BidirectionalIt> last,
    std::bidirectional_iterator_tag
 ) {
+    // Types and constants
+    using word_type = typename bit_iterator<BidirectionalIt>::word_type;
+    using size_type = typename bit_iterator<BidirectionalIt>::size_type;
+    using difference_type = 
+        typename bit_iterator<BidirectionalIt>::difference_type;
+    constexpr difference_type digits = binary_digits<word_type>::value;
+
     // first, ... , n_first-1, n_first, ... , last-1, last
     reverse(first, n_first);
     // n_first-1, ... , first, n_first, ... , last-1, last
     reverse(n_first, last);
     // n_first-1, ... , first, last-1, ... , n_first, last
     
-    // TODO need a partial reverse here...
-    while(first != n_first && n_first != last) {
-        std::iter_swap(first++, --last);
+    // Now we reverse the entire sequence. We split the reverse up into two
+    // sections:
+    // 1. Swap the outside elements until we come across n_first
+    //    
+    //     CORRESPONDING GCC CODE:
+    //     while (first != n_first && n_first != last) { 
+    //         std::iter_swap(first++, --last);
+    //     }
+    //
+    // 2. Call reverse on the remaining range.
+    
+    
+    // 1a. Swap partial first word to align the first iterator.
+    size_type digits_to_swap = digits - first.position();
+    word_type temp1 = _bitswap(*first.base());
+    advance(last, -(digits_to_swap));
+    word_type temp2 = _bitswap(get_word<word_type>(last, digits_to_swap));
+    write_word<word_type>(temp1, last, digits_to_swap);
+    write_word<word_type>(temp2 >> first.position(), first, digits_to_swap);
+    first += digits_to_swap;
+
+    // 1b. Swap full words.
+    BidirectionalIt it = first.base();
+    while (!is_within<digits>(first, n_first) && !is_within<digits>(n_first, last)) {
+        advance(last, -digits);
+        temp2 = _bitswap(get_word<word_type>(last, digits));
+        *it = _bitswap(*it);
+        std::swap(*it, temp2);
+        write_word<word_type>(temp2, last);
+        ++it;
     }
+
+    // 1.c Swap remaining bits.
+    first = bit_iterator<BidirectionalIt>(it);
+    digits_to_swap = (is_within<digits>(first, n_first)
+            && !is_within(n_first, last, distance(first, n_first)))
+            ? n_first.position() : distance(n_first, last); 
+    temp1 = _bitswap(*first.base());
+    advance(last, -(digits_to_swap));
+    temp2 = _bitswap(get_word<word_type>(last, digits_to_swap));
+    write_word<word_type>(temp1 >> (digits - digits_to_swap), last, digits_to_swap);
+    write_word<word_type>(temp2 >> (digits - digits_to_swap), first, digits_to_swap);
+    first += digits_to_swap;
+
+    // 2. Reverse remaining range
     if (first == n_first) {
-        // first == n_first
         reverse(n_first, last);
         return last;
     } else {
-        // n_first = last
         reverse(first, n_first);
         return first;
     }
