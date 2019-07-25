@@ -11,7 +11,7 @@
 
 % =============================== CONFIGURATION ============================== %
 % Document class
-\documentclass[letterpaper, 8pt, twocolumn]{article}
+\documentclass[letterpaper, 8pt]{article}
 % ---------------------------------------------------------------------------- %
 % Packages
 \usepackage[
@@ -203,7 +203,7 @@ exists.
 \subsection{Modifying Algorithms}
 \label{subsec:modifyingAlgs}
 
-\subsubsection{\texttt{swap_ranges}}
+\subsubsection{\texttt{swap\_ranges}}
 \label{subsubsec:swap_ranges}
 \paragraph{Description}
 Swaps all elements in the range [first, last) starting from first and 
@@ -327,6 +327,100 @@ $$N=\floor*{\frac{n}{|\texttt{word\_type}|}}$$ $$n'=n-N*|\texttt{word\_type}|$$
         can avoid temporary variables and just use \texttt{\_shld} starting 
         from last and going to first.
 \end{itemize}
+
+\subsubsection{\texttt{rotate}}
+\label{subsubsec:rotate}
+\paragraph{Description}
+Specifically, \texttt{rotate} swaps the elements in the range 
+\texttt{[first, last)} in such a way that the element \texttt{n\_first} 
+becomes the first element of the new range and \texttt{n\_first - 1} becomes 
+the last element.
+
+\paragraph{Implementation of ForwardIt specialized rotate}
+See code below. This algorithm works such that the \texttt{first} iterator
+increases at every step. This means there are at most 2 writes/position. However
+instead of using \texttt{iter\_swap}, we swap full words at a time.\\
+
+\begin{lstlisting}[language=C++, caption=Rotate on forward iterators]
+// 1. Swap the first (last - n_first) bits to the correct position
+bit_iterator<ForwardIt> first2 = n_first;
+do {
+    std::iter_swap(first, first2);
+    ++first;
+    ++first2;
+    if (first == n_first)
+        n_first = first2;
+} while (first2 != last);
+
+bit_iterator<ForwardIt> ret = first;
+first2 = n_first;
+
+// 2. At this point, positions first...first+(distance(n_first, last))
+// are correct. The subproblem is to now rotate on the current 
+// first, n_first, last
+//
+// We use the same strategy as above, with the change that now
+// when we encounter first2 == last in the loop, we set first2
+// to n_first. 
+while (first2 != last) {
+    std::iter_swap(first, first2);
+    ++first;
+    ++first2;
+    if (first == n_first)
+        n_first = first2;
+    else if (first2 == last)
+        first2 = n_first;
+}
+return ret;
+\end{lstlisting}
+
+\paragraph{Implementation of BidirectionalIt specialized rotate}
+See code below. While the code below simply shows an \texttt{iter\_swap}, the 
+implementation we used is a bit more complicated. In order to take advantage
+of words, what we need to do is a reverse swap i.e. given two words \texttt{t1}
+and \texttt{t2}, we want to swap them such that each holds the reverse version
+of the other word. Essentially all it comes down to is a reverse on each word
+and then a regular swap.
+
+\begin{lstlisting}[language=C++, caption=Rotate on bidirectional iterators]
+// 1. Swap the outside elements until we come across n_first
+while (first != n_first && n_first != last) { 
+    std::iter_swap(first++, --last);
+}
+// 2. Call reverse on the remaining range.
+if (first == n_first) {
+    reverse(n_first, last);
+    return last;
+} else {
+    reverse(first, n_first);
+    return first;
+}
+\end{lstlisting}
+
+\paragraph{Implementation of BidirectionalIt specialized rotate}
+Code not displayed, as even the \texttt{std::} version is quite lengthy. 
+The core logic is similar as the previous algorithms i.e. swapping ranges, 
+however the RAI version swaps chunks at a time, since we can determine in 
+$O(1)$ time what ranges to swap. 
+
+\paragraph{Comments}
+\begin{itemize}
+    \item Instead of calling \texttt{swap\_ranges} on ranges of only 1 word at
+        a time (since we don't know if we'll hit \texttt{n\_first} or 
+        \texttt{last} first), perhaps it would be best jsut to increment our 
+        iterators to see which one is hit first and then call 
+        \texttt{swap\_ranges} on the resulting range? To my knowledge there 
+        wouldn't be any extra increments, and the code would be much simpler.
+
+    \item Need to explain the RAI version. It will probably be lengthy though... 
+    \item There are also 2 functions that short-circuit the rotate algorithms
+        when \texttt{distance(first, n\_first) <= digits)} or 
+        \texttt{distance(n\_first, last) <= digits)}. It is done by just copying
+        the small section, shifting the entire range accordingly and pasting 
+        the copied part back to the other side.
+\end{itemize}
+
+
 % ---------------------------------------------------------------------------- %
 \bibliography{bit-algorithms}
 % ---------------------------------------------------------------------------- %
