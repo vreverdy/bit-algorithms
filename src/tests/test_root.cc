@@ -10,15 +10,17 @@
 // License:         BSD 3-Clause License
 // ========================================================================== //
 
+
+
 // ============================== PREAMBLE ================================== //
 // C++ standard library
 #include <vector>
 #include <list>
 #include <forward_list>
 // Project sources
+#include "test_utils.hpp"
 #include "bit_algorithm_details.hpp"
 #include "bit_details.hpp"
-#include "test_utils.hpp"
 #include "input_container.hpp"
 #include "input_iterator.hpp"
 // Test sources
@@ -33,14 +35,15 @@
 #include "count.hpp"
 #include "copy.hpp"
 #include "shift.hpp"
+#include "swap_ranges.hpp"
 #include "reverse.hpp"
 #include "mismatch.hpp"
 #include "none_of.hpp"
 #include "sample.hpp"
 #include "search.hpp"
 #include "max_element.hpp"
-#include "min_element.hpp"
 #include "padded_read.hpp"
 #include "replace.hpp"
+#include "rotate.hpp"
 // Third party libraries
 // ========================================================================== //
