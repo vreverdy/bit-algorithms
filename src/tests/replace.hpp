@@ -27,7 +27,7 @@
 // --------------------------- Replace Tests ---------------------------- //
 
 TEMPLATE_TEST_CASE("replace: handles single word cases", "[replace]",
-  unsigned short/*, unsigned int, unsigned long, unsigned long long*/) {
+  unsigned short, unsigned int, unsigned long, unsigned long long) {
 
   TestType t = 0;
   TestType all_ones = bit::_all_ones();
