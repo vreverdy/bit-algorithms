@@ -26,7 +26,7 @@ namespace bit {
 //
 // Note: distance(first, n_first) <= 3*digits
 template <class ForwardIt>
-bit_iterator<ForwardIt> __rotate_via_copy_begin(
+bit_iterator<ForwardIt> rotate_via_copy_begin(
    bit_iterator<ForwardIt> first, 
    bit_iterator<ForwardIt> n_first,
    bit_iterator<ForwardIt> last
@@ -64,7 +64,7 @@ bit_iterator<ForwardIt> __rotate_via_copy_begin(
 //
 // Note: distance(n_first, last) <= 3*digits
 template <class ForwardIt>
-bit_iterator<ForwardIt> __rotate_via_copy_end(
+bit_iterator<ForwardIt> rotate_via_copy_end(
    bit_iterator<ForwardIt> first, 
    bit_iterator<ForwardIt> n_first,
    bit_iterator<ForwardIt> last
@@ -100,7 +100,7 @@ bit_iterator<ForwardIt> __rotate_via_copy_end(
 // Rotates a range using forward iterators. Algorithm logic from the GCC
 // implementation
 template <class ForwardIt>
-bit_iterator<ForwardIt> __rotate_via_raw(
+bit_iterator<ForwardIt> rotate_via_raw(
    bit_iterator<ForwardIt> first, 
    bit_iterator<ForwardIt> n_first,
    bit_iterator<ForwardIt> last,
@@ -170,9 +170,9 @@ bit_iterator<ForwardIt> __rotate_via_raw(
     // 2a. See if we can use our rotates that simply copy and shift
     // TODO maybe we should check this at every iteratoration?
     if (is_within<2*digits>(first, n_first)) {
-        __rotate_via_copy_begin(first, n_first, last);
+        rotate_via_copy_begin(first, n_first, last);
     } else if (is_within<2*digits>(n_first, last)) {
-        __rotate_via_copy_end(first, n_first, last);
+        rotate_via_copy_end(first, n_first, last);
     } else {
         // CORRESPONDING GCC CODE:
         //  while (first2 != last) {
@@ -216,10 +216,10 @@ bit_iterator<ForwardIt> __rotate_via_raw(
                     n_first = first2;
                 }
                 if (is_within<2*digits>(first, n_first)) {
-                    __rotate_via_copy_begin(first, n_first, last);
+                    rotate_via_copy_begin(first, n_first, last);
                     break;
                 } else if (is_within<2*digits>(n_first, last)) {
-                    __rotate_via_copy_end(first, n_first, last);
+                    rotate_via_copy_end(first, n_first, last);
                     break;
                 }
             }
@@ -234,10 +234,10 @@ bit_iterator<ForwardIt> __rotate_via_raw(
                 advance(first, remainder);
                 first2 = n_first;
                 if (is_within<2*digits>(first, n_first)) {
-                    __rotate_via_copy_begin(first, n_first, last);
+                    rotate_via_copy_begin(first, n_first, last);
                     break;
                 } else if (is_within<2*digits>(n_first, last)) {
-                    __rotate_via_copy_end(first, n_first, last);
+                    rotate_via_copy_end(first, n_first, last);
                     break;
                 }
             }
@@ -257,7 +257,7 @@ bit_iterator<ForwardIt> __rotate_via_raw(
 // Rotates a range using bidirectional iterators. Algorithm logic from the GCC
 // implementation
 template <class BidirectionalIt>
-bit_iterator<BidirectionalIt> __rotate_via_raw(
+bit_iterator<BidirectionalIt> rotate_via_raw(
    bit_iterator<BidirectionalIt> first, 
    bit_iterator<BidirectionalIt> n_first,
    bit_iterator<BidirectionalIt> last,
@@ -333,7 +333,7 @@ bit_iterator<BidirectionalIt> __rotate_via_raw(
 // Rotates a range using random-access iterators. Algorithm logic from the GCC
 // implementation
 template <class RandomAccessIt>
-bit_iterator<RandomAccessIt> __rotate_via_raw(
+bit_iterator<RandomAccessIt> rotate_via_raw(
    bit_iterator<RandomAccessIt> first, 
    bit_iterator<RandomAccessIt> n_first,
    bit_iterator<RandomAccessIt> last,
@@ -481,7 +481,7 @@ bit_iterator<ForwardIt> rotate(
         write_word(temp, first, static_cast<word_type>(p));
         return new_last;
     }
-    return __rotate_via_raw(
+    return rotate_via_raw(
             first, 
             n_first, 
             last,
