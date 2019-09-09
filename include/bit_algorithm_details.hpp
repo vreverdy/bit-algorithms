@@ -308,14 +308,15 @@ ForwardIt word_shift_right(ForwardIt first,
 )
 {
     auto d = distance(first, last);
-    if (n <= 0 || n >= d) return first;
+    if (n <= 0) return first;
+    if (n >= d) return last;
     ForwardIt it = first;
     std::advance(it, d-n);
     std::rotate(first, it, last);
     it = first;
     std::advance(it, n);
     std::fill(first, it, 0); 
-    return it;
+    return std::next(first, n);
 }
 
 // returns a word consisting of all one bits 
