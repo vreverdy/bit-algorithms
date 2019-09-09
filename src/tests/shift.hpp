@@ -27,7 +27,8 @@
 TEMPLATE_PRODUCT_TEST_CASE("Shift: left_shift- multi word", 
                            "[template][product]", 
                            (std::vector, std::list, std::forward_list), 
-                           (unsigned short, unsigned int, unsigned long)) {
+                           (unsigned char, unsigned short, 
+                            unsigned int, unsigned long)) {
 
     using container_type = TestType;
     using num_type = typename container_type::value_type;
@@ -83,7 +84,8 @@ TEMPLATE_PRODUCT_TEST_CASE("Shift: left_shift- multi word",
 TEMPLATE_PRODUCT_TEST_CASE("Shift: left_shift- single word", 
                            "[template][product]", 
                            (std::vector, std::list, std::forward_list), 
-                           (unsigned short, unsigned int, unsigned long)) {
+                           (unsigned char, unsigned short, 
+                            unsigned int, unsigned long)) {
 
     using container_type = TestType;
     using num_type = typename container_type::value_type;
@@ -146,7 +148,8 @@ TEMPLATE_PRODUCT_TEST_CASE("Shift: left_shift- single word",
 TEMPLATE_PRODUCT_TEST_CASE("Shift: right_shift", 
                            "[template][product]", 
                            (std::vector, std::list, std::forward_list), 
-                           (unsigned short, unsigned int, unsigned long)) {
+                           (unsigned char, unsigned short, 
+                            unsigned int, unsigned long)) {
 
     using container_type = TestType;
     using num_type = typename container_type::value_type;
@@ -202,7 +205,8 @@ TEMPLATE_PRODUCT_TEST_CASE("Shift: right_shift",
 TEMPLATE_PRODUCT_TEST_CASE("Shift: right_shift- single word", 
                            "[template][product]", 
                            (std::vector, std::list, std::forward_list), 
-                           (unsigned short, unsigned int, unsigned long)) {
+                           (unsigned char, unsigned short, 
+                            unsigned int, unsigned long)) {
 
     using container_type = TestType;
     using num_type = typename container_type::value_type;

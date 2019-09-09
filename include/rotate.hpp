@@ -485,7 +485,7 @@ bit_iterator<ForwardIt> rotate(
             first, 
             n_first, 
             last,
-            std::__iterator_category(first.base())
+            typename std::iterator_traits<ForwardIt>::iterator_category()
     );
 }
 
