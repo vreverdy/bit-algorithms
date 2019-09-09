@@ -27,7 +27,7 @@
 // --------------------------- Replace Tests ---------------------------- //
 
 TEMPLATE_TEST_CASE("replace: handles single word cases", "[replace]",
-  unsigned short/*, unsigned int, unsigned long, unsigned long long*/) {
+  unsigned short, unsigned int, unsigned long, unsigned long long) {
 
   TestType t = 0;
   TestType all_ones = bit::_all_ones();
@@ -67,7 +67,7 @@ TEMPLATE_PRODUCT_TEST_CASE("replace: handles multi word cases",
                            (std::vector, std::list, std::forward_list), 
                            (unsigned short, unsigned int, unsigned long)) {
     using container_type = TestType;
-    using cont_iter_type = typename container_type::iterator;
+    //using cont_iter_type = typename container_type::iterator;
     using word_type = typename container_type::value_type;
 
     constexpr word_type all_ones = bit::_all_ones();
