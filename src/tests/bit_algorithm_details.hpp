@@ -23,7 +23,7 @@
 
 
 
-// ----------------------------- Rotate Tests ------------------------------- //
+// ---------------------------- Alg Utils Tests ----------------------------- //
 TEMPLATE_PRODUCT_TEST_CASE("bit_algorithm_details: is_within()", 
                            "[template][product]", 
                            (std::forward_list), 
