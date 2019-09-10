@@ -39,7 +39,6 @@ TEMPLATE_TEST_CASE("Copy: One word copy of same size", "[copy]",
   ); 
 
   auto first = bit::bit_iterator<num_type*>(&bits_1, 0);
-  auto last = bit::bit_iterator<num_type*>(&bits_1+1, 0);
   num_type expected_after_copy = string_as_bits<num_type>(bit_str1);
 
   auto first2 = bit::bit_iterator<num_type*>(&bits_2, 0);
@@ -65,7 +64,7 @@ TEMPLATE_TEST_CASE("Copy: One word partial copy", "[copy]",
   ); 
 
   auto first = bit::bit_iterator<num_type*>(&bits_1, 0);
-  auto last = bit::bit_iterator<num_type*>(&bits_1+1, 0);
+  //auto last = bit::bit_iterator<num_type*>(&bits_1+1, 0);
   num_type expected_after_copy = string_as_bits<num_type>(bit_str1);
 
   auto first2 = bit::bit_iterator<num_type*>(&bits_2, 0);
@@ -88,8 +87,8 @@ TEMPLATE_PRODUCT_TEST_CASE("Copy: copy to smaller words correct",
     auto digits = bit::binary_digits<num_type>::value;
     container_type bitcont1 = make_random_container<container_type>
                                      (container_size); //, 0, 0);
-    container_type bitcont2 = make_random_container<container_type, unsigned short>
-                                     (container_size*8); //, std::numeric_limits<num_type>::max(),
+    container_type bitcont2 = make_random_container<container_type, unsigned char>
+                                     (container_size*16); //, std::numeric_limits<num_type>::max(),
                                       //std::numeric_limits<num_type>::max());
     auto boolcont1 = bitcont_to_boolcont(bitcont1);
     auto boolcont2 = bitcont_to_boolcont(bitcont2);
@@ -101,30 +100,84 @@ TEMPLATE_PRODUCT_TEST_CASE("Copy: copy to smaller words correct",
     auto bool_last1 = std::end(boolcont1);
     auto bool_first2 = std::begin(boolcont2);
     auto bool_last2 = std::end(boolcont2);
-    auto bool_first1_t = bool_first1;
-    auto bool_first2_t = bool_first2;
-    auto bfirst1_t = bfirst1;
-    auto bfirst2_t = bfirst2;
-    auto bool_last1_t = bool_last1;
-    auto blast1_t = blast1;
-    copy(bfirst1_t, blast1_t, bfirst2_t);
-    std::copy(bool_first1_t, bool_last1_t, bool_first2_t);
-    REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
 
-    std::advance(bfirst1_t, 9);
-    std::advance(bool_first1_t, 9);
-    copy(bfirst1_t, blast1_t, bfirst2_t);
-    std::copy(bool_first1_t, bool_last1_t, bool_first2_t);
+    auto bret = bit::copy(
+            bfirst1, 
+            blast1,
+            bfirst2
+    );
+    auto bool_ret = std::copy(
+            bool_first1, 
+            bool_last1, 
+            bool_first2
+    );
     REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
+    REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
 
-    bool_last1_t = bool_first1;
-    std::advance(bool_last1_t, (container_size-1)*digits-digits/3);
-    blast1_t = bfirst1;
-    std::advance(blast1_t, (container_size-1)*digits-digits/3);
-    copy(bfirst1_t, blast1_t, bfirst2_t);
-    std::copy(bool_first1_t, bool_last1_t, bool_first2_t);
+    bret = bit::copy(
+            std::next(bfirst1, 9), 
+            blast1,
+            bfirst2
+    );
+    bool_ret = std::copy(
+            std::next(bool_first1, 9), 
+            bool_last1, 
+            bool_first2
+    );
     REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
+    REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
 
+    bret = bit::copy(
+            std::next(bfirst1, 9), 
+            std::next(bfirst1, (container_size - 1)*digits - (digits/3)),
+            bfirst2
+    );
+    bool_ret = std::copy(
+            std::next(bool_first1, 9), 
+            std::next(bool_first1, (container_size - 1)*digits - (digits/3)),
+            bool_first2
+    );
+    REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
+    REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
+
+    bret = bit::copy(
+            bfirst1, 
+            blast1,
+            std::next(bfirst2, digits - 1)
+    );
+    bool_ret = std::copy(
+            bool_first1, 
+            bool_last1, 
+            std::next(bool_first2, digits - 1)
+    );
+    REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
+    REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
+
+    bret = bit::copy(
+            std::next(bfirst1, 9), 
+            blast1,
+            std::next(bfirst2, digits - 1)
+    );
+    bool_ret = std::copy(
+            std::next(bool_first1, 9), 
+            bool_last1, 
+            std::next(bool_first2, digits - 1)
+    );
+    REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
+    REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
+
+    bret = bit::copy(
+            std::next(bfirst1, 9), 
+            std::next(bfirst1, (container_size - 1)*digits - (digits/3)),
+            std::next(bfirst2, digits - 1)
+    );
+    bool_ret = std::copy(
+            std::next(bool_first1, 9), 
+            std::next(bool_first1, (container_size - 1)*digits - (digits/3)),
+            std::next(bool_first2, digits - 1)
+    );
+    REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
+    REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
 }
 
 TEMPLATE_PRODUCT_TEST_CASE("Copy: copy to larger words correct", 
@@ -151,29 +204,84 @@ TEMPLATE_PRODUCT_TEST_CASE("Copy: copy to larger words correct",
     auto bool_last1 = std::end(boolcont1);
     auto bool_first2 = std::begin(boolcont2);
     auto bool_last2 = std::end(boolcont2);
-    auto bool_first1_t = bool_first1;
-    auto bool_first2_t = bool_first2;
-    auto bfirst1_t = bfirst1;
-    auto bfirst2_t = bfirst2;
-    auto bool_last1_t = bool_last1;
-    auto blast1_t = blast1;
-    copy(bfirst1_t, blast1_t, bfirst2_t);
-    std::copy(bool_first1_t, bool_last1_t, bool_first2_t);
-    REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
 
-    std::advance(bfirst1_t, 3);
-    std::advance(bool_first1_t, 3);
-    copy(bfirst1_t, blast1_t, bfirst2_t);
-    std::copy(bool_first1_t, bool_last1_t, bool_first2_t);
+    auto bret = bit::copy(
+            bfirst1, 
+            blast1,
+            bfirst2
+    );
+    auto bool_ret = std::copy(
+            bool_first1, 
+            bool_last1, 
+            bool_first2
+    );
     REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
+    REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
 
-    bool_last1_t = bool_first1;
-    std::advance(bool_last1_t, (container_size-1)*digits-digits/2);
-    blast1_t = bfirst1;
-    std::advance(blast1_t, (container_size-1)*digits-digits/2);
-    copy(bfirst1_t, blast1_t, bfirst2_t);
-    std::copy(bool_first1_t, bool_last1_t, bool_first2_t);
+    bret = bit::copy(
+            std::next(bfirst1, 9), 
+            blast1,
+            bfirst2
+    );
+    bool_ret = std::copy(
+            std::next(bool_first1, 9), 
+            bool_last1, 
+            bool_first2
+    );
     REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
+    REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
+
+    bret = bit::copy(
+            std::next(bfirst1, 9), 
+            std::next(bfirst1, (container_size - 1)*digits - (digits/3)),
+            bfirst2
+    );
+    bool_ret = std::copy(
+            std::next(bool_first1, 9), 
+            std::next(bool_first1, (container_size - 1)*digits - (digits/3)),
+            bool_first2
+    );
+    REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
+    REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
+
+    bret = bit::copy(
+            bfirst1, 
+            blast1,
+            std::next(bfirst2, digits - 1)
+    );
+    bool_ret = std::copy(
+            bool_first1, 
+            bool_last1, 
+            std::next(bool_first2, digits - 1)
+    );
+    REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
+    REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
+
+    bret = bit::copy(
+            std::next(bfirst1, 9), 
+            blast1,
+            std::next(bfirst2, digits - 1)
+    );
+    bool_ret = std::copy(
+            std::next(bool_first1, 9), 
+            bool_last1, 
+            std::next(bool_first2, digits - 1)
+    );
+    REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
+    REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
+
+    bret = bit::copy(
+            std::next(bfirst1, 9), 
+            std::next(bfirst1, (container_size - 1)*digits - (digits/3)),
+            std::next(bfirst2, digits - 1)
+    );
+    bool_ret = std::copy(
+            std::next(bool_first1, 9), 
+            std::next(bool_first1, (container_size - 1)*digits - (digits/3)),
+            std::next(bool_first2, digits - 1)
+    );
+    REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
+    REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
 
 }
 
@@ -185,12 +293,12 @@ TEMPLATE_PRODUCT_TEST_CASE("Copy: same size not aligned copy correct",
 
     using container_type = TestType;
     using num_type = typename container_type::value_type;
-    auto container_size = 4;
+    auto container_size = 6;
     auto digits = bit::binary_digits<num_type>::value;
     container_type bitcont1 = make_random_container<container_type>
                                      (container_size); //, 0, 0);
     container_type bitcont2 = make_random_container<container_type>
-                                     (container_size); //, std::numeric_limits<num_type>::max(),
+                                     (container_size*2); //, std::numeric_limits<num_type>::max(),
                                       //std::numeric_limits<num_type>::max());
     auto boolcont1 = bitcont_to_boolcont(bitcont1);
     auto boolcont2 = bitcont_to_boolcont(bitcont2);
@@ -202,31 +310,85 @@ TEMPLATE_PRODUCT_TEST_CASE("Copy: same size not aligned copy correct",
     auto bool_last1 = std::end(boolcont1);
     auto bool_first2 = std::begin(boolcont2);
     auto bool_last2 = std::end(boolcont2);
-    auto bool_first1_t = bool_first1;
-    auto bool_first2_t = bool_first2;
-    auto bfirst1_t = bfirst1;
-    auto bfirst2_t = bfirst2;
-    auto bool_last1_t = bool_last1;
-    auto blast1_t = blast1;
-    copy(bfirst1_t, blast1_t, bfirst2_t);
 
-    std::copy(bool_first1_t, bool_last1_t, bool_first2_t);
+    auto bret = bit::copy(
+            bfirst1, 
+            blast1,
+            bfirst2
+    );
+    auto bool_ret = std::copy(
+            bool_first1, 
+            bool_last1, 
+            bool_first2
+    );
     REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
+    REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
 
-    std::advance(bfirst1_t, 3);
-    std::advance(bool_first1_t, 3);
-    copy(bfirst1_t, blast1_t, bfirst2_t);
-
-    std::copy(bool_first1_t, bool_last1_t, bool_first2_t);
+    bret = bit::copy(
+            std::next(bfirst1, 9), 
+            blast1,
+            bfirst2
+    );
+    bool_ret = std::copy(
+            std::next(bool_first1, 9), 
+            bool_last1, 
+            bool_first2
+    );
     REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
+    REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
 
-    bool_last1_t = bool_first1;
-    std::advance(bool_last1_t, (container_size-1)*digits-digits/2);
-    blast1_t = bfirst1;
-    std::advance(blast1_t, (container_size-1)*digits-digits/2);
-    copy(bfirst1_t, blast1_t, bfirst2_t);
-    std::copy(bool_first1_t, bool_last1_t, bool_first2_t);
+    bret = bit::copy(
+            std::next(bfirst1, 9), 
+            std::next(bfirst1, (container_size - 1)*digits - (digits/3)),
+            bfirst2
+    );
+    bool_ret = std::copy(
+            std::next(bool_first1, 9), 
+            std::next(bool_first1, (container_size - 1)*digits - (digits/3)),
+            bool_first2
+    );
     REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
+    REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
+
+    bret = bit::copy(
+            bfirst1, 
+            blast1,
+            std::next(bfirst2, digits - 1)
+    );
+    bool_ret = std::copy(
+            bool_first1, 
+            bool_last1, 
+            std::next(bool_first2, digits - 1)
+    );
+    REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
+    REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
+
+    bret = bit::copy(
+            std::next(bfirst1, 9), 
+            blast1,
+            std::next(bfirst2, digits - 1)
+    );
+    bool_ret = std::copy(
+            std::next(bool_first1, 9), 
+            bool_last1, 
+            std::next(bool_first2, digits - 1)
+    );
+    REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
+    REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
+
+    bret = bit::copy(
+            std::next(bfirst1, 9), 
+            std::next(bfirst1, (container_size - 1)*digits - (digits/3)),
+            std::next(bfirst2, digits - 1)
+    );
+    bool_ret = std::copy(
+            std::next(bool_first1, 9), 
+            std::next(bool_first1, (container_size - 1)*digits - (digits/3)),
+            std::next(bool_first2, digits - 1)
+    );
+    REQUIRE(std::equal(bool_first2, bool_last2, bfirst2, blast2, comparator));
+    REQUIRE(std::distance(bfirst2, bret) == std::distance(bool_first2, bool_ret));
+
 }
 // -------------------------------------------------------------------------- //
 
