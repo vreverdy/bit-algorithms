@@ -398,7 +398,7 @@ TEMPLATE_PRODUCT_TEST_CASE("Rotate: via_copy_end",
     REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
     REQUIRE(std::distance(bfirst, bret) == std::distance(bool_first, bool_ret));
 
-    bret = bit::rotate_via_copy_end<iterator_type, 1>(
+    bret = bit::rotate_via_copy_end<iterator_type, 2>(
             bfirst, 
             std::next(bfirst, (container_size-1)*digits - 3) , 
             std::next(bfirst, container_size*digits-5)
@@ -483,7 +483,7 @@ TEMPLATE_PRODUCT_TEST_CASE("Rotate: via_copy_begin",
     REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
     REQUIRE(std::distance(bfirst, bret) == std::distance(bool_first, bool_ret));
 
-    bret = bit::rotate_via_copy_begin<iterator_type, 1>(
+    bret = bit::rotate_via_copy_begin<iterator_type, 2>(
             std::next(bfirst, digits-1),
             std::next(bfirst, digits+1), 
             blast
@@ -496,7 +496,7 @@ TEMPLATE_PRODUCT_TEST_CASE("Rotate: via_copy_begin",
     REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
     REQUIRE(std::distance(bfirst, bret) == std::distance(bool_first, bool_ret));
 
-    bret = bit::rotate_via_copy_begin<iterator_type, 3>(
+    bret = bit::rotate_via_copy_begin<iterator_type, 2>(
             std::next(bfirst, digits-4),
             std::next(bfirst, 2*digits-4), 
             blast

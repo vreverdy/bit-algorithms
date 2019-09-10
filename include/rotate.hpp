@@ -170,9 +170,9 @@ bit_iterator<ForwardIt> rotate_via_raw(
     // 2a. See if we can use our rotates that simply copy and shift
     // TODO maybe we should check this at every iteratoration?
     if (is_within<2*digits>(first, n_first)) {
-        rotate_via_copy_begin<ForwardIt, 2>(first, n_first, last);
+        rotate_via_copy_begin<ForwardIt, 3>(first, n_first, last);
     } else if (is_within<2*digits>(n_first, last)) {
-        rotate_via_copy_end<ForwardIt, 2>(first, n_first, last);
+        rotate_via_copy_end<ForwardIt, 3>(first, n_first, last);
     } else {
         // CORRESPONDING GCC CODE:
         //  while (first2 != last) {
@@ -216,10 +216,10 @@ bit_iterator<ForwardIt> rotate_via_raw(
                     n_first = first2;
                 }
                 if (is_within<2*digits>(first, n_first)) {
-                    rotate_via_copy_begin<ForwardIt, 2>(first, n_first, last);
+                    rotate_via_copy_begin<ForwardIt, 3>(first, n_first, last);
                     break;
                 } else if (is_within<2*digits>(n_first, last)) {
-                    rotate_via_copy_end<ForwardIt, 2>(first, n_first, last);
+                    rotate_via_copy_end<ForwardIt, 3>(first, n_first, last);
                     break;
                 }
             }
@@ -234,10 +234,10 @@ bit_iterator<ForwardIt> rotate_via_raw(
                 advance(first, remainder);
                 first2 = n_first;
                 if (is_within<2*digits>(first, n_first)) {
-                    rotate_via_copy_begin<ForwardIt, 2>(first, n_first, last);
+                    rotate_via_copy_begin<ForwardIt, 3>(first, n_first, last);
                     break;
                 } else if (is_within<2*digits>(n_first, last)) {
-                    rotate_via_copy_end<ForwardIt, 2>(first, n_first, last);
+                    rotate_via_copy_end<ForwardIt, 3>(first, n_first, last);
                     break;
                 }
             }
