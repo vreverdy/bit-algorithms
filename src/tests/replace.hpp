@@ -1,10 +1,10 @@
-// ========================== REPLACE TESTS ============================= //
+// ============================ REPLACE TESTS =============================== //
 // Project:         The Experimental Bit Algorithms Library
 // Name:            replace.hpp
-// Description:     Tests for replace function overloads for bits 
+// Description:     Tests for replace
 // Creator:         Vincent Reverdy
-// Contributor(s):  Collin Gress [2019]
-// License: BSD 3-Clause License
+// Contributor(s):  Bryce Kille [2019]
+// License:         BSD 3-Clause License
 // ========================================================================== //
 #ifndef _REPLACE_TESTS_HPP_INCLUDED
 #define _REPLACE_TESTS_HPP_INCLUDED
@@ -12,9 +12,8 @@
 
 
 
-// =============================== PREAMBLE ================================= //
+// ============================== PREAMBLE ================================== //
 // C++ standard library
-#include <iostream>
 // Project sources
 #include "test_root.cc"
 #include "bit.hpp"
@@ -24,89 +23,128 @@
 
 
 
-// --------------------------- Replace Tests ---------------------------- //
-
-TEMPLATE_TEST_CASE("replace: handles single word cases", "[replace]",
-  unsigned short, unsigned int, unsigned long, unsigned long long) {
-
-  TestType t = 0;
-  TestType all_ones = bit::_all_ones();
-
-  bit::bit_iterator<TestType*> beg(&t, 0);
-  bit::bit_iterator<TestType*> end(&t + 1, 0);
-  bit::replace(beg, end, bit::bit0, bit::bit1);
-  REQUIRE(t == all_ones);
-
-  bit::replace(beg, end, bit::bit1, bit::bit0);
-  REQUIRE(t == 0);
-
-  bit::bit_iterator<TestType*> beg_plus_four(&t, 4); 
-  bit::replace(beg, beg_plus_four, bit::bit0, bit::bit1); 
-  REQUIRE(t == 15);
-
-  t = 0;
-  bit::replace(beg_plus_four, end, bit::bit0, bit::bit1);
-  REQUIRE(t == bit::_shift_towards_msb(all_ones, 4)); 
-
-  t = static_cast<TestType>(-1);
-  bit::replace(beg_plus_four, end, bit::bit1, bit::bit0);
-  REQUIRE(t == 15);
-
-  t = 0;
-  bit::bit_iterator<TestType*> beg_plus_seven(&t, 7);
-  bit::replace(beg_plus_four, beg_plus_seven, bit::bit0, bit::bit1);
-  REQUIRE(t == 112);
-
-  t = static_cast<TestType>(-1);
-  bit::replace(beg_plus_four, beg_plus_seven, bit::bit1, bit::bit0);
-  REQUIRE(t == static_cast<TestType>(all_ones ^ 112));
-}
-
-TEMPLATE_PRODUCT_TEST_CASE("replace: handles multi word cases", 
+// ---------------------------- REPLACE Tests ----------------------------- //
+TEMPLATE_PRODUCT_TEST_CASE("Replace: single_word", 
                            "[template][product]", 
                            (std::vector, std::list, std::forward_list), 
-                           (unsigned short, unsigned int, unsigned long)) {
+                           (unsigned char, unsigned short, 
+                            unsigned int, unsigned long)) {
+
     using container_type = TestType;
-    //using cont_iter_type = typename container_type::iterator;
-    using word_type = typename container_type::value_type;
+    using num_type = typename container_type::value_type;
+    auto container_size = 4;
+    auto digits = bit::binary_digits<num_type>::value;
+    container_type bitcont = make_random_container<container_type>
+                                     (container_size); 
+    auto boolcont = bitcont_to_boolcont(bitcont);
+    auto bfirst = bit::bit_iterator<decltype(std::begin(bitcont))>(std::begin(bitcont));
+    auto blast = bit::bit_iterator<decltype(std::end(bitcont))>(std::end(bitcont));
+    auto bool_first = std::begin(boolcont);
+    auto bool_last = std::end(boolcont);
 
-    constexpr word_type all_ones = bit::_all_ones();
+    bit::replace(
+        bfirst, 
+        std::next(bfirst, 3), 
+        bit::bit0,
+        bit::bit1
+    );
+    std::replace(
+        bool_first, 
+        std::next(bool_first, 3), 
+        false,
+        true
+    );
+    REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
 
-    container_type cont = {0, 0, 0};
+    bit::replace(
+        std::next(bfirst, digits - 3), 
+        std::next(bfirst, digits + 3), 
+        bit::bit0,
+        bit::bit1
+    );
+    std::replace(
+        std::next(bool_first, digits - 3), 
+        std::next(bool_first, digits + 3), 
+        false,
+        true
+    );
+    REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
 
-    bit_iterator first(cont.begin());
-    bit_iterator second(std::next(cont.begin()));
-    bit_iterator third(std::next(cont.begin(), 2));
-    bit_iterator last(cont.end());
-
-    bit::replace(first, last, bit::bit0, bit::bit1);
-
-    auto word_iter = cont.begin();
-    REQUIRE(*word_iter == all_ones);
-    REQUIRE(*std::next(word_iter) == all_ones); 
-    REQUIRE(*std::next(word_iter, 2) == all_ones);
-
-    cont = {all_ones, all_ones, all_ones};
-    bit::replace(first, last, bit::bit1, bit::bit0);
-    REQUIRE(*word_iter == 0);
-    REQUIRE(*std::next(word_iter) == 0);
-    REQUIRE(*std::next(word_iter, 2) == 0);
-
-    constexpr std::size_t num_digits = bit::binary_digits<word_type>::value;
-    bit_iterator half_first = std::next(first, num_digits / 2);
-    bit_iterator half_second = std::next(second, num_digits / 2);
-
-    bit::replace(half_first, half_second, bit::bit0, bit::bit1);
-    REQUIRE(*word_iter == static_cast<word_type>(all_ones << (num_digits / 2))); 
-    REQUIRE(*std::next(word_iter) == static_cast<word_type>(all_ones >> (num_digits / 2)));
-
-    cont = {0, 0, 0};
-    bit::replace(half_second, third, bit::bit0, bit::bit1);
-    REQUIRE(*word_iter == 0);
-    REQUIRE(*std::next(word_iter) == static_cast<word_type>(all_ones << (num_digits / 2)));
-    REQUIRE(*std::next(word_iter, 2) == 0);
+    bit::replace(
+        std::next(bfirst, 3), 
+        std::next(bfirst, digits - 4), 
+        bit::bit0,
+        bit::bit1
+    );
+    std::replace(
+        std::next(bool_first, 3), 
+        std::next(bool_first, digits - 4), 
+        false,
+        true
+    );
+    REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
 }
 
+TEMPLATE_PRODUCT_TEST_CASE("Replace: multi_word", 
+                           "[template][product]", 
+                           (std::vector, std::list, std::forward_list), 
+                           (unsigned char, unsigned short, 
+                            unsigned int, unsigned long)) {
+
+    using container_type = TestType;
+    using num_type = typename container_type::value_type;
+    auto container_size = 8;
+    auto digits = bit::binary_digits<num_type>::value;
+    container_type bitcont = make_random_container<container_type>
+                                     (container_size); 
+    auto boolcont = bitcont_to_boolcont(bitcont);
+    auto bfirst = bit::bit_iterator<decltype(std::begin(bitcont))>(std::begin(bitcont));
+    auto blast = bit::bit_iterator<decltype(std::end(bitcont))>(std::end(bitcont));
+    auto bool_first = std::begin(boolcont);
+    auto bool_last = std::end(boolcont);
+
+    bit::replace(
+        bfirst, 
+        std::next(bfirst, 3*digits), 
+        bit::bit0,
+        bit::bit1
+    );
+    std::replace(
+        bool_first, 
+        std::next(bool_first, 3*digits), 
+        false,
+        true
+    );
+    REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
+
+    bit::replace(
+        std::next(bfirst, digits + 3), 
+        std::next(bfirst, 4*digits - 4), 
+        bit::bit1,
+        bit::bit0
+    );
+    std::replace(
+        std::next(bool_first, digits + 3), 
+        std::next(bool_first, 4*digits - 4), 
+        true,
+        false
+    );
+    REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
+
+    bit::replace(
+        std::next(bfirst, digits - 1), 
+        std::next(bfirst, container_size*digits - 1), 
+        bit::bit0,
+        bit::bit1
+    );
+    std::replace(
+        std::next(bool_first, digits - 1), 
+        std::next(bool_first, container_size*digits - 1), 
+        false,
+        true
+    );
+    REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
+}
 // -------------------------------------------------------------------------- //
 
 
