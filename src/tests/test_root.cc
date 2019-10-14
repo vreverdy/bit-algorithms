@@ -30,6 +30,7 @@
 #include "count.hpp"
 #include "equal.hpp"
 #include "find.hpp"
+#include "fill.hpp"
 #include "for_each.hpp"
 #include "for_each_n.hpp"
 #include "is_heap.hpp"
