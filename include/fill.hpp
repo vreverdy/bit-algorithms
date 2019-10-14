@@ -36,7 +36,7 @@ void fill(bit_iterator<ForwardIt> first, bit_iterator<ForwardIt> last,
     constexpr word_type digits = binary_digits<word_type>::value;
 
     // Initializations
-    word_type fill_word = bv == bit0 ? 0 : -1;
+    const word_type fill_word = bv == bit0 ? 0 : -1;
 
     if (is_within<digits>(first, last)) {
         write_word<word_type>(fill_word, first, distance(first, last));
