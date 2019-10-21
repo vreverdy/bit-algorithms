@@ -430,7 +430,6 @@ typename bit_iterator<It>::word_type _padded_read(bit_iterator<It> first,
         } 
     }
 }
-
 // -------------------------------------------------------------------------- //
 
 
