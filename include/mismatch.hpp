@@ -21,13 +21,85 @@
 
 namespace bit {
 
-// TODO
+// TODO Not optimized
 template <class InputIt1, class InputIt2>
 constexpr std::pair<bit_iterator<InputIt1>, bit_iterator<InputIt2>> mismatch(
     bit_iterator<InputIt1> first1, bit_iterator<InputIt1> last1,
     bit_iterator<InputIt2> first2
 ) {
-    (last1);
+    // Assertions
+     _assert_range_viability(first1, last1); 
+
+    // Types and constants
+    using word_type1 = typename bit_iterator<InputIt1>::word_type;
+    using word_type2 = typename bit_iterator<InputIt2>::word_type;
+    using size_type1 = typename bit_iterator<InputIt1>::size_type;
+    using size_type2 = typename bit_iterator<InputIt2>::size_type;
+    constexpr size_type1 digits1 = binary_digits<word_type1>::value;
+    constexpr size_type2 digits2 = binary_digits<word_type2>::value;
+
+    // Different word types ):
+    if constexpr (digits1 != digits2) {
+        return std::mismatch(first1, last1, first2);
+    }
+
+    // Same word types word types (:
+    using word_type = word_type1; 
+    constexpr size_type1 digits = digits1; 
+
+    if (is_within<digits>(first1, last1)) {
+        word_type m = distance(first1, last1); 
+        word_type mask = static_cast<word_type>(-1) 
+                        >> (digits - distance(first1, last1));
+        word_type range1 = get_word(first1, m) & mask;
+        word_type range2 = get_word(first2, m) & mask;
+        word_type adv = std::min(m, _tzcnt(static_cast<word_type>(range1 ^ range2)));
+        return std::make_pair(
+                next(first1, adv),
+                next(first2, adv)
+        );
+    }
+    if (first1.position() != 0) {
+        word_type range1 = *first1.base() >> first1.position();
+        word_type range2 = get_word<word_type>(first2, digits) 
+            & static_cast<word_type>(
+                    static_cast<word_type>(-1) >> first1.position()
+        );
+        word_type adv = std::min<word_type>(
+                digits - first1.position(), 
+                _tzcnt(static_cast<word_type>(range1 ^ range2))
+        );
+        if (adv < (digits - first1.position())) {
+            return std::make_pair(
+                    next(first1, adv), 
+                    next(first2, adv)
+            );
+        }
+        advance(first1, adv);
+        advance(first2, adv);
+    }  
+    while (first1.base() !=  last1.base()) {
+        word_type range2 = get_word(first2, digits);
+        word_type adv = _tzcnt<word_type>(*first1.base() ^ range2);
+        advance(first1, adv);
+        advance(first2, adv);
+        if (adv < digits) {
+            return std::make_pair(first1, first2); 
+        }
+    }
+    if (last1.position() != 0) {
+        word_type mask = static_cast<word_type>(
+                (static_cast<word_type>(1) << last1.position()) - 1
+        );
+        word_type range1 = *first1.base();
+        word_type range2 = get_word(first2, last1.position());
+        word_type adv = std::min<word_type>(
+                _tzcnt<word_type>(static_cast<word_type>(range1 ^ range2) & mask),
+                last1.position()
+        );
+        advance(first1, adv);
+        advance(first2, adv);
+    }
     return std::make_pair(first1, first2);
 }
 
