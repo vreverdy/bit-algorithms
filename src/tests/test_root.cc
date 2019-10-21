@@ -43,7 +43,6 @@
 //#include "replace.hpp"
 #include "rotate.hpp"
 #include "sample.hpp"
-#include "search.hpp"
 #include "shift.hpp"
 #include "swap_ranges.hpp"
 // Third party libraries
