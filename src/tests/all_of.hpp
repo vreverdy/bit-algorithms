@@ -25,8 +25,8 @@ TEMPLATE_TEST_CASE("all_of: is correct for trivial single word cases", "[all_of]
     unsigned short, unsigned int, unsigned long, unsigned long long) {
 
     TestType t = 0;
-    bit_iterator<TestType*> first(&t, 0);
-    bit_iterator<TestType*> last(&t + 1, 0);
+    bit::bit_iterator<TestType*> first(&t, 0);
+    bit::bit_iterator<TestType*> last(&t + 1, 0);
 
     auto predicate = [](bit::bit_value bv) { return bv == bit::bit0; };
 

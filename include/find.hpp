@@ -30,8 +30,8 @@ constexpr bit_iterator<InputIt> find(bit_iterator<InputIt> first,
     std::size_t bits_scanned = 0;
 
     while (cursor != last) {
-        std::size_t bits_to_read = std::min(
-            static_cast<std::size_t>(last - cursor), word_type_digits);
+        std::size_t bits_to_read = std::min<size_t>(
+            distance(cursor, last), word_type_digits);
 
         word_type cur = get_word(cursor, bits_to_read); 
 

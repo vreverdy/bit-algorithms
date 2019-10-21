@@ -25,14 +25,14 @@ TEMPLATE_TEST_CASE("is_heap: is correct for trivial single word cases", "[is_hea
 
     TestType t = 1;
 
-    bit_iterator<TestType*> first1(&t, 0);
-    bit_iterator<TestType*> last1(&t + 1, 0);
+    bit::bit_iterator<TestType*> first1(&t, 0);
+    bit::bit_iterator<TestType*> last1(&t + 1, 0);
 
     REQUIRE(bit::is_heap(first1, last1) == std::is_heap(first1, last1));
 
     t = static_cast<TestType>(-1);
-    bit_iterator<TestType*> first2(&t, 0);
-    bit_iterator<TestType*> last2(&t + 1, 0);
+    bit::bit_iterator<TestType*> first2(&t, 0);
+    bit::bit_iterator<TestType*> last2(&t + 1, 0);
 
     REQUIRE(bit::is_heap(first2, last2) == std::is_heap(first2, last2));
 }
