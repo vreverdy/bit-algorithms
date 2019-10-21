@@ -1,13 +1,13 @@
-// ============================ REPLACE TESTS =============================== //
+// ============================= ______ TESTS =============================== //
 // Project:         The Experimental Bit Algorithms Library
-// Name:            replace.hpp
-// Description:     Tests for replace
+// Name:            template.hpp
+// Description:     template for testing files
 // Creator:         Vincent Reverdy
 // Contributor(s):  Bryce Kille [2019]
 // License:         BSD 3-Clause License
 // ========================================================================== //
-#ifndef _REPLACE_TESTS_HPP_INCLUDED
-#define _REPLACE_TESTS_HPP_INCLUDED
+#ifndef _TEMPLATE_TESTS_HPP_INCLUDED
+#define _TEMPLATE_TESTS_HPP_INCLUDED
 // ========================================================================== //
 
 
@@ -23,8 +23,8 @@
 
 
 
-// ---------------------------- REPLACE Tests ----------------------------- //
-TEMPLATE_PRODUCT_TEST_CASE("Replace: single_word", 
+// ---------------------------- TEMPLATE Tests ------------------------------ //
+TEMPLATE_PRODUCT_TEST_CASE("Rotate: single_word", 
                            "[template][product]", 
                            (std::vector, std::list, std::forward_list), 
                            (unsigned char, unsigned short, 
@@ -42,50 +42,21 @@ TEMPLATE_PRODUCT_TEST_CASE("Replace: single_word",
     auto bool_first = std::begin(boolcont);
     auto bool_last = std::end(boolcont);
 
-    bit::replace(
-        bfirst, 
-        std::next(bfirst, 3), 
-        bit::bit0,
-        bit::bit1
+    auto bret = bit::rotate(
+            bfirst, 
+            std::next(bfirst, 3), 
+            std::next(bfirst, digits)
     );
-    std::replace(
-        bool_first, 
-        std::next(bool_first, 3), 
-        false,
-        true
+    auto bool_ret = std::rotate(
+            bool_first, 
+            std::next(bool_first, 3), 
+            std::next(bool_first, digits)
     );
     REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
-
-    bit::replace(
-        std::next(bfirst, digits - 3), 
-        std::next(bfirst, digits + 3), 
-        bit::bit0,
-        bit::bit1
-    );
-    std::replace(
-        std::next(bool_first, digits - 3), 
-        std::next(bool_first, digits + 3), 
-        false,
-        true
-    );
-    REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
-
-    bit::replace(
-        std::next(bfirst, 3), 
-        std::next(bfirst, digits - 4), 
-        bit::bit0,
-        bit::bit1
-    );
-    std::replace(
-        std::next(bool_first, 3), 
-        std::next(bool_first, digits - 4), 
-        false,
-        true
-    );
-    REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
+    REQUIRE(std::distance(bfirst, bret) == std::distance(bool_first, bool_ret));
 }
 
-TEMPLATE_PRODUCT_TEST_CASE("Replace: multi_word", 
+TEMPLATE_PRODUCT_TEST_CASE("template: multiple_word_subcases", 
                            "[template][product]", 
                            (std::vector, std::list, std::forward_list), 
                            (unsigned char, unsigned short, 
@@ -93,7 +64,7 @@ TEMPLATE_PRODUCT_TEST_CASE("Replace: multi_word",
 
     using container_type = TestType;
     using num_type = typename container_type::value_type;
-    auto container_size = 8;
+    auto container_size = 4;
     auto digits = bit::binary_digits<num_type>::value;
     container_type bitcont = make_random_container<container_type>
                                      (container_size); 
@@ -103,52 +74,16 @@ TEMPLATE_PRODUCT_TEST_CASE("Replace: multi_word",
     auto bool_first = std::begin(boolcont);
     auto bool_last = std::end(boolcont);
 
-    bit::replace(
-        bfirst, 
-        std::next(bfirst, 3*digits), 
-        bit::bit0,
-        bit::bit1
-    );
-    std::replace(
-        bool_first, 
-        std::next(bool_first, 3*digits), 
-        false,
-        true
-    );
+    // k <= digits
+    auto bret = bit::rotate(bfirst, std::next(bfirst, 3) , blast);
+    auto bool_ret = std::rotate(bool_first, std::next(bool_first, 3), bool_last);
     REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
-
-    bit::replace(
-        std::next(bfirst, digits + 3), 
-        std::next(bfirst, 4*digits - 4), 
-        bit::bit1,
-        bit::bit0
-    );
-    std::replace(
-        std::next(bool_first, digits + 3), 
-        std::next(bool_first, 4*digits - 4), 
-        true,
-        false
-    );
-    REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
-
-    bit::replace(
-        std::next(bfirst, digits - 1), 
-        std::next(bfirst, container_size*digits - 1), 
-        bit::bit0,
-        bit::bit1
-    );
-    std::replace(
-        std::next(bool_first, digits - 1), 
-        std::next(bool_first, container_size*digits - 1), 
-        false,
-        true
-    );
-    REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
+    REQUIRE(std::distance(bfirst, bret) == std::distance(bool_first, bool_ret));
 }
 // -------------------------------------------------------------------------- //
 
 
 
 // ========================================================================== //
-#endif // _REPLACE_TESTS_HPP_INCLUDED
+#endif // _TEMPLATE_TESTS_HPP_INCLUDED
 // ========================================================================== //

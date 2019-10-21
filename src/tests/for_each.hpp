@@ -25,14 +25,14 @@ TEMPLATE_TEST_CASE("for_each: is correct for trivial single word cases", "[for_e
     unsigned short, unsigned int, unsigned long, unsigned long long) {
 
     TestType t = 0;
-    bit_iterator<TestType*> first(&t, 0);
-    bit_iterator<TestType*> last(&t + 1, 0);
+    bit::bit_iterator<TestType*> first(&t, 0);
+    bit::bit_iterator<TestType*> last(&t + 1, 0);
 
     auto lambda = [](bit::bit_reference<TestType> br) { br = bit::bit1; }; 
 
     TestType expected_t = 0;
-    bit_iterator<TestType*> expected_first(&expected_t, 0);
-    bit_iterator<TestType*> expected_last(&expected_t + 1, 0);
+    bit::bit_iterator<TestType*> expected_first(&expected_t, 0);
+    bit::bit_iterator<TestType*> expected_last(&expected_t + 1, 0);
 
     bit::for_each(first, last, lambda);
     std::for_each(expected_first, expected_last, lambda);

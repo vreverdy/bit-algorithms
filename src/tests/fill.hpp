@@ -1,13 +1,13 @@
-// ============================ REPLACE TESTS =============================== //
+// ============================== FILL TESTS ================================ //
 // Project:         The Experimental Bit Algorithms Library
-// Name:            replace.hpp
-// Description:     Tests for replace
+// Name:            fill.hpp
+// Description:     Tests for fill algorithms 
 // Creator:         Vincent Reverdy
 // Contributor(s):  Bryce Kille [2019]
 // License:         BSD 3-Clause License
 // ========================================================================== //
-#ifndef _REPLACE_TESTS_HPP_INCLUDED
-#define _REPLACE_TESTS_HPP_INCLUDED
+#ifndef _FILL_TESTS_HPP_INCLUDED
+#define _FILL_TESTS_HPP_INCLUDED
 // ========================================================================== //
 
 
@@ -23,8 +23,8 @@
 
 
 
-// ---------------------------- REPLACE Tests ----------------------------- //
-TEMPLATE_PRODUCT_TEST_CASE("Replace: single_word", 
+// ------------------------------ Fill Tests -------------------------------- //
+TEMPLATE_PRODUCT_TEST_CASE("fill: single_word", 
                            "[template][product]", 
                            (std::vector, std::list, std::forward_list), 
                            (unsigned char, unsigned short, 
@@ -42,50 +42,44 @@ TEMPLATE_PRODUCT_TEST_CASE("Replace: single_word",
     auto bool_first = std::begin(boolcont);
     auto bool_last = std::end(boolcont);
 
-    bit::replace(
-        bfirst, 
-        std::next(bfirst, 3), 
-        bit::bit0,
-        bit::bit1
+    bit::fill(
+            bfirst, 
+            std::next(bfirst, digits), 
+            bit::bit1
     );
-    std::replace(
-        bool_first, 
-        std::next(bool_first, 3), 
-        false,
-        true
+    std::fill(
+            bool_first, 
+            std::next(bool_first, digits), 
+            1
     );
     REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
 
-    bit::replace(
-        std::next(bfirst, digits - 3), 
-        std::next(bfirst, digits + 3), 
-        bit::bit0,
-        bit::bit1
+    bit::fill(
+            bfirst, 
+            std::next(bfirst, 3), 
+            bit::bit0
     );
-    std::replace(
-        std::next(bool_first, digits - 3), 
-        std::next(bool_first, digits + 3), 
-        false,
-        true
+    std::fill(
+            bool_first, 
+            std::next(bool_first, 3), 
+            0
     );
     REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
 
-    bit::replace(
-        std::next(bfirst, 3), 
-        std::next(bfirst, digits - 4), 
-        bit::bit0,
-        bit::bit1
+    bit::fill(
+            std::next(bfirst, 3), 
+            std::next(bfirst, digits),
+            bit::bit1
     );
-    std::replace(
-        std::next(bool_first, 3), 
-        std::next(bool_first, digits - 4), 
-        false,
-        true
+    std::fill(
+            std::next(bool_first, 3), 
+            std::next(bool_first, digits),
+            1
     );
     REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
 }
 
-TEMPLATE_PRODUCT_TEST_CASE("Replace: multi_word", 
+TEMPLATE_PRODUCT_TEST_CASE("fill: multiple_word_subcases", 
                            "[template][product]", 
                            (std::vector, std::list, std::forward_list), 
                            (unsigned char, unsigned short, 
@@ -93,7 +87,7 @@ TEMPLATE_PRODUCT_TEST_CASE("Replace: multi_word",
 
     using container_type = TestType;
     using num_type = typename container_type::value_type;
-    auto container_size = 8;
+    auto container_size = 4;
     auto digits = bit::binary_digits<num_type>::value;
     container_type bitcont = make_random_container<container_type>
                                      (container_size); 
@@ -103,45 +97,39 @@ TEMPLATE_PRODUCT_TEST_CASE("Replace: multi_word",
     auto bool_first = std::begin(boolcont);
     auto bool_last = std::end(boolcont);
 
-    bit::replace(
-        bfirst, 
-        std::next(bfirst, 3*digits), 
-        bit::bit0,
-        bit::bit1
+    bit::fill(
+            bfirst, 
+            std::next(bfirst, container_size*digits), 
+            bit::bit1
     );
-    std::replace(
-        bool_first, 
-        std::next(bool_first, 3*digits), 
-        false,
-        true
+    std::fill(
+            bool_first, 
+            std::next(bool_first, container_size*digits), 
+            1
     );
     REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
 
-    bit::replace(
-        std::next(bfirst, digits + 3), 
-        std::next(bfirst, 4*digits - 4), 
-        bit::bit1,
-        bit::bit0
+    bit::fill(
+            bfirst, 
+            std::next(bfirst, digits + 3), 
+            bit::bit0
     );
-    std::replace(
-        std::next(bool_first, digits + 3), 
-        std::next(bool_first, 4*digits - 4), 
-        true,
-        false
+    std::fill(
+            bool_first, 
+            std::next(bool_first, digits + 3), 
+            0
     );
     REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
 
-    bit::replace(
-        std::next(bfirst, digits - 1), 
-        std::next(bfirst, container_size*digits - 1), 
-        bit::bit0,
-        bit::bit1
+    bit::fill(
+            std::next(bfirst, 3), 
+            std::next(bfirst, container_size*digits - 6),
+            bit::bit1
     );
-    std::replace(
-        std::next(bool_first, digits - 1), 
-        std::next(bool_first, container_size*digits - 1), 
-        false,
-        true
+    std::fill(
+            std::next(bool_first, 3), 
+            std::next(bool_first, container_size*digits - 6),
+            1
     );
     REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
 }
@@ -150,5 +138,5 @@ TEMPLATE_PRODUCT_TEST_CASE("Replace: multi_word",
 
 
 // ========================================================================== //
-#endif // _REPLACE_TESTS_HPP_INCLUDED
+#endif // _FILL_TESTS_HPP_INCLUDED
 // ========================================================================== //
