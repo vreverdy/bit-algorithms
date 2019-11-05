@@ -168,6 +168,79 @@ constexpr bit_iterator<ForwardIt1> search(bit_iterator<ForwardIt1> first,
 }
 
 // Status: to do
+template <class ForwardIt1, class ForwardIt2>
+constexpr bit_iterator<ForwardIt1> search_shift_or(bit_iterator<ForwardIt1> first,
+    bit_iterator<ForwardIt1> last, bit_iterator<ForwardIt2> s_first,
+    bit_iterator<ForwardIt2> s_last) {
+    // Assertions
+     _assert_range_viability(first, last); 
+     _assert_range_viability(s_first, s_last); 
+
+    // Types and constants
+    using word_type1 = typename bit_iterator<ForwardIt1>::word_type;
+    using word_type2 = typename bit_iterator<ForwardIt2>::word_type;
+    using size_type1 = typename bit_iterator<ForwardIt1>::size_type;
+    using size_type2 = typename bit_iterator<ForwardIt2>::size_type;
+    constexpr size_type1 digits1 = binary_digits<word_type1>::value;
+    constexpr size_type2 digits2 = binary_digits<word_type2>::value;
+
+    // Different word types ):
+    if constexpr (digits1 != digits2) {
+        return std::search(first, last, s_first, s_last);
+    }
+
+    // Same word types word types (:
+    // QUESTION: If word_type1 and word_type2 are of the same size, does it matter
+    // if I just treat all words as word_type1?
+    
+    using word_type = word_type1; 
+    using size_type = size_type1; 
+    constexpr size_type1 digits = digits1; 
+    
+    auto bit_m = distance(s_first, s_last);
+    if (is_within(first, last, bit_m-1)) {
+        return last;
+    }
+    auto word_m = (bit_m / digits) + (bit_m % digits != 0);    
+    std::vector<word_type> D(word_m, 0);
+
+
+    auto D_first = bit_iterator(D.begin());
+    auto D_last = D_first + bit_m;
+    auto t_first = first;
+    auto t_last = first + bit_m;
+    while (t_first != first + bit_m) {
+        shift_right(D_first, D_last, 1);
+        *D_first = bit1;
+        std::transform(s_first, s_last, D_first, D_first,
+                [&t_first] (const bit::bit_value s_bv, const bit::bit_value D_bv) {
+                return D_bv & (~(s_bv^t_first[0]));
+            }
+        );
+        ++t_first; ++t_last;
+    } 
+    if (D_first[bit_m - 1] == bit1) {
+        return first;
+    }
+    auto ret = first + 1;
+
+    do {
+        shift_right(D_first, D_last, 1);
+        *D_first = bit1;
+        std::transform(s_first, s_last, D_first, D_first,
+                [&t_first] (const bit::bit_value s_bv, const bit::bit_value D_bv) {
+                return D_bv & (~(s_bv^t_first[0]));
+            }
+        );
+        if (D_first[bit_m - 1] == bit1) {
+            return ret;
+        }
+        ++t_first; ++t_last; ++ret;
+    } while (t_last != last);
+    return last;
+}
+
+// Status: to do
 template <class ExecutionPolicy, class ForwardIt1, class ForwardIt2>
 bit_iterator<ForwardIt1> search(ExecutionPolicy&& policy, 
     bit_iterator<ForwardIt1> first, bit_iterator<ForwardIt1> last,
