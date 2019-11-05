@@ -209,17 +209,16 @@ constexpr bit_iterator<ForwardIt1> search_shift_or(bit_iterator<ForwardIt1> firs
     auto D_last = D_first + bit_m;
     auto t_first = first;
     auto t_last = first + bit_m;
-
-    bit_value val_mask_bit;
-    auto shift_or_mask_bit = [&val_mask_bit] (const bit_value s_bit, const bit_value D_bit) {
-                return static_cast<bit_value>(D_bit & (~(s_bit ^ val_mask_bit)));
+    word_type val_mask;
+    auto shift_or_mask_f = [&val_mask] (const word_type s_word, const word_type D_word) {
+                return static_cast<word_type>(D_word & (~(s_word ^ val_mask)));
     };
 
     while (t_first != first + bit_m) {
         shift_right(D_first, D_last, 1);
         *D_first = bit1;
-        val_mask_bit = *t_first;
-        transform(s_first, s_last, D_first, D_first, shift_or_mask_bit);
+        val_mask = *t_first ? -1 : 0;
+        transform_word(s_first, s_last, D_first, D_first, shift_or_mask_f);
         ++t_first; ++t_last;
     } 
     if (D_first[bit_m - 1] == bit1) {
@@ -230,8 +229,8 @@ constexpr bit_iterator<ForwardIt1> search_shift_or(bit_iterator<ForwardIt1> firs
     do {
         shift_right(D_first, D_last, 1);
         *D_first = bit1;
-        val_mask_bit = *t_first;
-        transform(s_first, s_last, D_first, D_first, shift_or_mask_bit);
+        val_mask = *t_first ? -1 : 0;
+        transform_word(s_first, s_last, D_first, D_first, shift_or_mask_f);
         if (D_first[bit_m - 1] == bit1) {
             return ret;
         }
