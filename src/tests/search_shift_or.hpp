@@ -43,7 +43,6 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: single_word pattern or smaller",
     auto bool_first_txt = std::begin(bool_txt);
     auto bool_last_txt = std::end(bool_txt);
 
-    // k == digits
     auto bret = bit::search_shift_or(
             bfirst_txt, 
             blast_txt, 
@@ -74,7 +73,6 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: single_word pattern or smaller",
     REQUIRE(std::equal(bool_first_txt, bool_last_txt, bfirst_txt, blast_txt, comparator));
     REQUIRE(std::distance(bfirst_txt, bret) == std::distance(bool_first_txt, bool_ret));
 
-    // k < digits
     bret = bit::search_shift_or(
         bfirst_txt, 
         blast_txt, 
@@ -125,7 +123,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | text aligne
                            "[template][product]", 
                            (std::vector, std::list, std::forward_list), 
                            (unsigned char, unsigned short, 
-                            unsigned int, unsigned long)) {
+                            unsigned int, unsigned long, unsigned long long)) {
 
     using container_type = TestType;
     using num_type = typename container_type::value_type;
@@ -206,7 +204,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | pattern ali
                            "[template][product]", 
                            (std::vector, std::list, std::forward_list), 
                            (unsigned char, unsigned short, 
-                            unsigned int, unsigned long)) {
+                            unsigned int)) {
 
     using container_type = TestType;
     using num_type = typename container_type::value_type;
@@ -271,7 +269,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | unaligned",
                            "[template][product]", 
                            (std::vector, std::list, std::forward_list), 
                            (unsigned char, unsigned short, 
-                            unsigned int, unsigned long)) {
+                            unsigned int)) {
 
     using container_type = TestType;
     using num_type = typename container_type::value_type;
@@ -336,7 +334,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: many_word pattern | unaligned",
                            "[template][product]", 
                            (std::vector, std::list, std::forward_list), 
                            (unsigned char, unsigned short, 
-                            unsigned int, unsigned long)) {
+                            unsigned int)) {
 
     using container_type = TestType;
     using num_type = typename container_type::value_type;
