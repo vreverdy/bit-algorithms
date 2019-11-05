@@ -47,5 +47,6 @@
 #include "search_shift_or.hpp"
 #include "shift.hpp"
 #include "swap_ranges.hpp"
+#include "transform.hpp"
 // Third party libraries
 // ========================================================================== //
