@@ -195,7 +195,7 @@ constexpr bit_iterator<ForwardIt1> search_shift_or(bit_iterator<ForwardIt1> firs
     
     using word_type = word_type1; 
     using size_type = size_type1; 
-    constexpr size_type1 digits = digits1; 
+    constexpr size_type digits = digits1; 
     
     auto bit_m = distance(s_first, s_last);
     if (is_within(first, last, bit_m-1)) {
