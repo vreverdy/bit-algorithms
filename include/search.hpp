@@ -17,7 +17,6 @@
 #include <iostream>
 // Project sources
 #include "../ext/bit/bit.hpp"
-#include <bit>
 #include "bit_algorithm.hpp"
 // Third-party libraries
 // Miscellaneous
