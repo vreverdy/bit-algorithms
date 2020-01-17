@@ -23,6 +23,7 @@ jobs:
       xcode: "10.0.0"
     steps:
       - checkout
+      - run: brew update
       - run: brew install gcc@8
       - run: make CXX=/usr/local/bin/g++-8 CXX_STANDARD=c++2a test
   macos_apple_llvm_10_0:
