@@ -3,7 +3,7 @@
 // Name: find.hpp
 // Description: bit_iterator overloads for std::find, std::find_if, std::find_if_not
 // Creator: Vincent Reverdy
-// Contributor(s): Collin Gress [2019] 
+// Contributor(s): Bryce Kille [2019] 
 // License: BSD 3-Clause License
 // ========================================================================== //
 #ifndef _FIND_HPP_INCLUDED
@@ -24,31 +24,50 @@ constexpr bit_iterator<InputIt> find(bit_iterator<InputIt> first,
     bit_iterator<InputIt> last, bit::bit_value bv) {
 
     using word_type = typename bit_iterator<InputIt>::word_type;
-    std::size_t word_type_digits = binary_digits<word_type>::value;
+    std::size_t digits = binary_digits<word_type>::value;
 
-    bit_iterator<InputIt> cursor = first;
-    std::size_t bits_scanned = 0;
+    InputIt it = first.base();
+    bit_iterator<InputIt> ret_it = last;
 
-    while (cursor != last) {
-        std::size_t bits_to_read = std::min<size_t>(
-            distance(cursor, last), word_type_digits);
-
-        word_type cur = get_word(cursor, bits_to_read); 
-
-        std::size_t num_trailing_complementary_bits = (bv == bit0) 
-            ? _tzcnt(static_cast<word_type>(~cur))
-            : _tzcnt(static_cast<word_type>(cur));
-
-        if (num_trailing_complementary_bits < bits_to_read) {
-            bits_scanned += num_trailing_complementary_bits;
-            break;
-        } else {
-            bits_scanned += bits_to_read;
-            std::advance(cursor, bits_to_read);
+    std::size_t num_trailing_complementary_bits = (bv == bit1) 
+        ? _tzcnt(static_cast<word_type>(*it >> first.position()))
+        : _tzcnt(static_cast<word_type>(~(*it >> first.position())));
+    
+    if (first.base() == last.base()) {
+        ret_it = first + std::min<size_t>(
+            last.position() - first.position(), 
+            num_trailing_complementary_bits
+        );
+    } else if (num_trailing_complementary_bits < digits - first.position()) {
+        ret_it = first + num_trailing_complementary_bits;
+    }
+    else {
+        ++it;
+        for (;it != last.base(); ++it) {
+            if (bv == bit1 && static_cast<word_type>(*it)) {
+                std::size_t num_trailing_complementary_bits = _tzcnt(static_cast<word_type>(*it));
+                    ret_it = bit_iterator<InputIt>(it, num_trailing_complementary_bits);
+                    break;
+            } else if (bv == bit0 && static_cast<word_type>(~*it)) {
+                std::size_t num_trailing_complementary_bits = _tzcnt(static_cast<word_type>(~*it));
+                    ret_it = bit_iterator<InputIt>(it, num_trailing_complementary_bits);
+                    break;
+            }
+        }
+        if (it == last.base() && last.position() != 0) {
+            std::size_t num_trailing_complementary_bits = (bv == bit1) 
+                ? _tzcnt(static_cast<word_type>(*it))
+                : _tzcnt(static_cast<word_type>(~*it));
+            ret_it = bit_iterator<InputIt>(
+                it, 
+                std::min<size_t>(
+                    last.position(), 
+                    num_trailing_complementary_bits
+                )
+            );
         }
     }
-
-    return first + bits_scanned;
+    return ret_it;
 }
 
 // Status: complete

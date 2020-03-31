@@ -75,7 +75,177 @@ TEMPLATE_TEST_CASE("find: is ok for virtual/misaligned words", "[find]",
             std::find(first, last, bit::bit1));
 }
 
+TEMPLATE_PRODUCT_TEST_CASE("find: left_shift- multi word", 
+                           "[template][product]", 
+                           (std::vector, std::list, std::forward_list), 
+                           (unsigned char, unsigned short, 
+                            unsigned int, unsigned long)) {
+
+    using container_type = TestType;
+    using num_type = typename container_type::value_type;
+    auto container_size = 4;
+    auto digits = bit::binary_digits<num_type>::value;
+    container_type bitcont1 = make_random_container<container_type>
+                                     (container_size); 
+    auto boolcont1 = bitcont_to_boolcont(bitcont1);
+    auto bfirst1 = bit::bit_iterator<decltype(std::begin(bitcont1))>(std::begin(bitcont1));
+    auto blast1 = bit::bit_iterator<decltype(std::end(bitcont1))>(std::end(bitcont1));
+    auto bool_first1 = std::begin(boolcont1);
+    auto bool_last1 = std::end(boolcont1);
+    auto bool_first1_t = bool_first1;
+    auto bfirst1_t = bfirst1;
+    auto bool_last1_t = bool_last1;
+    auto blast1_t = blast1;
+    
+    auto bret = bit::find(bfirst1_t, blast1_t, bit::bit0);
+    auto bool_ret = std::find(bool_first1_t, bool_last1_t, false);
+    REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::distance(bfirst1, bret) == std::distance(bool_first1, bool_ret));
+
+    std::advance(bfirst1_t, 3);
+    std::advance(bool_first1_t, 3);
+    bret = bit::find(bfirst1_t, blast1_t, bit::bit0);
+    bool_ret = std::find(bool_first1_t, bool_last1_t, false);
+    REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::distance(bfirst1, bret) == std::distance(bool_first1, bool_ret));
+    bret = bit::find(bfirst1_t, blast1_t, bit::bit1);
+    bool_ret = std::find(bool_first1_t, bool_last1_t, true);
+    REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::distance(bfirst1, bret) == std::distance(bool_first1, bool_ret));
+
+    bool_last1_t = bool_first1;
+    std::advance(bool_last1_t, (container_size-1)*digits-digits/2);
+    blast1_t = bfirst1;
+    std::advance(blast1_t, (container_size-1)*digits-digits/2);
+    bret = bit::find(bfirst1_t, blast1_t, bit::bit0);
+    bool_ret = std::find(bool_first1_t, bool_last1_t, false);
+    REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::distance(bfirst1, bret) == std::distance(bool_first1, bool_ret));
+    bret = bit::find(bfirst1_t, blast1_t, bit::bit1);
+    bool_ret = std::find(bool_first1_t, bool_last1_t, true);
+    REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::distance(bfirst1, bret) == std::distance(bool_first1, bool_ret));
+
+    bool_first1_t = bool_first1;
+    bool_last1_t = bool_first1;
+    std::advance(bool_first1_t, 2);
+    std::advance(bool_last1_t, digits-2);
+    bfirst1_t = bfirst1;
+    blast1_t = bfirst1;
+    std::advance(bfirst1_t, 2);
+    std::advance(blast1_t, digits-2);
+    bret = bit::find(bfirst1_t, blast1_t, bit::bit0);
+    bool_ret = std::find(bool_first1_t, bool_last1_t, false);
+    REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::distance(bfirst1, bret) == std::distance(bool_first1, bool_ret));
+}
+
+TEMPLATE_PRODUCT_TEST_CASE("find: left_shift- single word", 
+                           "[template][product]", 
+                           (std::vector, std::list, std::forward_list), 
+                           (unsigned char, unsigned short, 
+                            unsigned int, unsigned long)) {
+
+    using container_type = TestType;
+    using num_type = typename container_type::value_type;
+    auto container_size = 5;
+    auto digits = bit::binary_digits<num_type>::value;
+    container_type bitcont1 = make_random_container<container_type>
+                                     (container_size); 
+    auto boolcont1 = bitcont_to_boolcont(bitcont1);
+    auto bfirst1 = bit::bit_iterator<decltype(std::begin(bitcont1))>(std::begin(bitcont1));
+    auto blast1 = bit::bit_iterator<decltype(std::end(bitcont1))>(std::end(bitcont1));
+    auto bool_first1 = std::begin(boolcont1);
+    auto bool_last1 = std::end(boolcont1);
+    auto bool_first1_t = bool_first1;
+    auto bfirst1_t = bfirst1;
+    auto bool_last1_t = bool_last1;
+    auto blast1_t = blast1;
+
+    bool_first1_t = bool_first1;
+    bool_last1_t = bool_first1;
+    std::advance(bool_first1_t, 1);
+    std::advance(bool_last1_t, digits-1);
+    bfirst1_t = bfirst1;
+    blast1_t = bfirst1;
+    std::advance(bfirst1_t, 1);
+    std::advance(blast1_t, digits-1);
+
+    auto bret = bit::find(bfirst1_t, blast1_t, bit::bit0);
+    auto bool_ret = std::find(bool_first1_t, bool_last1_t, false);
+    REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::distance(bfirst1, bret) == std::distance(bool_first1, bool_ret));
+    bret = bit::find(bfirst1_t, blast1_t, bit::bit1);
+    bool_ret = std::find(bool_first1_t, bool_last1_t, true);
+    REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::distance(bfirst1, bret) == std::distance(bool_first1, bool_ret));
+    
+    bool_first1_t = bool_first1;
+    bool_last1_t = bool_first1;
+    std::advance(bool_first1_t, digits+3);
+    std::advance(bool_last1_t, 2*digits-3);
+    bfirst1_t = bfirst1;
+    blast1_t = bfirst1;
+    std::advance(bfirst1_t, digits+3);
+    std::advance(blast1_t, 2*digits-3);
+    bret = bit::find(bfirst1_t, blast1_t, bit::bit0);
+    bool_ret = std::find(bool_first1_t, bool_last1_t, false);
+    REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::distance(bfirst1, bret) == std::distance(bool_first1, bool_ret));
+    bret = bit::find(bfirst1_t, blast1_t, bit::bit1);
+    bool_ret = std::find(bool_first1_t, bool_last1_t, true);
+    REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::distance(bfirst1, bret) == std::distance(bool_first1, bool_ret));
+
+    bool_first1_t = bool_first1;
+    bool_last1_t = bool_first1;
+    std::advance(bool_first1_t, 2*digits+3);
+    std::advance(bool_last1_t, 3*digits-3);
+    bfirst1_t = bfirst1;
+    blast1_t = bfirst1;
+    std::advance(bfirst1_t, 2*digits+3);
+    std::advance(blast1_t, 3*digits-3);
+    bret = bit::find(bfirst1_t, blast1_t, bit::bit0);
+    bool_ret = std::find(bool_first1_t, bool_last1_t, false);
+    REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::distance(bfirst1, bret) == std::distance(bool_first1, bool_ret));
+    bret = bit::find(bfirst1_t, blast1_t, bit::bit1);
+    bool_ret = std::find(bool_first1_t, bool_last1_t, true);
+    REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::distance(bfirst1, bret) == std::distance(bool_first1, bool_ret));
+}
 
 
 
+
+TEMPLATE_PRODUCT_TEST_CASE("find: long-range", 
+                           "[template][product]", 
+                           (std::vector, std::list, std::forward_list), 
+                           (unsigned char, unsigned short, 
+                            unsigned int, unsigned long)) {
+
+    using container_type = TestType;
+    using num_type = typename container_type::value_type;
+    auto container_size = 4;
+    auto digits = bit::binary_digits<num_type>::value;
+    container_type bitcont1 = make_random_container<container_type>
+                                     (container_size); 
+    auto bfirst1 = bit::bit_iterator<decltype(std::begin(bitcont1))>(std::begin(bitcont1));
+    auto blast1 = bit::bit_iterator<decltype(std::end(bitcont1))>(std::end(bitcont1));
+    auto bfirst1_t = bfirst1;
+    auto blast1_t = blast1;
+    bit::fill(bfirst1, blast1, bit::bit0);
+    for (int N = digits*container_size - 1; N >= 0; N -= 3) {
+        std::cout << N << std::endl;
+        bfirst1[N] = bit::bit1;
+        auto bret = bit::find(bfirst1_t, blast1_t, bit::bit1);
+        REQUIRE(std::distance(bfirst1, bret) == N);
+    }
+    bit::fill(bfirst1, blast1, bit::bit1);
+    for (int N = digits*container_size - 1; N >= 0; N -= 3) {
+        bfirst1[N] = bit::bit0;
+        auto bret = bit::find(bfirst1_t, blast1_t, bit::bit0);
+        REQUIRE(std::distance(bfirst1, bret) == N);
+    }
+}
 #endif
