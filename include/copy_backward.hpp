@@ -25,8 +25,7 @@ namespace bit {
 template <class BidirIt1, class BidirIt2>
 constexpr bit_iterator<BidirIt2> copy_backward(bit_iterator<BidirIt1> first,
     bit_iterator<BidirIt1> last, bit_iterator<BidirIt2> d_last) {
-    (first, last);
-    return d_last;
+    return std::copy_backward(first, last, d_last);
 }
 
 // ========================================================================== //
