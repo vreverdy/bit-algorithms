@@ -201,7 +201,7 @@ constexpr bit_iterator<ForwardIt1> search_shift_or(bit_iterator<ForwardIt1> firs
         return last;
     }
     auto word_m = (bit_m / digits) + (bit_m % digits != 0);    
-    std::vector<word_type> D(word_m, 0);
+    std::vector<word_type> D(word_m, 1);
 
 
     auto D_first = bit_iterator(D.begin());
@@ -209,32 +209,25 @@ constexpr bit_iterator<ForwardIt1> search_shift_or(bit_iterator<ForwardIt1> firs
     auto t_first = first;
     auto t_last = first + bit_m;
     word_type val_mask;
-    auto shift_or_mask_f = [&val_mask] (const word_type s_word, const word_type D_word) {
-                return static_cast<word_type>(D_word & (~(s_word ^ val_mask)));
+    auto shift_or_mask_f0 = [] (const word_type s_word, const word_type D_word) {
+                return static_cast<word_type>(D_word & (~s_word));
+    };
+    auto shift_or_mask_f1 = [] (const word_type s_word, const word_type D_word) {
+                return static_cast<word_type>(D_word & s_word);
     };
 
-    while (t_first != first + bit_m) {
+    while (t_first != last) {
         shift_right(D_first, D_last, 1);
         *D_first = bit1;
-        val_mask = *t_first ? -1 : 0;
-        transform_word(s_first, s_last, D_first, D_first, shift_or_mask_f);
-        ++t_first; ++t_last;
-    } 
-    if (D_first[bit_m - 1] == bit1) {
-        return first;
-    }
-    auto ret = first + 1;
-
-    do {
-        shift_right(D_first, D_last, 1);
-        *D_first = bit1;
-        val_mask = *t_first ? -1 : 0;
-        transform_word(s_first, s_last, D_first, D_first, shift_or_mask_f);
-        if (D_first[bit_m - 1] == bit1) {
-            return ret;
+        if (*t_first == bit0)
+            transform_word(s_first, s_last, D_first, D_first, shift_or_mask_f0);
+        else 
+            transform_word(s_first, s_last, D_first, D_first, shift_or_mask_f1);
+        ++t_first;
+        if (D_first[bit_m - 1] == bit1 && bit::distance(first, t_first) >= bit_m) {
+            return first + bit::distance(first, t_first) - bit_m;
         }
-        ++t_first; ++t_last; ++ret;
-    } while (t_last != last);
+    } 
     return last;
 }
 

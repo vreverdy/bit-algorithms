@@ -27,7 +27,7 @@
 // ----------------------------- SEARCH Tests ------------------------------- //
 TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: single_word pattern or smaller", 
                            "[template][product]", 
-                           (std::vector, std::list, std::forward_list), 
+                           (std::vector), 
                            (unsigned char, unsigned short, 
                             unsigned int, unsigned long)) {
 
@@ -121,7 +121,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: single_word pattern or smaller",
 
 TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | text aligned", 
                            "[template][product]", 
-                           (std::vector, std::list, std::forward_list), 
+                           (std::vector), 
                            (unsigned char, unsigned short, 
                             unsigned int, unsigned long, unsigned long long)) {
 
@@ -202,7 +202,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | text aligne
 
 TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | pattern aligned", 
                            "[template][product]", 
-                           (std::vector, std::list, std::forward_list), 
+                           (std::vector), 
                            (unsigned char, unsigned short, 
                             unsigned int)) {
 
@@ -267,7 +267,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | pattern ali
 
 TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | unaligned", 
                            "[template][product]", 
-                           (std::vector, std::list, std::forward_list), 
+                           (std::vector), 
                            (unsigned char, unsigned short, 
                             unsigned int)) {
 
@@ -332,7 +332,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | unaligned",
 
 TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: many_word pattern | unaligned", 
                            "[template][product]", 
-                           (std::vector, std::list, std::forward_list), 
+                           (std::vector), 
                            (unsigned char, unsigned short, 
                             unsigned int)) {
 
@@ -391,6 +391,100 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: many_word pattern | unaligned",
         std::next(bool_first_txt, 50*digits - 6)
     );
 
+    REQUIRE(std::equal(bool_first_txt, bool_last_txt, bfirst_txt, blast_txt, comparator));
+    REQUIRE(std::distance(bfirst_txt, bret) == std::distance(bool_first_txt, bool_ret));
+}
+
+TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: single_word pattern or smaller at ends", 
+                           "[template][product]", 
+                           (std::vector), 
+                           (unsigned char, unsigned short, 
+                            unsigned int, unsigned long)) {
+
+    using container_type = TestType;
+    using num_type = typename container_type::value_type;
+    auto container_size = 10;
+    auto digits = bit::binary_digits<num_type>::value;
+    container_type bit_txt = make_random_container<container_type>
+                                     (container_size); 
+    auto bool_txt = bitcont_to_boolcont(bit_txt);
+    auto bfirst_txt = bit::bit_iterator<decltype(std::begin(bit_txt))>(std::begin(bit_txt));
+    auto blast_txt = bit::bit_iterator<decltype(std::end(bit_txt))>(std::end(bit_txt));
+    auto bool_first_txt = std::begin(bool_txt);
+    auto bool_last_txt = std::end(bool_txt);
+
+    auto bret = bit::search_shift_or(
+            bfirst_txt, 
+            blast_txt, 
+            std::next(bfirst_txt, 10*digits-5),
+            std::next(bfirst_txt, 10*digits-4)
+    );
+    auto bool_ret = std::search(
+            bool_first_txt, 
+            bool_last_txt, 
+            std::next(bool_first_txt, 10*digits-5),
+            std::next(bool_first_txt, 10*digits-4)
+    );
+    REQUIRE(std::equal(bool_first_txt, bool_last_txt, bfirst_txt, blast_txt, comparator));
+    REQUIRE(std::distance(bfirst_txt, bret) == std::distance(bool_first_txt, bool_ret));
+
+    bret = bit::search_shift_or(
+            bfirst_txt, 
+            blast_txt, 
+            std::next(bfirst_txt, 0),
+            std::next(bfirst_txt, 4)
+    );
+    bool_ret = std::search(
+            bool_first_txt, 
+            bool_last_txt, 
+            std::next(bool_first_txt, 0),
+            std::next(bool_first_txt, 4)
+    );
+    REQUIRE(std::equal(bool_first_txt, bool_last_txt, bfirst_txt, blast_txt, comparator));
+    REQUIRE(std::distance(bfirst_txt, bret) == std::distance(bool_first_txt, bool_ret));
+
+    bret = bit::search_shift_or(
+            bfirst_txt + 2, 
+            blast_txt - 2, 
+            std::next(bfirst_txt, 0),
+            std::next(bfirst_txt, 4)
+    );
+    bool_ret = std::search(
+            bool_first_txt + 2, 
+            bool_last_txt - 2, 
+            std::next(bool_first_txt, 0),
+            std::next(bool_first_txt, 4)
+    );
+    REQUIRE(std::equal(bool_first_txt, bool_last_txt, bfirst_txt, blast_txt, comparator));
+    REQUIRE(std::distance(bfirst_txt, bret) == std::distance(bool_first_txt, bool_ret));
+
+    bret = bit::search_shift_or(
+            bfirst_txt + 2, 
+            blast_txt - 2, 
+            std::next(bfirst_txt, 2),
+            std::next(bfirst_txt, 4)
+    );
+    bool_ret = std::search(
+            bool_first_txt + 2, 
+            bool_last_txt - 2, 
+            std::next(bool_first_txt, 2),
+            std::next(bool_first_txt, 4)
+    );
+    REQUIRE(std::equal(bool_first_txt, bool_last_txt, bfirst_txt, blast_txt, comparator));
+    REQUIRE(std::distance(bfirst_txt, bret) == std::distance(bool_first_txt, bool_ret));
+
+    bret = bit::search_shift_or(
+            bfirst_txt + 2, 
+            bfirst_txt + 6, 
+            std::next(bfirst_txt, 2),
+            std::next(bfirst_txt, 6)
+    );
+    bool_ret = std::search(
+            bool_first_txt + 2, 
+            bool_first_txt + 6, 
+            std::next(bool_first_txt, 2),
+            std::next(bool_first_txt, 6)
+    );
     REQUIRE(std::equal(bool_first_txt, bool_last_txt, bfirst_txt, blast_txt, comparator));
     REQUIRE(std::distance(bfirst_txt, bret) == std::distance(bool_first_txt, bool_ret));
 }
