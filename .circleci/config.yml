@@ -2,7 +2,7 @@ version: 2
 jobs:
   ubuntu_gcc_8:
     docker:
-      - image: ubuntu:19.04
+      - image: ubuntu:18.04
     steps:
       - run: apt-get update && apt-get install -y git
       - checkout
@@ -11,7 +11,7 @@ jobs:
       - run: make CXX=g++ CXX_STANDARD=c++2a test
   ubuntu_clang_8:
     docker:
-      - image: ubuntu:19.04
+      - image: ubuntu:18.04
     steps:
       - run: apt-get update && apt-get install -y git
       - checkout
