@@ -8,8 +8,8 @@ jobs:
       - run: apt-get update && apt-get install -y git
       - checkout
       - run: apt-get install -y make
-      - run: apt-get install -y gcc-9 g++-9
-      - run: make CXX=g++-9 CXX_STANDARD=c++2a test
+      - run: apt-get install -y gcc g++
+      - run: make CXX=g++ CXX_STANDARD=c++17 test
   ubuntu_clang_8:
     docker:
       - image: ubuntu:18.04
