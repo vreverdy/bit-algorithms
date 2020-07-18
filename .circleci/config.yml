@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  ubuntu_gcc_9:
+  ubuntu_gcc_8:
     docker:
       - image: ubuntu:18.04
     steps:
