@@ -4,7 +4,6 @@ jobs:
     docker:
       - image: ubuntu:18.04
     steps:
-      - run: add-apt-repository ppa:ubuntu-toolchain-r/test
       - run: apt-get update && apt-get install -y git
       - checkout
       - run: apt-get install -y make
