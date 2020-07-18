@@ -1,9 +1,10 @@
 version: 2
 jobs:
-  ubuntu_gcc_8:
+  ubuntu_gcc_9:
     docker:
       - image: ubuntu:18.04
     steps:
+      - run: add-apt-repository ppa:ubuntu-toolchain-r/test
       - run: apt-get update && apt-get install -y git
       - checkout
       - run: apt-get install -y make
