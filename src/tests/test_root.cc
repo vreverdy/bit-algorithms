@@ -18,7 +18,7 @@
 #include <list>
 #include <forward_list>
 // Project sources
-#include "test_utils.hpp"
+#include "utils/test_utils.hpp"
 #include "bit_algorithm_details.hpp"
 #include "bit_details.hpp"
 #include "input_container.hpp"

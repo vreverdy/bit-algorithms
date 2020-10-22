@@ -1,0 +1,3 @@
+[submodule "ext/xsimd"]
+	path = ext/xsimd
+	url = https://github.com/xtensor-stack/xsimd
