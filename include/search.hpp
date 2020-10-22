@@ -167,74 +167,52 @@ constexpr bit_iterator<ForwardIt1> search(bit_iterator<ForwardIt1> first,
 }
 
 // Status: to do
-template <class ForwardIt1, class ForwardIt2>
-constexpr bit_iterator<ForwardIt1> search_shift_or(bit_iterator<ForwardIt1> first,
-    bit_iterator<ForwardIt1> last, bit_iterator<ForwardIt2> s_first,
-    bit_iterator<ForwardIt2> s_last) {
+template <class RandomAccessIt>
+constexpr bit_iterator<RandomAccessIt> search_shift_or(bit_iterator<RandomAccessIt> first,
+    bit_iterator<RandomAccessIt> last, bit_iterator<RandomAccessIt> s_first,
+    bit_iterator<RandomAccessIt> s_last) {
+
     // Assertions
      _assert_range_viability(first, last); 
      _assert_range_viability(s_first, s_last); 
 
     // Types and constants
-    using word_type1 = typename bit_iterator<ForwardIt1>::word_type;
-    using word_type2 = typename bit_iterator<ForwardIt2>::word_type;
-    using size_type1 = typename bit_iterator<ForwardIt1>::size_type;
-    using size_type2 = typename bit_iterator<ForwardIt2>::size_type;
-    constexpr size_type1 digits1 = binary_digits<word_type1>::value;
-    constexpr size_type2 digits2 = binary_digits<word_type2>::value;
+    using word_type = typename bit_iterator<RandomAccessIt>::word_type;
+    using size_type = typename bit_iterator<RandomAccessIt>::size_type;
+    constexpr size_type digits = binary_digits<word_type>::value;
 
-    // Different word types ):
-    if constexpr (digits1 != digits2) {
-        return std::search(first, last, s_first, s_last);
-    }
-
-    // Same word types word types (:
-    // QUESTION: If word_type1 and word_type2 are of the same size, does it matter
-    // if I just treat all words as word_type1?
-    
-    using word_type = word_type1; 
-    using size_type = size_type1; 
-    constexpr size_type digits = digits1; 
-    
     auto bit_m = distance(s_first, s_last);
     if (is_within(first, last, bit_m-1)) {
         return last;
     }
     auto word_m = (bit_m / digits) + (bit_m % digits != 0);    
-    std::vector<word_type> D(word_m, 0);
+    std::vector<word_type> D(word_m, static_cast<word_type>(-1));
 
 
     auto D_first = bit_iterator(D.begin());
     auto D_last = D_first + bit_m;
     auto t_first = first;
-    auto t_last = first + bit_m;
-    word_type val_mask;
-    auto shift_or_mask_f = [&val_mask] (const word_type s_word, const word_type D_word) {
-                return static_cast<word_type>(D_word & (~(s_word ^ val_mask)));
+    //auto t_last = first + bit_m;
+    //word_type val_mask;
+    auto shift_or_mask_f0 = [] (const auto s_word, const auto D_word) {
+                return D_word & (~s_word);
+    };
+    auto shift_or_mask_f1 = [] (const auto s_word, const auto D_word) {
+                return D_word & s_word;
     };
 
-    while (t_first != first + bit_m) {
+    while (t_first != last) {
         shift_right(D_first, D_last, 1);
         *D_first = bit1;
-        val_mask = *t_first ? -1 : 0;
-        transform_word(s_first, s_last, D_first, D_first, shift_or_mask_f);
-        ++t_first; ++t_last;
-    } 
-    if (D_first[bit_m - 1] == bit1) {
-        return first;
-    }
-    auto ret = first + 1;
-
-    do {
-        shift_right(D_first, D_last, 1);
-        *D_first = bit1;
-        val_mask = *t_first ? -1 : 0;
-        transform_word(s_first, s_last, D_first, D_first, shift_or_mask_f);
-        if (D_first[bit_m - 1] == bit1) {
-            return ret;
+        if (*t_first == bit0)
+            transform(s_first, s_last, D_first, D_first, shift_or_mask_f0);
+        else 
+            transform(s_first, s_last, D_first, D_first, shift_or_mask_f1);
+        ++t_first;
+        if (D_first[bit_m - 1] == bit1 && bit::distance(first, t_first) >= bit_m) {
+            return first + bit::distance(first, t_first) - bit_m;
         }
-        ++t_first; ++t_last; ++ret;
-    } while (t_last != last);
+    } 
     return last;
 }
 

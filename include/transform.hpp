@@ -13,7 +13,11 @@
 // ============================== PREAMBLE ================================== //
 // C++ standard library
 // Project sources
+#include "bit.hpp"
 // Third-party libraries
+#include "xsimd/xsimd.hpp"
+#include "xsimd/stl/algorithms.hpp"
+#include <iterator>
 // Miscellaneous
 
 namespace bit {
@@ -39,43 +43,24 @@ namespace bit {
     //return d_first;
 //}
 
-//// Status: on hold
-//template <class InputIt1, class InputIt2, class OutputIt, class BinaryOperation>
-//constexpr bit_iterator<OutputIt> transform(bit_iterator<InputIt1> first1,
-    //bit_iterator<InputIt1> last1, bit_iterator<InputIt2> first2,
-    //bit_iterator<OutputIt> d_first, BinaryOperation binary_op) {
-    //(first1, last1, first2, binary_op); 
-    //return d_first;
-//}
-
-template <class InputIt1, class InputIt2, class OutputIt, class BinaryOperation>
-constexpr bit_iterator<OutputIt> transform_word(bit_iterator<InputIt1> first1,
-    bit_iterator<InputIt1> last1, bit_iterator<InputIt2> first2,
-    bit_iterator<OutputIt> d_first, BinaryOperation binary_op) {
+template <class RandomAccessIt, class BinaryOperation>
+constexpr bit_iterator<RandomAccessIt> transform_word(
+        bit_iterator<RandomAccessIt> first1,
+        bit_iterator<RandomAccessIt> last1, 
+        bit_iterator<RandomAccessIt> first2,
+        bit_iterator<RandomAccessIt> d_first,
+        BinaryOperation binary_op) {
     // Assertions
      _assert_range_viability(first1, last1); 
 
     // Types and constants
-    using word_type1    = typename bit_iterator<InputIt1>::word_type;
-    using word_type2    = typename bit_iterator<InputIt2>::word_type;
-    using word_type_out = typename bit_iterator<OutputIt>::word_type;
-    using size_type1    = typename bit_iterator<InputIt1>::size_type;
-    using size_type2    = typename bit_iterator<InputIt2>::size_type;
-    using size_type_out = typename bit_iterator<OutputIt>::size_type;
-    constexpr size_type1 digits1     = binary_digits<word_type1>::value;
-    constexpr size_type2 digits2     = binary_digits<word_type2>::value;
-    constexpr size_type_out digits_out  = binary_digits<word_type_out>::value;
-
-    // This is just for now. Perhaps later we can expand to different word sizes
-    assert(digits1 == digits2);
-    assert(digits2 == digits_out);
-    using word_type = word_type1; 
-    using size_type = size_type1; 
-    constexpr size_type digits = digits1; 
+    using word_type    = typename bit_iterator<RandomAccessIt>::word_type;
+    using size_type    = typename bit_iterator<RandomAccessIt>::size_type;
+    constexpr size_type digits     = binary_digits<word_type>::value;
 
     if (is_within<digits>(first1, last1)) {
         word_type d = distance(first1, last1);
-        write_word(
+        write_word<word_type>(
             binary_op(
                 get_word(first1, d),
                 get_word(first2, d)
@@ -86,10 +71,10 @@ constexpr bit_iterator<OutputIt> transform_word(bit_iterator<InputIt1> first1,
         return next(d_first, d);
     } 
     
-    InputIt1 it1    = first1.base();
+    RandomAccessIt it1    = first1.base();
     if (first1.position() != 0) {
         word_type d = digits - first1.position();
-        write_word(
+        write_word<word_type>(
             binary_op(
                 static_cast<word_type>(*first1.base() >> first1.position()),
                 get_word(first2, d)
@@ -103,7 +88,7 @@ constexpr bit_iterator<OutputIt> transform_word(bit_iterator<InputIt1> first1,
     }
     
     while (it1 != last1.base()) {
-        write_word(
+        write_word<word_type>(
             binary_op(
                 *it1++,
                 get_word<word_type>(first2)
@@ -116,7 +101,7 @@ constexpr bit_iterator<OutputIt> transform_word(bit_iterator<InputIt1> first1,
     }
 
     if (last1.position() != 0) {
-        write_word(
+        write_word<word_type>(
             binary_op(
                 *it1,
                 get_word(first2, last1.position())
@@ -127,6 +112,36 @@ constexpr bit_iterator<OutputIt> transform_word(bit_iterator<InputIt1> first1,
         advance(d_first, last1.position());
     }
     return d_first;
+}
+
+template <class RandomAccessIt, class BinaryOperation>
+constexpr bit_iterator<RandomAccessIt> transform(
+        bit_iterator<RandomAccessIt> first1,
+        bit_iterator<RandomAccessIt> last1, 
+        bit_iterator<RandomAccessIt> first2,
+        bit_iterator<RandomAccessIt> d_first,
+        BinaryOperation binary_op) {
+    // Assertions
+     _assert_range_viability(first1, last1); 
+
+    // Types and constants
+    using word_type    = typename bit_iterator<RandomAccessIt>::word_type;
+    using size_type    = typename bit_iterator<RandomAccessIt>::size_type;
+    constexpr size_type digits     = binary_digits<word_type>::value;
+
+    bool is_first1_aligned = first1.position() == 0;
+    bool is_last1_aligned = last1.position() == 0;
+    bool is_first2_aligned = first2.position() == 0;
+    bool is_d_first_aligned = d_first.position() == 0;
+    
+    if (is_first1_aligned && is_first2_aligned && is_d_first_aligned && is_last1_aligned) {
+        xsimd::transform(first1.base(), last1.base(), first2.base(), d_first.base(),
+               [binary_op](const auto& x, const auto& y) {return binary_op(x, y);}); 
+        first1 += std::distance(first1.base(), last1.base()) * digits;
+        first2 += std::distance(first1.base(), last1.base()) * digits;
+        d_first += std::distance(first1.base(), last1.base()) * digits;
+    }
+    return d_first; //transform_word(first1, last1, first2, d_first, binary_op);
 }
 
 // Status: on hold

@@ -26,9 +26,8 @@
 // ----------------------------- transform Tests ---------------------------- //
 TEMPLATE_PRODUCT_TEST_CASE("transform_word: simple bitwise instruction", 
                            "[template][product]", 
-                           (std::vector, std::list, std::forward_list), 
-                           (unsigned char, unsigned short, unsigned int, 
-                            unsigned long, unsigned long long)) {
+                           (std::vector), 
+                           (unsigned char)) {
 
     using container_type = TestType;
     using word_type = typename container_type::value_type;
@@ -58,10 +57,10 @@ TEMPLATE_PRODUCT_TEST_CASE("transform_word: simple bitwise instruction",
     auto bool_last_d = std::end(boolcont_d);
 
     auto and_f = [](const auto left, const auto right) {
-        return static_cast<word_type>(left & right);
+        return left & right;
     };
 
-    auto bret = bit::transform_word(
+    auto bret = bit::transform(
             bfirst1, 
             blast1,
             bfirst2,
@@ -80,7 +79,7 @@ TEMPLATE_PRODUCT_TEST_CASE("transform_word: simple bitwise instruction",
     REQUIRE(std::equal(bool_first_d, bool_last_d, bfirst_d, blast_d, comparator));
     REQUIRE(std::distance(bfirst_d, bret) == std::distance(bool_first_d, bool_ret));
 
-    bret = bit::transform_word(
+    bret = bit::transform(
             std::next(bfirst1, 2),
             std::next(bfirst1, digits),
             std::next(bfirst2, digits),
@@ -99,7 +98,7 @@ TEMPLATE_PRODUCT_TEST_CASE("transform_word: simple bitwise instruction",
     REQUIRE(std::equal(bool_first_d, bool_last_d, bfirst_d, blast_d, comparator));
     REQUIRE(std::distance(bfirst_d, bret) == std::distance(bool_first_d, bool_ret));
 
-    bret = bit::transform_word(
+    bret = bit::transform(
             std::next(bfirst1),
             std::next(bfirst1, digits),
             std::next(bfirst2, digits),
@@ -118,7 +117,7 @@ TEMPLATE_PRODUCT_TEST_CASE("transform_word: simple bitwise instruction",
     REQUIRE(std::equal(bool_first_d, bool_last_d, bfirst_d, blast_d, comparator));
     REQUIRE(std::distance(bfirst_d, bret) == std::distance(bool_first_d, bool_ret));
 
-    bret = bit::transform_word(
+    bret = bit::transform(
             std::next(bfirst1),
             std::next(bfirst1, digits - 2),
             std::next(bfirst2, digits),
@@ -137,7 +136,7 @@ TEMPLATE_PRODUCT_TEST_CASE("transform_word: simple bitwise instruction",
     REQUIRE(std::equal(bool_first_d, bool_last_d, bfirst_d, blast_d, comparator));
     REQUIRE(std::distance(bfirst_d, bret) == std::distance(bool_first_d, bool_ret));
 
-    bret = bit::transform_word(
+    bret = bit::transform(
             std::next(bfirst1, 2),
             std::next(bfirst1, 5*digits),
             std::next(bfirst2, digits),
@@ -156,7 +155,7 @@ TEMPLATE_PRODUCT_TEST_CASE("transform_word: simple bitwise instruction",
     REQUIRE(std::equal(bool_first_d, bool_last_d, bfirst_d, blast_d, comparator));
     REQUIRE(std::distance(bfirst_d, bret) == std::distance(bool_first_d, bool_ret));
 
-    bret = bit::transform_word(
+    bret = bit::transform(
             std::next(bfirst1, 2),
             std::next(bfirst1, 5*digits),
             std::next(bfirst2, digits - 1),
@@ -175,7 +174,7 @@ TEMPLATE_PRODUCT_TEST_CASE("transform_word: simple bitwise instruction",
     REQUIRE(std::equal(bool_first_d, bool_last_d, bfirst_d, blast_d, comparator));
     REQUIRE(std::distance(bfirst_d, bret) == std::distance(bool_first_d, bool_ret));
 
-    bret = bit::transform_word(
+    bret = bit::transform(
             std::next(bfirst1, 2),
             std::next(bfirst1, 5*digits - 1),
             std::next(bfirst2, digits - 1),

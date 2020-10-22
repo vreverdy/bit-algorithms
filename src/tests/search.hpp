@@ -27,9 +27,8 @@
 // ----------------------------- SEARCH Tests ------------------------------- //
 TEMPLATE_PRODUCT_TEST_CASE("search: single_word pattern or smaller", 
                            "[template][product]", 
-                           (std::vector, std::list, std::forward_list), 
-                           (unsigned char, unsigned short, 
-                            unsigned int, unsigned long)) {
+                           (std::vector), 
+                           (unsigned char)) {
 
     using container_type = TestType;
     using num_type = typename container_type::value_type;
@@ -123,7 +122,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search: single_word pattern or smaller",
 
 TEMPLATE_PRODUCT_TEST_CASE("search: multiple_word pattern | text aligned", 
                            "[template][product]", 
-                           (std::forward_list), 
+                           (std::vector), 
                            (unsigned char)) {
 
     using container_type = TestType;
@@ -203,7 +202,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search: multiple_word pattern | text aligned",
 
 TEMPLATE_PRODUCT_TEST_CASE("search: multiple_word pattern | pattern aligned", 
                            "[template][product]", 
-                           (std::forward_list), 
+                           (std::vector), 
                            (unsigned char)) {
 
     using container_type = TestType;
@@ -267,7 +266,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search: multiple_word pattern | pattern aligned",
 
 TEMPLATE_PRODUCT_TEST_CASE("search: multiple_word pattern | unaligned", 
                            "[template][product]", 
-                           (std::forward_list), 
+                           (std::vector), 
                            (unsigned char)) {
 
     using container_type = TestType;
@@ -331,7 +330,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search: multiple_word pattern | unaligned",
 
 TEMPLATE_PRODUCT_TEST_CASE("search: many_word pattern | unaligned", 
                            "[template][product]", 
-                           (std::forward_list), 
+                           (std::vector), 
                            (unsigned char)) {
 
     using container_type = TestType;
