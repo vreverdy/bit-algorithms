@@ -7,6 +7,45 @@ An exploratory implementation of bit overloads of the C++ standard algorithms
 ## Description
 While [The Bit Library](https://github.com/vreverdy/bit) is currently being proposed and reviewed by the ISO C++ Standards Committee, this repository is intended for exploratory developments on bit manipulation algorithm overloads based on the bit library. Once finalized, the algorithms will be merged to the main bit library repository and proposed for standardization to C++.
 
+Overloading all of the routines in [<algorithm>] for bit iterators is an immense task. We aim to focus on the routines which (1) would benefit most from bit-parallel computation and (2) are commonly used in a bitwise setting. That being said, there are those out there who would benefit from an implementation of `sort` or `partition` which partitions all of the bits. Please open an issue if there is an routine in the <algorithm> header that you would like implemented in our library. Additionally, it may be useful to create a separate set of routines not present in <algorithm> that would be useful to the community. If you feel there is a popular bitwise algorithm on containers which cannot be efficiently implemented using the bit overloads for the <algorithm> library, please open an issue to let us know.
+
+## Performance Benchmarks
+We used Google's [benchmark](https://github.com/google/benchmark) library for computing benchmarks. Each benchmark is formatted as `{bit, std}::function` (size) [(alignment-tags)].
+
+* `bit` is for this library, `std` is the standard library operating on the infamous `vector<bool>`. 
+* (size) denotes the size of the container in bits. `small = 1 << 4`, `large = 1 << 16`
+* (alignment-tags) refers to the memory alignment of the bit-iterators. `U` means the iterator did not fall on a word boundary, `R` means the iterator was placed at random, and `A` means the iterator aligns with a word boundary.
+
+For example, `bit::rotate (large) (ARA)` refers to our library's implementation of the `rotate` algorithm operating on a container of 32768 bits, where `first` and `last` are aligned but `n_first` is selected at random.
+
+```
+Run on (64 X 2300 MHz CPU s)
+CPU Caches:
+  L1 Data 32 KiB (x32)
+  L1 Instruction 32 KiB (x32)
+  L2 Unified 1024 KiB (x32)
+  L3 Unified 22528 KiB (x2)
+Load Average: 0.41, 0.67, 0.73
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+--------------------------------------------------------------------
+Benchmark                          Time             CPU   Iterations
+--------------------------------------------------------------------
+bit::reverse (small) (UU)       8.50 ns         8.51 ns     82287778
+std::reverse (small)            39.1 ns         39.1 ns     17901633
+bit::reverse (large) (AA)       1028 ns         1028 ns       681228
+std::reverse (large)          253966 ns       253976 ns         2758
+bit::rotate (small) (ARA)       6.97 ns         6.97 ns    100498019
+std::rotate (small)             74.9 ns         74.9 ns      8787660
+bit::rotate (large) (ARA)      14746 ns        14746 ns        47206
+std::rotate (large)           536530 ns       536528 ns         1339
+bit::count (small) (AA)         1.31 ns         1.31 ns    536149000
+std::count (small)              22.2 ns         22.2 ns     31543212
+bit::count (large) (AA)         1717 ns         1717 ns       407179
+std::count (large)             84685 ns        84687 ns         8266
+```
+
+
+
 ## Structure
 The structure of the repository is the following:
 * **`bit-algorithms`**: main project directory

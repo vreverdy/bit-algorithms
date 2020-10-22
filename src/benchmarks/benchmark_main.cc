@@ -19,7 +19,8 @@
 // Project sources
 #include "bit.hpp"
 #include "utils/test_utils.hpp"
-//#include "rotate_bench.hpp"
+#include "count_bench.hpp"
+#include "rotate_bench.hpp"
 #include "reverse_bench.hpp"
 #include "search_bench.hpp"
 // Third party libraries
@@ -52,7 +53,7 @@ template <class F, class C, class... Args>
 void register_types(F test_lambda_f, std::string func_name, unsigned int size) {
     using word_type = typename C::value_type;
     std::string container_name = demangle(typeid(C).name());
-    std::string test_name = func_name + " " + container_name;
+    std::string test_name = func_name; // + " " + container_name;
     benchmark::RegisterBenchmark(
             test_name.c_str(), 
             test_lambda_f, 
@@ -85,25 +86,65 @@ void register_bool_containers(F test_lambda_f, std::string func_name, unsigned i
 
 //BENCHMARK_MAIN();
 int main(int argc, char** argv) {
+    unsigned int size_small = 1 << 4;
+    unsigned int size_medium = 1 << 8;
+    unsigned int size_large = 1 << 16;
+    unsigned int size_huge = 1 << 30;
     // Reverse benchmarks
-    unsigned int size = 1 << 16;
-    //register_word_containers<decltype(BM_BitReverse), std::vector, std::list>(
-            //BM_BitReverse, 
-            //"Reverse_B_AA_Large",
-            //size);
-    //register_bool_containers<decltype(BM_BoolReverse), std::vector, std::list>(
-            //BM_BoolReverse, 
-            //"Reverse_SBool_Large",
-            //size);
-    //size = 256;
-    //register_word_containers<decltype(BM_BitReverse_UU), std::vector, std::list>(
-            //BM_BitReverse_UU, 
-            //"Reverse_B_UU_Small",
-            //size);
-    //register_bool_containers<decltype(BM_BoolReverse), std::vector, std::list>(
-            //BM_BoolReverse, 
-            //"Reverse_SBool_Small",
-            //size);
+    register_word_containers<decltype(BM_BitReverse_UU), std::vector>(
+            BM_BitReverse_UU, 
+            "bit::reverse (small) (UU)",
+            size_small);
+    register_bool_containers<decltype(BM_BoolReverse), std::vector>(
+            BM_BoolReverse, 
+            "std::reverse (small)",
+            size_small);
+    register_word_containers<decltype(BM_BitReverse), std::vector>(
+            BM_BitReverse, 
+            "bit::reverse (large) (AA)",
+            size_large);
+    register_bool_containers<decltype(BM_BoolReverse), std::vector>(
+            BM_BoolReverse, 
+            "std::reverse (large)",
+            size_large);
+
+    // Rotate benchmarks 
+    register_word_containers<decltype(BM_BitRotate), std::vector>(
+            BM_BitRotate, 
+            "bit::rotate (small) (ARA)",
+            size_small);
+    register_bool_containers<decltype(BM_BoolRotate), std::vector>(
+            BM_BoolRotate, 
+            "std::rotate (small)",
+            size_small);
+    register_word_containers<decltype(BM_BitRotate), std::vector>(
+            BM_BitRotate, 
+            "bit::rotate (large) (ARA)",
+            size_large);
+    register_bool_containers<decltype(BM_BoolRotate), std::vector>(
+            BM_BoolRotate, 
+            "std::rotate (large)",
+            size_large);
+
+    // Count benchmarks 
+    register_word_containers<decltype(BM_BitCount), std::vector>(
+            BM_BitCount, 
+            "bit::count (small) (AA)",
+            size_small);
+    register_bool_containers<decltype(BM_BoolCount), std::vector>(
+            BM_BoolCount, 
+            "std::count (small)",
+            size_small);
+    register_word_containers<decltype(BM_BitCount), std::vector>(
+            BM_BitCount, 
+            "bit::count (large) (AA)",
+            size_large);
+    register_bool_containers<decltype(BM_BoolCount), std::vector>(
+            BM_BoolCount, 
+            "std::count (large)",
+            size_large);
+
+    // Search benchmarks
     //register_word_containers<decltype(BM_BitSearch), std::vector>(
             //BM_BitSearch, 
             //"Search_Bit_Large",
@@ -112,14 +153,14 @@ int main(int argc, char** argv) {
             //BM_BoolSearch, 
             //"Search_Bool_Large",
             //size);
-    register_word_containers<decltype(BM_BitSearch_WorstCase), std::vector>(
-            BM_BitSearch_WorstCase, 
-            "Search_Bit_Large_WorstCase",
-            size);
-    register_bool_containers<decltype(BM_BoolSearch_WorstCase), std::vector>(
-            BM_BoolSearch_WorstCase, 
-            "Search_Bool_Large_WorstCase",
-            size);
+    //register_word_containers<decltype(BM_BitSearch_WorstCase), std::vector>(
+            //BM_BitSearch_WorstCase, 
+            //"Search_Bit_Large_WorstCase",
+            //size);
+    //register_bool_containers<decltype(BM_BoolSearch_WorstCase), std::vector>(
+            //BM_BoolSearch_WorstCase, 
+            //"Search_Bool_Large_WorstCase",
+            //size);
     benchmark::Initialize(&argc, argv);
     benchmark::RunSpecifiedBenchmarks();
 }
