@@ -2,7 +2,6 @@
 
 #include "bit.hpp"
 #include "catch2.hpp"
-#include "test_utils.hpp"
 #include <list>
 
 TEMPLATE_TEST_CASE("Single number: full reverse correct", "[reverse]",

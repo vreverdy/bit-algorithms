@@ -13,7 +13,6 @@
 
 // ============================== PREAMBLE ================================== //
 // Project sources
-#include "test_utils.hpp"
 // Third party libraries
 #include "catch2.hpp"
 

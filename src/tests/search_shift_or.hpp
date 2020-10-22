@@ -27,7 +27,7 @@
 // ----------------------------- SEARCH Tests ------------------------------- //
 TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: single_word pattern or smaller", 
                            "[template][product]", 
-                           (std::vector, std::list, std::forward_list), 
+                           (std::vector), 
                            (unsigned char, unsigned short, 
                             unsigned int, unsigned long)) {
 
@@ -121,7 +121,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: single_word pattern or smaller",
 
 TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | text aligned", 
                            "[template][product]", 
-                           (std::vector, std::list, std::forward_list), 
+                           (std::vector), 
                            (unsigned char, unsigned short, 
                             unsigned int, unsigned long, unsigned long long)) {
 
@@ -202,7 +202,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | text aligne
 
 TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | pattern aligned", 
                            "[template][product]", 
-                           (std::vector, std::list, std::forward_list), 
+                           (std::vector), 
                            (unsigned char, unsigned short, 
                             unsigned int)) {
 
@@ -267,7 +267,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | pattern ali
 
 TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | unaligned", 
                            "[template][product]", 
-                           (std::vector, std::list, std::forward_list), 
+                           (std::vector), 
                            (unsigned char, unsigned short, 
                             unsigned int)) {
 
@@ -332,7 +332,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | unaligned",
 
 TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: many_word pattern | unaligned", 
                            "[template][product]", 
-                           (std::vector, std::list, std::forward_list), 
+                           (std::vector), 
                            (unsigned char, unsigned short, 
                             unsigned int)) {
 
