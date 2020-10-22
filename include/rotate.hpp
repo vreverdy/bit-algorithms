@@ -350,7 +350,7 @@ bit_iterator<RandomAccessIt> rotate_via_raw(
     difference_type n = last - first;
     
     if (k == n - k) {
-        std::swap_ranges(first, n_first, n_first);
+        swap_ranges(first, n_first, n_first);
         return n_first;
     }
 
@@ -371,12 +371,12 @@ bit_iterator<RandomAccessIt> rotate_via_raw(
             unsigned int full_swaps = (n - k) / k;
             size_type remainder = (n - k) - full_swaps*k;
             while (full_swaps > 0) {
-                std::swap_ranges(p, q, q);
+                swap_ranges(p, q, q);
                 p += k;
                 q += k;
                 --full_swaps;
             }
-            std::swap_ranges(p, p + remainder, q);
+            swap_ranges(p, p + remainder, q);
             p += remainder;
             q += remainder;
             n %= k;
@@ -399,12 +399,12 @@ bit_iterator<RandomAccessIt> rotate_via_raw(
             while (full_swaps > 0) {
                 p -= k;
                 q -= k;
-                std::swap_ranges(p, q, q);
+                swap_ranges(p, q, q);
                 --full_swaps;
             }
             p -= remainder;
             q -= remainder;
-            std::swap_ranges(p, p + remainder, q);
+            swap_ranges(p, p + remainder, q);
             n %= k;
             if (n == 0)
                 return ret;
