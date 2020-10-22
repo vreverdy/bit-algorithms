@@ -16,8 +16,10 @@ auto BM_BitRotate = [](benchmark::State& state, auto input) {
     auto first = bit::bit_iterator<decltype(std::begin(bitcont))>(std::begin(bitcont));
     auto n_first = first + distr(generator);
     auto last = bit::bit_iterator<decltype(std::end(bitcont))>(std::end(bitcont));
-    for (auto _ : state)
-        bit::reverse(first, last);
+    for (auto _ : state) {
+        benchmark::DoNotOptimize(bit::rotate(first, n_first, last));
+        benchmark::ClobberMemory();
+    }
 };
 
 
@@ -34,6 +36,8 @@ auto BM_BoolRotate = [](benchmark::State& state, auto input) {
     auto first = cont.begin();
     auto n_first = first + distr(generator);
     auto last = cont.end();
-    for (auto _ : state)
-        std::reverse(first, last);
+    for (auto _ : state) {
+        benchmark::DoNotOptimize(std::rotate(first, n_first, last));
+        benchmark::ClobberMemory();
+    }
 };

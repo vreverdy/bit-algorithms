@@ -9,8 +9,10 @@ auto BM_BitCount = [](benchmark::State& state, auto input) {
     container_type bitcont = make_random_container<container_type>(container_size); 
     auto first = bit::bit_iterator<decltype(std::begin(bitcont))>(std::begin(bitcont));
     auto last = bit::bit_iterator<decltype(std::end(bitcont))>(std::end(bitcont));
-    for (auto _ : state)
-        bit::count(first, last, bit::bit1);
+    for (auto _ : state) {
+        benchmark::DoNotOptimize(bit::count(first, last, bit::bit1));
+        benchmark::ClobberMemory();
+    }
 };
 
 
@@ -21,6 +23,8 @@ auto BM_BoolCount = [](benchmark::State& state, auto input) {
     container_type cont = make_random_container<container_type>(container_size); 
     auto first = cont.begin();
     auto last = cont.end();
-    for (auto _ : state)
-        std::count(first, last, true);
+    for (auto _ : state) {
+        benchmark::DoNotOptimize(std::count(first, last, true));
+        benchmark::ClobberMemory();
+    }
 };

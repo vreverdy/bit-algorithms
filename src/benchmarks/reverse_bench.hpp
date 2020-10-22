@@ -12,8 +12,10 @@ auto BM_BitReverse = [](benchmark::State& state, auto input) {
     container_type bitcont = make_random_container<container_type>(container_size); 
     auto first = bit::bit_iterator<decltype(std::begin(bitcont))>(std::begin(bitcont));
     auto last = bit::bit_iterator<decltype(std::end(bitcont))>(std::end(bitcont));
-    for (auto _ : state)
+    for (auto _ : state) {
         bit::reverse(first, last);
+        benchmark::ClobberMemory();
+    }
 };
 
 auto BM_BitReverse_UU = [](benchmark::State& state, auto input) {
@@ -25,8 +27,10 @@ auto BM_BitReverse_UU = [](benchmark::State& state, auto input) {
     container_type bitcont = make_random_container<container_type>(container_size); 
     auto first = bit::bit_iterator<decltype(std::begin(bitcont))>(std::begin(bitcont));
     auto last = bit::bit_iterator<decltype(std::end(bitcont))>(std::end(bitcont));
-    for (auto _ : state)
+    for (auto _ : state) {
         bit::reverse(first + 2, last - 3);
+        benchmark::ClobberMemory();
+    }
 };
 
 auto BM_BoolReverse = [](benchmark::State& state, auto input) {
@@ -36,6 +40,8 @@ auto BM_BoolReverse = [](benchmark::State& state, auto input) {
     container_type cont = make_random_container<container_type>(container_size); 
     auto first = cont.begin();
     auto last = cont.end();
-    for (auto _ : state)
+    for (auto _ : state) {
         std::reverse(first, last);
+        benchmark::ClobberMemory();
+    }
 };
