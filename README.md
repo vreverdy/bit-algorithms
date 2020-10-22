@@ -44,6 +44,14 @@ bit::count (large) (AA)         1717 ns         1717 ns       407179
 std::count (large)             84685 ns        84687 ns         8266
 ```
 
+| Benchmark | Size  | Speedup |
+|-----------|-------|---------|
+| reverse   | small | 4.6x    |
+| reverse   | large | 247x    |
+| rotate    | small | 10.7x   |
+| rotate    | large | 36.4x   |
+| count     | small | 17.1x   |
+| count     | large | 49.3x   |
 
 
 ## Structure
