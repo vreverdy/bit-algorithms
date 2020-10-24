@@ -32,7 +32,7 @@ TEST_SRCS = ${TEST_DIR}/test_root.cc ${TEST_HEADERS}
 BENCHMARK_HEADERS = $(wildcard ${BENCHMARK_DIR}/*.hpp)
 BENCHMARK_SRCS = ${BENCHMARK_DIR}/benchmark_main.cc ${BENCHMARK_HEADERS} 
 
-INCLUDES = -I${PWD}/ext -I${PWD}/ext/bit -I${PWD}/ext/xsimd/include -I${PWD}/include 
+INCLUDES = -I${PWD}/ext -I${PWD}/ext/bit -I${PWD}/ext/libsimdpp -I${PWD}/include 
 
 # tests
 TEST_OBJS = ${BUILD_DIR}/test_main.o ${BUILD_DIR}/test_root.o
