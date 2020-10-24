@@ -70,7 +70,7 @@ void register_word_containers(F test_lambda_f, std::string func_name, unsigned i
 
 template <class F, template<typename...> class C, template<typename...> class... Args> 
 void register_word_containers(F test_lambda_f, std::string func_name, unsigned int size) {
-    register_types<F, C<unsigned int>>(test_lambda_f, func_name, size);
+    register_types<F, C<unsigned long long int>>(test_lambda_f, func_name, size);
     register_word_containers<F, Args...>(test_lambda_f, func_name, size);
 }
 
