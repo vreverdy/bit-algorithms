@@ -18,6 +18,7 @@
 // C++ standard library
 // Project sources
 #include "../ext/bit/bit.hpp"
+#include <iterator>
 // Third-party libraries
 // Miscellaneous
 namespace bit {
@@ -290,11 +291,9 @@ ForwardIt word_shift_left(ForwardIt first,
     if (n >= distance(first, last)) return first;
     ForwardIt mid = first;
     std::advance(mid, n);
-    for (; mid != last; ++first, ++mid) {
-        *first = *mid;
-        *mid = 0;
-    }
-    return first;
+    auto ret = std::copy(mid, last, first);
+    std::fill(ret, last, 0);
+    return ret;
 }
 
 
@@ -302,12 +301,12 @@ ForwardIt word_shift_left(ForwardIt first,
 // bits with 0
 // NOT OPTIMIZED. Will be replaced with std::shift eventually.
 template <class ForwardIt>
-ForwardIt word_shift_right(ForwardIt first,
+ForwardIt word_shift_right_dispatch(ForwardIt first,
                           ForwardIt last,
-                          typename ForwardIt::difference_type n
-)
-{
-    auto d = distance(first, last);
+                          typename ForwardIt::difference_type n,
+                          std::forward_iterator_tag
+) {
+        auto d = distance(first, last);
     if (n <= 0) return first;
     if (n >= d) return last;
     ForwardIt it = first;
@@ -317,6 +316,35 @@ ForwardIt word_shift_right(ForwardIt first,
     std::advance(it, n);
     std::fill(first, it, 0); 
     return std::next(first, n);
+}
+
+template <class ForwardIt>
+ForwardIt word_shift_right_dispatch(ForwardIt first,
+                          ForwardIt last,
+                          typename ForwardIt::difference_type n,
+                          std::random_access_iterator_tag
+) {
+    auto d = distance(first, last);
+    if (n <= 0) return first;
+    if (n >= d) return last;
+    ForwardIt it = first;
+    std::advance(it, d-n);
+    auto ret = std::copy_backward(first, it, last);
+    std::fill(first, ret, 0); 
+    return ret;
+}
+
+template <class ForwardIt>
+ForwardIt word_shift_right(ForwardIt first,
+                          ForwardIt last,
+                          typename ForwardIt::difference_type n
+)
+{
+    return word_shift_right_dispatch(
+        first, 
+        last,
+        n,
+        typename std::iterator_traits<ForwardIt>::iterator_category());
 }
 
 // returns a word consisting of all one bits 
