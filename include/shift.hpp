@@ -16,6 +16,9 @@
 // Project sources
 // Third-party libraries
 #include <iterator>
+#define SIMDPP_ARCH_X86_AVX512BW true 
+#define is_aligned(POINTER, BYTE_COUNT) \
+    (((uintptr_t)(const void *)(POINTER)) % (BYTE_COUNT) == 0)
 #include <simdpp/simd.h>
 // Miscellaneous
 namespace bit {
@@ -234,12 +237,17 @@ bit_iterator<ForwardIt> shift_right_dispatch(
     // Shift bit sequence to the msb 
     if (remaining_bitshifts) {
         auto it = is_last_aligned ? last.base() - 1 : last.base();
-        for (; std::distance(new_first_base, it)*digits >= 512 + 2*digits; it -= 512/digits) {
-            //TODO Cant always cast to uint64 when memory isn't aligned. Also why does this work lol
-            using vec_type = simdpp::uint64<8>;
-            auto it_rewind = it - 512/digits + 1;
+        // Align iterator
+        const auto N = SIMDPP_FAST_INT64_SIZE;
+        const auto N_native_words = (N*64)/digits;
+        for (; std::distance(new_first_base, it)*digits >= N_native_words + 2 && !is_aligned(&(*(it - N_native_words + 1)), 64); --it) {
+            *it = _shld<word_type>(*it, *(it - 1), remaining_bitshifts);
+        }
+        for (; std::distance(new_first_base, it) >= (unsigned int) N_native_words + 2; it -= N_native_words ) {
+            using vec_type = simdpp::uint64<N>;
+            auto it_rewind = it - N_native_words + 1;
             vec_type v = simdpp::load(&(*it_rewind));
-            vec_type v_minus1 = simdpp::load(&(*(it_rewind-1)));
+            vec_type v_minus1 = simdpp::load_u(&(*(it_rewind-1)));
             vec_type ls = simdpp::shift_l(v, remaining_bitshifts);
             vec_type rs = simdpp::shift_r(v_minus1, digits - remaining_bitshifts);
             vec_type ret = simdpp::bit_or(ls, rs);
@@ -311,22 +319,18 @@ bit_iterator<ForwardIt> shift_left_dispatch(
     // Shift bit sequence to the lsb 
     if (remaining_bitshifts) {
         ForwardIt it = first.base();
-        // simd_shift all words except the last
-        // TODO cast to word type. Users should use larger words
-        //if constexpr (digits == 8) {
-             //vec_type = simdpp::uint8<64>;
-        //} else if constexpr (digits == 16) {
-             //vec_type = simdpp::uint16<32>;
-        //} else if constexpr (digits == 32) {
-             //vec_type = simdpp::uint32<16>;
-        //} else {
-             //vec_type = simdpp::uint64<8>;
-        //}
-        for (; std::distance(it, new_last_base)*digits >= 512 + digits; it += 512/digits) {
-            //TODO Cant always cast to uint64 when memory isn't aligned
-            using vec_type = simdpp::uint64<8>;
-            vec_type v = simdpp::load(&(*it));
-            vec_type v_plus1 = simdpp::load(&(*(it+1)));
+
+        // _shrd all words except the last until we reach alignment
+        // TODO set alignment based off of instruction set used. 
+        for (; std::next(it, is_last_aligned) != new_last_base && !is_aligned(&*it, 64); ++it) {
+            *it = _shrd<word_type>(*it, *std::next(it), remaining_bitshifts);
+        }
+        // For the last word simply right shift
+        const auto N = SIMDPP_FAST_INT64_SIZE;
+        for (; std::distance(it, new_last_base)*digits >= (N+2)*64 ; it += N*(64/digits)) {
+            using vec_type = simdpp::uint64<N>;
+            vec_type v = simdpp::load(&(*(it)));
+            vec_type v_plus1 = simdpp::load_u(&(*(it+1)));
             vec_type rs = simdpp::shift_r(v, remaining_bitshifts);
             vec_type ls = simdpp::shift_l(v_plus1, digits - remaining_bitshifts);
             vec_type ret = simdpp::bit_or(ls, rs);
