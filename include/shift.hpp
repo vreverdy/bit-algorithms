@@ -197,16 +197,16 @@ bit_iterator<ForwardIt> shift_left_dispatch(
     return d_last;
 }
 
-template <class ForwardIt>
-bit_iterator<ForwardIt> shift_right_dispatch(
-        bit_iterator<ForwardIt> first,
-        bit_iterator<ForwardIt> last,
-        typename bit_iterator<ForwardIt>::difference_type n,
+template <class RandomAccessIt>
+bit_iterator<RandomAccessIt> shift_right_dispatch(
+        bit_iterator<RandomAccessIt> first,
+        bit_iterator<RandomAccessIt> last,
+        typename bit_iterator<RandomAccessIt>::difference_type n,
         std::random_access_iterator_tag
 ) {
     // Types and constants
-    using word_type = typename bit_iterator<ForwardIt>::word_type;
-    using size_type = typename bit_iterator<ForwardIt>::size_type;
+    using word_type = typename bit_iterator<RandomAccessIt>::word_type;
+    using size_type = typename bit_iterator<RandomAccessIt>::size_type;
     constexpr size_type digits = binary_digits<word_type>::value;
 
     // Initialization
@@ -226,14 +226,14 @@ bit_iterator<ForwardIt> shift_right_dispatch(
         ) << first.position();
     *first.base() = *first.base() & mask;
     // Shift words to the right
-    ForwardIt new_first_base = word_shift_right(
+    RandomAccessIt new_first_base = word_shift_right(
         first.base(), 
         std::next(
             last.base(), 
             !is_last_aligned),
         word_shifts
     );
-    bit_iterator<ForwardIt> d_first(new_first_base, first.position());
+    bit_iterator<RandomAccessIt> d_first(new_first_base, first.position());
     // Shift bit sequence to the msb 
     if (remaining_bitshifts) {
         auto it = is_last_aligned ? last.base() - 1 : last.base();
@@ -280,16 +280,16 @@ bit_iterator<ForwardIt> shift_right_dispatch(
     return d_first;
 }
 
-template <class ForwardIt>
-bit_iterator<ForwardIt> shift_left_dispatch(
-        bit_iterator<ForwardIt> first,
-        bit_iterator<ForwardIt> last,
-        typename bit_iterator<ForwardIt>::difference_type n,
+template <class RandomAccessIt>
+bit_iterator<RandomAccessIt> shift_left_dispatch(
+        bit_iterator<RandomAccessIt> first,
+        bit_iterator<RandomAccessIt> last,
+        typename bit_iterator<RandomAccessIt>::difference_type n,
         std::random_access_iterator_tag
 ) {
     // Types and constants
-    using word_type = typename bit_iterator<ForwardIt>::word_type;
-    using size_type = typename bit_iterator<ForwardIt>::size_type;
+    using word_type = typename bit_iterator<RandomAccessIt>::word_type;
+    using size_type = typename bit_iterator<RandomAccessIt>::size_type;
     constexpr size_type digits = binary_digits<word_type>::value;
 
     // Initialization
@@ -304,7 +304,7 @@ bit_iterator<ForwardIt> shift_left_dispatch(
     word_type last_value = !is_last_aligned ? *last.base() : 0;
 
     // Shift words to the left using std::shift 
-    ForwardIt new_last_base = word_shift_left(first.base(), 
+    RandomAccessIt new_last_base = word_shift_left(first.base(), 
                                     last.base(),
                                     word_shifts
     );
@@ -318,7 +318,7 @@ bit_iterator<ForwardIt> shift_left_dispatch(
     }
     // Shift bit sequence to the lsb 
     if (remaining_bitshifts) {
-        ForwardIt it = first.base();
+        RandomAccessIt it = first.base();
 
         // _shrd all words except the last until we reach alignment
         // TODO set alignment based off of instruction set used. 
@@ -362,7 +362,7 @@ bit_iterator<ForwardIt> shift_left_dispatch(
         );
     }
     //TODO is this more or less inefficient than having a latent iterator?
-    bit_iterator<ForwardIt> d_last = next(first, d-n);
+    bit_iterator<RandomAccessIt> d_last = next(first, d-n);
     return d_last;
 }
 
