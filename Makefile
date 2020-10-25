@@ -11,7 +11,7 @@ else
 endif
 
 WARNING_FLAGS = -pedantic -Wall -Wextra
-DEBUG_FLAGS = -O0 -g -fno-omit-frame-pointer -pg
+DEBUG_FLAGS = -O0 -g -fno-omit-frame-pointer -pg -march=native
 OPTIMIZED_FLAGS = -O3 -DNDEBUG -march=native -mtune=native
 TEST_FLAGS = ${ERR_LIMIT} ${WARNING_FLAGS} ${DEBUG_FLAGS}
 BENCHMARK_FLAGS = ${ERR_LIMIT} ${WARNING_FLAGS} ${OPTIMIZED_FLAGS} -fPIC
