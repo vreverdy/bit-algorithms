@@ -30,38 +30,38 @@ Load Average: 0.41, 0.67, 0.73
 --------------------------------------------------------------------
 Benchmark                          Time             CPU   Iterations
 --------------------------------------------------------------------
-bit::shift_left (small) (UU)        37.6 ns         37.6 ns     18632527
-std::shift_left (small)             76.9 ns         76.9 ns      9102706
-bit::shift_left (large) (AA)         309 ns          309 ns      2263052
-std::shift_left (large)           140695 ns       140696 ns         4981
-bit::shift_right (small) (UU)       34.7 ns         34.7 ns     20104960
-std::shift_right (small)            74.3 ns         74.3 ns      9409820
-bit::shift_right (large) (AA)        292 ns          292 ns      2401142
-std::shift_right (large)          125876 ns       125877 ns         5583
-bit::reverse (small) (UU)           8.80 ns         8.80 ns     79574304
-std::reverse (small)                39.1 ns         39.1 ns     17912089
-bit::reverse (large) (AA)            954 ns          954 ns       729239
-std::reverse (large)              246429 ns       246419 ns         2834
-bit::rotate (small) (ARA)           9.15 ns         9.15 ns     76447964
-std::rotate (small)                 89.1 ns         89.1 ns     10000000
-bit::rotate (large) (ARA)           7527 ns         7527 ns        94366
-std::rotate (large)               440913 ns       440913 ns         1396
-bit::count (small) (AA)             1.74 ns         1.74 ns    402277285
-std::count (small)                  17.8 ns         17.8 ns     39245835
-bit::count (large) (AA)              902 ns          902 ns       776200
-std::count (large)                 72801 ns        72804 ns         9570
+bit::shift_left (small) (UU)        3.77 ns         3.77 ns    185649261
+std::shift_left (small)             45.6 ns         45.6 ns     15359502
+bit::shift_left (large) (AA)         254 ns          254 ns      2760779
+std::shift_left (large)           195023 ns       195021 ns         3590
+bit::shift_right (small) (UU)       3.77 ns         3.77 ns    185654156
+std::shift_right (small)            34.6 ns         34.6 ns     20218713
+bit::shift_right (large) (AA)        240 ns          240 ns      2921340
+std::shift_right (large)          131946 ns       131946 ns         5294
+bit::reverse (small) (UU)           8.87 ns         8.87 ns     78851173
+std::reverse (small)                39.1 ns         39.1 ns     17922588
+bit::reverse (large) (AA)            962 ns          962 ns       727702
+std::reverse (large)              246764 ns       246770 ns         2844
+bit::rotate (small) (ARA)           6.76 ns         6.76 ns    105597804
+std::rotate (small)                 71.5 ns         71.5 ns      8798226
+bit::rotate (large) (ARA)           7577 ns         7577 ns        93948
+std::rotate (large)               505214 ns       505212 ns         1383
+bit::count (small) (AA)             1.16 ns         1.16 ns    603331880
+std::count (small)                  17.9 ns         17.9 ns     39219825
+bit::count (large) (AA)              664 ns          664 ns      1054400
+std::count (large)                 72859 ns        72860 ns         9610
 ```
 
 | Benchmark | Size  | Speedup |
 |-----------|-------|---------|
-| shift     | small | 2.3x    |
-| shift     | large | 443x    |
+| shift     | small | 10.6x   |
+| shift     | large | 662x    |
 | reverse   | small | 4.4x    |
 | reverse   | large | 258x    |
 | rotate    | small | 9.7x    |
-| rotate    | large | 58.6x   |
-| count     | small | 10.7x   |
-| count     | large | 80.3x   |
+| rotate    | large | 66.7x   |
+| count     | small | 15.4x   |
+| count     | large | 110x    |
 
 
 ## Structure
