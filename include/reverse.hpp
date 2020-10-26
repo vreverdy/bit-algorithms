@@ -61,28 +61,26 @@ constexpr void reverse(
         last_value = *std::prev(last.base(), is_last_aligned);
         // Reverse the underlying sequence
         std::reverse(first.base(), std::next(last.base(), !is_last_aligned));
+        // Bitswap every element of the underlying sequence
+        for (it = first.base(); it != std::next(last.base(), !is_last_aligned); ++it) {
+            *it = _bitswap(*it);
+        }
         // Shift the underlying sequence to the left
         if (first.position() < gap) {
-            it = first.base();
             gap = gap - first.position();
-            for (; it != last.base(); ++it) {
-                *it = _shld<word_type>(*it, *std::next(it), gap);
-            }
-            *it <<= gap;
+            shift_left(
+                bit_iterator(first.base()),
+                bit_iterator(std::next(last.base())),
+                gap);
             it = first.base();
         // Shift the underlying sequence to the right
         } else if (first.position() > gap) {
-            it = std::prev(last.base(), is_last_aligned);
             gap = first.position() - gap;
-            for (; it != first.base(); --it) {
-                *it = _shrd<word_type>(*it, *std::prev(it), gap);
-            }
-            *it >>= gap;
+            shift_right(
+                bit_iterator(first.base()),
+                bit_iterator(std::next(last.base(), !is_last_aligned)),
+                gap);
             it = first.base();
-        }
-        // Bitswap every element of the underlying sequence
-        for (; it != std::next(last.base(), !is_last_aligned); ++it) {
-            *it = _bitswap(*it);
         }
         // Blend bits of the first element
         if (!is_first_aligned) {
