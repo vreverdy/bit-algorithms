@@ -1,120 +1,154 @@
-#pragma once
+// ============================= REVERSE TESTS =============================== //
+// Project:         The Experimental Bit Algorithms Library
+// Name:            reverse.hpp
+// Description:     Tests for reverse algorithms 
+// Creator:         Vincent Reverdy
+// Contributor(s):  Bryce Kille [2019]
+// License:         BSD 3-Clause License
+// ========================================================================== //
+#ifndef _REVERSE_TESTS_HPP_INCLUDED
+#define _REVERSE_TESTS_HPP_INCLUDED
+// ========================================================================== //
 
+
+
+// ============================== PREAMBLE ================================== //
+// C++ standard library
+// Project sources
+#include "test_root.cc"
 #include "bit.hpp"
-#include "catch2.hpp"
-#include <list>
+// Third-party libraries
+// Miscellaneous
+// ========================================================================== //
 
-TEMPLATE_TEST_CASE("Single number: full reverse correct", "[reverse]",
-  unsigned short, unsigned int, unsigned long, unsigned long long) {
 
-  using num_type = TestType;
 
-  std::string bit_str = random_bit_str(bit::binary_digits<num_type>::value);
-
-  std::string bit_str_reversed = bit_str;
-  std::reverse(bit_str_reversed.begin(), bit_str_reversed.end());
-
-  num_type num = string_as_bits<num_type>(bit_str);
-  num_type expected_after_reverse = string_as_bits<num_type>(bit_str_reversed);
-
-  reverse(bit::bit_iterator<num_type*>(&num, 0), bit::bit_iterator<num_type*>(&num + 1, 0));
-  REQUIRE(num == expected_after_reverse);
-}
-
-TEMPLATE_TEST_CASE("Single number: correct where all bits zero", "[reverse]", unsigned short, unsigned int,
-  unsigned long, unsigned long long) {
-
-  using num_type = TestType;
-
-  num_type num = 0;
-  num_type expected_after_reverse = 0;
-
-  reverse(bit::bit_iterator<num_type*>(&num, 0), bit::bit_iterator<num_type*>(&num + 1, 0));
-  REQUIRE(num == expected_after_reverse);
-}
-
-TEMPLATE_TEST_CASE("Single number: correct where all bits one", "[reverse]", unsigned short, unsigned int,
-  unsigned long, unsigned long long) {
-
-  using num_type = TestType;
-
-  num_type num = -1;
-  num_type expected_after_reverse = -1;
-
-  reverse(bit::bit_iterator<num_type*>(&num, 0), bit::bit_iterator<num_type*>(&num + 1, 0));
-  REQUIRE(num == expected_after_reverse);
-}
-
-TEMPLATE_TEST_CASE("Single number: reverses only within the iteration range (first-half)", "[reverse]", unsigned short, unsigned int,
-  unsigned long, unsigned long long) {
-
-  using num_type = TestType;
-
-  constexpr auto num_digits = bit::binary_digits<num_type>::value;
-
-  std::string bit_str = random_bit_str(bit::binary_digits<num_type>::value);
-  std::string bit_str_reversed = bit_str;
-
-  std::reverse(bit_str_reversed.begin(), bit_str_reversed.begin() + num_digits / 2);
-
-  num_type num = string_as_bits<num_type>(bit_str);
-  num_type expected_after_reverse = string_as_bits<num_type>(bit_str_reversed);
-
-  reverse(bit::bit_iterator<num_type*>(&num, 0), bit::bit_iterator<num_type*>(&num, num_digits / 2));
-  REQUIRE(num == expected_after_reverse);
-}
-
-TEMPLATE_TEST_CASE("Single number: reverses only within the iteration range (second-half)", "[reverse]", unsigned short, unsigned int,
-  unsigned long, unsigned long long) {
-
-  using num_type = TestType;
-
-  constexpr auto num_digits = bit::binary_digits<num_type>::value;
-
-  std::string bit_str = random_bit_str(bit::binary_digits<num_type>::value);
-  std::string bit_str_reversed = bit_str;
-
-  std::reverse(bit_str_reversed.begin() + num_digits / 2, bit_str_reversed.end());
-
-  num_type num = string_as_bits<num_type>(bit_str);
-  num_type expected_after_reverse = string_as_bits<num_type>(bit_str_reversed);
-
-  reverse(bit::bit_iterator<num_type*>(&num, num_digits / 2), bit::bit_iterator<num_type*>(&num + 1, 0));
-  REQUIRE(num == expected_after_reverse);
-}
-
-TEMPLATE_TEST_CASE("Single number: does nothing if iteration range is empty", "[reverse]", unsigned short, unsigned int,
-  unsigned long, unsigned long long) {
-
-  using num_type = TestType;
-
-  num_type num = random_number<num_type>();
-  num_type expected_after_reverse = num;
-
-  constexpr auto num_digits = bit::binary_digits<num_type>::value;
-  auto random_position = random_number(static_cast<std::size_t>(0), num_digits - 1);
-
-  reverse(bit::bit_iterator<num_type*>(&num, random_position), bit::bit_iterator<num_type*>(&num, random_position));
-  REQUIRE(num == expected_after_reverse);
-}
-
-TEMPLATE_PRODUCT_TEST_CASE("Vector: full reverse correct", 
+// ----------------------------- Reverse Tests ------------------------------- //
+TEMPLATE_PRODUCT_TEST_CASE("Reverse: single_word", 
                            "[template][product]", 
                            (std::vector, std::list), 
-                           (unsigned short, unsigned int, 
-                            unsigned long, unsigned long long)) {
+                           (unsigned char, unsigned short, 
+                            unsigned int, unsigned long)) {
 
     using container_type = TestType;
-    auto container_size = 16;
+    using num_type = typename container_type::value_type;
+    auto container_size = 4;
+    auto digits = bit::binary_digits<num_type>::value;
     container_type bitcont = make_random_container<container_type>
-                                     (container_size);
+                                     (container_size); 
+    auto boolcont = bitcont_to_boolcont(bitcont);
     auto bfirst = bit::bit_iterator<decltype(std::begin(bitcont))>(std::begin(bitcont));
     auto blast = bit::bit_iterator<decltype(std::end(bitcont))>(std::end(bitcont));
-    auto boolcont = bitcont_to_boolcont(bitcont);
     auto bool_first = std::begin(boolcont);
     auto bool_last = std::end(boolcont);
+
+    bit::reverse(
+        bfirst, 
+        std::next(bfirst, 3)
+    );
+    std::reverse(
+        bool_first, 
+        std::next(bool_first, 3)
+    );
     REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
-    reverse(bfirst, blast); 
-    std::reverse(bool_first, bool_last);
+
+    bit::reverse(
+        bfirst, 
+        std::next(bfirst, digits)
+    );
+    std::reverse(
+        bool_first, 
+        std::next(bool_first, digits)
+    );
+    REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
+
+    bit::reverse(
+        std::next(bfirst, 2), 
+        std::next(bfirst, digits)
+    );
+    std::reverse(
+        std::next(bool_first, 2), 
+        std::next(bool_first, digits)
+    );
+    REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
+
+    bit::reverse(
+        std::next(bfirst, 2), 
+        std::next(bfirst, digits - 3)
+    );
+    std::reverse(
+        std::next(bool_first, 2), 
+        std::next(bool_first, digits - 3)
+    );
     REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
 }
+
+TEMPLATE_PRODUCT_TEST_CASE("Reverse: STD_multiple_word_main", 
+                           "[template][product]", 
+                           (std::vector, std::list), 
+                           (unsigned char, unsigned short, 
+                            unsigned int, unsigned long)) {
+
+    using container_type = TestType;
+    using num_type = typename container_type::value_type;
+    auto container_size = 10;
+    auto digits = bit::binary_digits<num_type>::value;
+    container_type bitcont = make_random_container<container_type>
+                                     (container_size); 
+    auto boolcont = bitcont_to_boolcont(bitcont);
+    auto bfirst = bit::bit_iterator<decltype(std::begin(bitcont))>(std::begin(bitcont));
+    auto blast = bit::bit_iterator<decltype(std::end(bitcont))>(std::end(bitcont));
+    auto bool_first = std::begin(boolcont);
+    auto bool_last = std::end(boolcont);
+
+    bit::reverse(
+        bfirst,
+        blast
+    );
+    std::reverse(
+        bool_first,
+        bool_last
+    );
+    REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
+
+    // f.pos() <= nf.pos() and first is aligned
+    bit::reverse(
+        std::next(bfirst, 0),
+        std::next(bfirst, (container_size-4)*digits-3)
+    );
+    std::reverse(
+        std::next(bool_first, 0), 
+        std::next(bool_first, (container_size-4)*digits-3)
+     );
+    REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
+
+    // f.pos() == nf.pos() and last is aligned
+    bit::reverse(
+        std::next(bfirst, 6),
+        std::next(bfirst, (container_size-4)*digits + 6)
+    );
+    std::reverse(
+        std::next(bool_first, 6), 
+        std::next(bool_first, (container_size-4)*digits + 6)
+    );
+    REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
+
+    // f.pos() <= nf.pos() and first is aligned
+    bit::reverse(
+        std::next(bfirst, 0),
+        std::next(bfirst, (container_size-4)*digits-3)
+    );
+    std::reverse(
+        std::next(bool_first, 0), 
+        std::next(bool_first, (container_size-4)*digits-3)
+     );
+    REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
+}
+
+// -------------------------------------------------------------------------- //
+
+
+
+// ========================================================================== //
+#endif // _REVERSE_TESTS_HPP_INCLUDED
+// ========================================================================== //
