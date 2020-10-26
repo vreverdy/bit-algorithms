@@ -22,8 +22,7 @@
 #include "count_bench.hpp"
 #include "rotate_bench.hpp"
 #include "reverse_bench.hpp"
-#include "shift_left_bench.hpp"
-#include "shift_right_bench.hpp"
+#include "shift_bench.hpp"
 #include "search_bench.hpp"
 // Third party libraries
 #include <benchmark/benchmark.h>
