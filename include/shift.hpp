@@ -383,6 +383,7 @@ bit_iterator<ForwardIt> shift_left(
 
     // Initialization
     auto d = distance(first, last);
+    const bool is_last_aligned = last.position() == 0;
 
     // Out of range cases
     if (n <= 0) return last;
@@ -390,7 +391,7 @@ bit_iterator<ForwardIt> shift_left(
 
 
     // Single word case
-    if (first.base() == last.base()) {
+    if (std::next(first.base(), is_last_aligned) == last.base()) {
         *first.base() = _bitblend<word_type>(
                 *first.base(),
                 ((
@@ -428,6 +429,7 @@ bit_iterator<ForwardIt> shift_right(
     using word_type = typename bit_iterator<ForwardIt>::word_type;
 
     // Initialization
+    const bool is_last_aligned = last.position() == 0;
     auto d = distance(first, last);
 
     // Out of range cases
@@ -435,7 +437,7 @@ bit_iterator<ForwardIt> shift_right(
     else if (n >= d) return last;
 
     // Single word case
-    if (first.base() == last.base()) {
+    if (std::next(first.base(), is_last_aligned) == last.base()) {
         *first.base() = _bitblend<word_type>(
                 *first.base(),
                 (
