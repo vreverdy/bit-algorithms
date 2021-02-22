@@ -1,3 +1,3 @@
 [submodule "ext/libsimdpp"]
 	path = ext/libsimdpp
-	url = git@github.com:p12tic/libsimdpp.git
+	url = git@github.com:bkille/libsimdpp.git
