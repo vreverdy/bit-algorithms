@@ -402,7 +402,7 @@ bit_iterator<ForwardIt> shift_left(
                     )
                 )) >> n,
                 first.position(),
-                last.position() - first.position()
+                (is_last_aligned ? digits : last.position()) - first.position()
         );
         return bit_iterator<ForwardIt>(
                 first.base(), 
@@ -430,6 +430,7 @@ bit_iterator<ForwardIt> shift_right(
 
     // Initialization
     const bool is_last_aligned = last.position() == 0;
+    constexpr auto digits = binary_digits<word_type>::value;
     auto d = distance(first, last);
 
     // Out of range cases
@@ -446,7 +447,7 @@ bit_iterator<ForwardIt> shift_right(
                     )
                 ) << n,
                 first.position(),
-                last.position() - first.position()
+                (is_last_aligned ? digits : last.position()) - first.position()
         );
         return bit_iterator<ForwardIt>(
                 first.base(), 
