@@ -97,14 +97,22 @@ int main(int argc, char** argv) {
             BM_BitShiftLeft_UU, 
             "bit::shift_left (small) (UU)",
             size_small);
+    register_word_containers<decltype(BM_BitShiftLeft), std::vector>(
+            BM_BitShiftLeft, 
+            "bit::shift_left (small) (AA)",
+            size_small);
     register_bool_containers<decltype(BM_BoolShiftLeft), std::vector>(
             BM_BoolShiftLeft, 
             "std::shift_left (small)",
             size_small);
+    register_word_containers<decltype(BM_BitShiftLeft_UU), std::vector>(
+            BM_BitShiftLeft_UU, 
+            "bit::shift_left (large) (UU)",
+            size_large);
     register_word_containers<decltype(BM_BitShiftLeft), std::vector>(
             BM_BitShiftLeft, 
-            "bit::shift_left (large) (AA)",
-            size_large);
+            "bit::shift_left (small) (AA)",
+            size_small);
     register_bool_containers<decltype(BM_BoolShiftLeft), std::vector>(
             BM_BoolShiftLeft, 
             "std::shift_left (large)",
@@ -138,6 +146,10 @@ int main(int argc, char** argv) {
     register_word_containers<decltype(BM_BitReverse), std::vector>(
             BM_BitReverse, 
             "bit::reverse (large) (AA)",
+            size_large);
+    register_word_containers<decltype(BM_BitReverse_UU), std::vector>(
+            BM_BitReverse_UU, 
+            "bit::reverse (large) (UU)",
             size_large);
     register_bool_containers<decltype(BM_BoolReverse), std::vector>(
             BM_BoolReverse, 
