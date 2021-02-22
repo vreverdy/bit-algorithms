@@ -6,6 +6,8 @@ jobs:
     steps:
       - run: apt-get update && apt-get install -y git
       - checkout
+      - run: git submodule sync
+      - run: git submodule update --init
       - run: apt-get install -y make
       - run: apt-get install -y gcc g++
       - run: make CXX=g++ CXX_STANDARD=c++17 test
@@ -15,6 +17,8 @@ jobs:
     steps:
       - run: apt-get update && apt-get install -y git
       - checkout
+      - run: git submodule sync
+      - run: git submodule update --init
       - run: apt-get install -y make
       - run: apt-get install -y clang
       - run: make CXX=clang++ CXX_STANDARD=c++2a test
@@ -23,6 +27,8 @@ jobs:
       xcode: "10.0.0"
     steps:
       - checkout
+      - run: git submodule sync
+      - run: git submodule update --init
       - run: brew update
       - run: brew install gcc@8
       - run: make CXX=/usr/local/bin/g++-8 CXX_STANDARD=c++2a test
@@ -31,6 +37,8 @@ jobs:
       xcode: "10.0.0"
     steps:
       - checkout
+      - run: git submodule sync
+      - run: git submodule update --init
       - run: make CXX=clang++ CXX_STANDARD=c++2a test
 workflows:
   version: 2
