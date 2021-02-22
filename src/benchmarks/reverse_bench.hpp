@@ -1,9 +1,6 @@
 #include <benchmark/benchmark.h>
 #include <math.h>
 
-enum Alignment {unaligned = 0, aligned = 1};
-
-int unaligned_t = 1;
 auto BM_BitReverse = [](benchmark::State& state, auto input) {
     using container_type = typename std::tuple_element<0, decltype(input)>::type;
     using word_type = typename std::tuple_element<1, decltype(input)>::type;
