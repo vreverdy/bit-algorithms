@@ -22,7 +22,6 @@ set_property(GLOBAL PROPERTY CXX_STANDARD_REQUIRED true)
 target_compile_options(tests PUBLIC -O0 -g -fno-omit-frame-pointer -pg)
 target_compile_options(benchmarks PUBLIC -O3 -DNDEBUG -mtune=native)
 
-
 #include libraries 
 find_package(benchmark REQUIRED)
 target_link_libraries(benchmarks benchmark::benchmark)
