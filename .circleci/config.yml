@@ -11,8 +11,8 @@ jobs:
       - run: apt-get install -y make
       - run: apt-get install -y gcc g++
       - run: apt-get install -y cmake
-      - run: cmake ./
-      - run: make CXX=g++ CXX_STANDARD=c++17 test
+      - run: cmake -DBUILD_BENCHMARKS=OFF ./
+      - run: make tests CXX=g++ CXX_STANDARD=c++2a
   ubuntu_clang_8:
     docker:
       - image: ubuntu:18.04
@@ -24,8 +24,8 @@ jobs:
       - run: apt-get install -y make
       - run: apt-get install -y clang
       - run: apt-get install -y cmake
-      - run: cmake ./
-      - run: make CXX=clang++ CXX_STANDARD=c++2a test
+      - run: cmake -DBUILD_BENCHMARKS=OFF ./
+      - run: make tests CXX=clang++ CXX_STANDARD=c++2a
   macos_gcc_8:
     macos:
       xcode: "12.0.0"
@@ -36,8 +36,8 @@ jobs:
       - run: brew update
       - run: brew install gcc@8
       - run: brew install cmake
-      - run: cmake ./
-      - run: make CXX=/usr/local/bin/g++-8 CXX_STANDARD=c++2a test
+      - run: cmake -DBUILD_BENCHMARKS=OFF ./
+      - run: make tests CXX=/usr/local/bin/g++-8 CXX_STANDARD=c++2a
   macos_apple_llvm_12_0:
     macos:
       xcode: "12.0.0"
@@ -46,8 +46,8 @@ jobs:
       - run: git submodule sync
       - run: git submodule update --init
       - run: brew install cmake
-      - run: cmake ./
-      - run: make CXX=clang++ CXX_STANDARD=c++2a test
+      - run: cmake -DBUILD_BENCHMARKS=OFF ./
+      - run: make tests CXX=clang++ CXX_STANDARD=c++2a 
 workflows:
   version: 2
   ci:
