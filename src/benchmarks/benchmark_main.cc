@@ -22,6 +22,7 @@
 #include "count_bench.hpp"
 #include "rotate_bench.hpp"
 #include "reverse_bench.hpp"
+#include "shift_bench.hpp"
 #include "search_bench.hpp"
 // Third party libraries
 #include <benchmark/benchmark.h>
@@ -68,7 +69,7 @@ void register_word_containers(F test_lambda_f, std::string func_name, unsigned i
 
 template <class F, template<typename...> class C, template<typename...> class... Args> 
 void register_word_containers(F test_lambda_f, std::string func_name, unsigned int size) {
-    register_types<F, C<unsigned int>>(test_lambda_f, func_name, size);
+    register_types<F, C<unsigned long long int>>(test_lambda_f, func_name, size);
     register_word_containers<F, Args...>(test_lambda_f, func_name, size);
 }
 
@@ -90,6 +91,49 @@ int main(int argc, char** argv) {
     unsigned int size_medium = 1 << 8;
     unsigned int size_large = 1 << 16;
     unsigned int size_huge = 1 << 30;
+    
+    // Shift benchmarks
+    register_word_containers<decltype(BM_BitShiftLeft_UU), std::vector>(
+            BM_BitShiftLeft_UU, 
+            "bit::shift_left (small) (UU)",
+            size_small);
+    register_word_containers<decltype(BM_BitShiftLeft), std::vector>(
+            BM_BitShiftLeft, 
+            "bit::shift_left (small) (AA)",
+            size_small);
+    register_bool_containers<decltype(BM_BoolShiftLeft), std::vector>(
+            BM_BoolShiftLeft, 
+            "std::shift_left (small)",
+            size_small);
+    register_word_containers<decltype(BM_BitShiftLeft_UU), std::vector>(
+            BM_BitShiftLeft_UU, 
+            "bit::shift_left (large) (UU)",
+            size_large);
+    register_word_containers<decltype(BM_BitShiftLeft), std::vector>(
+            BM_BitShiftLeft, 
+            "bit::shift_left (small) (AA)",
+            size_small);
+    register_bool_containers<decltype(BM_BoolShiftLeft), std::vector>(
+            BM_BoolShiftLeft, 
+            "std::shift_left (large)",
+            size_large);
+    register_word_containers<decltype(BM_BitShiftRight_UU), std::vector>(
+            BM_BitShiftRight_UU, 
+            "bit::shift_right (small) (UU)",
+            size_small);
+    register_bool_containers<decltype(BM_BoolShiftRight), std::vector>(
+            BM_BoolShiftRight, 
+            "std::shift_right (small)",
+            size_small);
+    register_word_containers<decltype(BM_BitShiftRight), std::vector>(
+            BM_BitShiftRight, 
+            "bit::shift_right (large) (AA)",
+            size_large);
+    register_bool_containers<decltype(BM_BoolShiftRight), std::vector>(
+            BM_BoolShiftRight, 
+            "std::shift_right (large)",
+            size_large);
+
     // Reverse benchmarks
     register_word_containers<decltype(BM_BitReverse_UU), std::vector>(
             BM_BitReverse_UU, 
@@ -102,6 +146,10 @@ int main(int argc, char** argv) {
     register_word_containers<decltype(BM_BitReverse), std::vector>(
             BM_BitReverse, 
             "bit::reverse (large) (AA)",
+            size_large);
+    register_word_containers<decltype(BM_BitReverse_UU), std::vector>(
+            BM_BitReverse_UU, 
+            "bit::reverse (large) (UU)",
             size_large);
     register_bool_containers<decltype(BM_BoolReverse), std::vector>(
             BM_BoolReverse, 

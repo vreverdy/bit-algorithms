@@ -1,6 +1,5 @@
 #include <benchmark/benchmark.h>
 #include "search.hpp"
-#include "xsimd/stl/algorithms.hpp"
 #include "bit.hpp"
 
 auto BM_BitSearch = [](benchmark::State& state, auto input) {

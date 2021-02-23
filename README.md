@@ -7,7 +7,7 @@ An exploratory implementation of bit overloads of the C++ standard algorithms
 ## Description
 While [The Bit Library](https://github.com/vreverdy/bit) is currently being proposed and reviewed by the ISO C++ Standards Committee, this repository is intended for exploratory developments on bit manipulation algorithm overloads based on the bit library. Once finalized, the algorithms will be merged to the main bit library repository and proposed for standardization to C++.
 
-Overloading all of the routines in [<algorithm>] for bit iterators is an immense task. We aim to focus on the routines which (1) would benefit most from bit-parallel computation and (2) are commonly used in a bitwise setting. That being said, there are those out there who would benefit from an implementation of `sort` or `partition` which partitions all of the bits. Please open an issue if there is an routine in the <algorithm> header that you would like implemented in our library. Additionally, it may be useful to create a separate set of routines not present in <algorithm> that would be useful to the community. If you feel there is a popular bitwise algorithm on containers which cannot be efficiently implemented using the bit overloads for the <algorithm> library, please open an issue to let us know.
+Overloading all of the routines in [<algorithm>](https://en.cppreference.com/w/cpp/algorithm) for bit iterators is an immense task. We aim to focus on the routines which (1) would benefit most from bit-parallel computation and (2) are commonly used in a bitwise setting. That being said, there are those out there who would benefit from an implementation of `sort` or `partition` which partitions all of the bits. Please open an issue if there is an routine in the <algorithm> header that you would like implemented in our library. Additionally, it may be useful to create a separate set of routines not present in <algorithm> that would be useful to the community. If you feel there is a popular bitwise algorithm on containers which cannot be efficiently implemented using the bit overloads for the <algorithm> library, please open an issue to let us know.
 
 ## Performance Benchmarks
 We used Google's [benchmark](https://github.com/google/benchmark) library for computing benchmarks. Each benchmark is formatted as `{bit, std}::function` (size) [(alignment-tags)].
@@ -30,28 +30,38 @@ Load Average: 0.41, 0.67, 0.73
 --------------------------------------------------------------------
 Benchmark                          Time             CPU   Iterations
 --------------------------------------------------------------------
-bit::reverse (small) (UU)       8.50 ns         8.51 ns     82287778
-std::reverse (small)            39.1 ns         39.1 ns     17901633
-bit::reverse (large) (AA)       1028 ns         1028 ns       681228
-std::reverse (large)          253966 ns       253976 ns         2758
-bit::rotate (small) (ARA)       6.97 ns         6.97 ns    100498019
-std::rotate (small)             74.9 ns         74.9 ns      8787660
-bit::rotate (large) (ARA)      14746 ns        14746 ns        47206
-std::rotate (large)           536530 ns       536528 ns         1339
-bit::count (small) (AA)         1.31 ns         1.31 ns    536149000
-std::count (small)              22.2 ns         22.2 ns     31543212
-bit::count (large) (AA)         1717 ns         1717 ns       407179
-std::count (large)             84685 ns        84687 ns         8266
+bit::shift_left (small) (UU)        3.77 ns         3.77 ns    185649261
+std::shift_left (small)             45.6 ns         45.6 ns     15359502
+bit::shift_left (large) (AA)         254 ns          254 ns      2760779
+std::shift_left (large)           195023 ns       195021 ns         3590
+bit::shift_right (small) (UU)       3.77 ns         3.77 ns    185654156
+std::shift_right (small)            34.6 ns         34.6 ns     20218713
+bit::shift_right (large) (AA)        240 ns          240 ns      2921340
+std::shift_right (large)          131946 ns       131946 ns         5294
+bit::reverse (small) (UU)           8.87 ns         8.87 ns     78851173
+std::reverse (small)                39.1 ns         39.1 ns     17922588
+bit::reverse (large) (AA)            962 ns          962 ns       727702
+std::reverse (large)              246764 ns       246770 ns         2844
+bit::rotate (small) (ARA)           6.76 ns         6.76 ns    105597804
+std::rotate (small)                 71.5 ns         71.5 ns      8798226
+bit::rotate (large) (ARA)           7577 ns         7577 ns        93948
+std::rotate (large)               505214 ns       505212 ns         1383
+bit::count (small) (AA)             1.16 ns         1.16 ns    603331880
+std::count (small)                  17.9 ns         17.9 ns     39219825
+bit::count (large) (AA)              664 ns          664 ns      1054400
+std::count (large)                 72859 ns        72860 ns         9610
 ```
 
 | Benchmark | Size  | Speedup |
 |-----------|-------|---------|
-| reverse   | small | 4.6x    |
-| reverse   | large | 247x    |
-| rotate    | small | 10.7x   |
-| rotate    | large | 36.4x   |
-| count     | small | 17.1x   |
-| count     | large | 49.3x   |
+| shift     | small | 10.6x   |
+| shift     | large | 662x    |
+| reverse   | small | 4.4x    |
+| reverse   | large | 258x    |
+| rotate    | small | 9.7x    |
+| rotate    | large | 66.7x   |
+| count     | small | 15.4x   |
+| count     | large | 110x    |
 
 
 ## Structure

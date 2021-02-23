@@ -25,7 +25,7 @@ namespace bit {
 
 // ---------------------------- Copy Algorithms ----------------------------- //
 
-// Status: complete
+// Status: Does not work for Input/Output it due to distance call
 template <class InputIt, class OutputIt>
 constexpr bit_iterator<OutputIt> copy(bit_iterator<InputIt> first,
                             bit_iterator<InputIt> last,
@@ -38,12 +38,13 @@ constexpr bit_iterator<OutputIt> copy(bit_iterator<InputIt> first,
 
     // Types and constants
     using dst_word_type = typename bit_iterator<OutputIt>::word_type;
+    using src_word_type = typename bit_iterator<InputIt>::word_type;
     using dst_size_type = typename bit_iterator<OutputIt>::size_type;
     constexpr dst_size_type dst_digits = binary_digits<dst_word_type>::value;
 
     // Initialization
     const bool is_d_first_aligned = d_first.position() == 0;
-    dst_size_type total_bits_to_copy = std::distance(first, last);
+    dst_size_type total_bits_to_copy = distance(first, last);
     auto it = d_first.base();
 
     // d_first is not aligned. Copy partial word to align it
@@ -66,11 +67,20 @@ constexpr bit_iterator<OutputIt> copy(bit_iterator<InputIt> first,
         it++;
     }
 
-    while (total_bits_to_copy >= dst_digits) {
-        *it = get_word<dst_word_type>(first, dst_digits);
-        total_bits_to_copy -= dst_digits;
-        it++; 
-        std::advance(first, dst_digits);
+    const bool is_first_aligned = first.position() == 0;
+    // d_first will be aligned at this point
+    if (is_first_aligned && std::is_same<dst_word_type, src_word_type>()) {
+        auto N = std::distance(first.base(), last.base());
+        it = std::copy(first.base(), last.base(), it);
+        first += dst_digits * N;
+        total_bits_to_copy -= dst_digits * N;
+    } else {
+        while (total_bits_to_copy >= dst_digits) {
+            *it = get_word<dst_word_type>(first, dst_digits);
+            total_bits_to_copy -= dst_digits;
+            it++; 
+            std::advance(first, dst_digits);
+        }
     }
     if (total_bits_to_copy) {
         *it = _bitblend(

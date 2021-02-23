@@ -32,7 +32,7 @@ TEMPLATE_PRODUCT_TEST_CASE("Shift: left_shift- multi word",
 
     using container_type = TestType;
     using num_type = typename container_type::value_type;
-    auto container_size = 4;
+    auto container_size = 200;
     auto digits = bit::binary_digits<num_type>::value;
     container_type bitcont1 = make_random_container<container_type>
                                      (container_size); 
@@ -46,11 +46,13 @@ TEMPLATE_PRODUCT_TEST_CASE("Shift: left_shift- multi word",
     auto bool_last1_t = bool_last1;
     auto blast1_t = blast1;
     
+    // All aligned, small shift
     auto bret = bit::shift_left(bfirst1_t, blast1_t, 3);
     auto bool_ret = bit::word_shift_left(bool_first1_t, bool_last1_t, 3);
     REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
     REQUIRE(std::distance(bfirst1, bret) == std::distance(bool_first1, bool_ret));
 
+    // First unaligned, >word shift
     std::advance(bfirst1_t, 3);
     std::advance(bool_first1_t, 3);
     bret = bit::shift_left(bfirst1_t, blast1_t, digits+3);
@@ -58,15 +60,17 @@ TEMPLATE_PRODUCT_TEST_CASE("Shift: left_shift- multi word",
     REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
     REQUIRE(std::distance(bfirst1, bret) == std::distance(bool_first1, bool_ret));
 
+    // Last unaligned, > word shift
     bool_last1_t = bool_first1;
     std::advance(bool_last1_t, (container_size-1)*digits-digits/2);
     blast1_t = bfirst1;
     std::advance(blast1_t, (container_size-1)*digits-digits/2);
-    bret = bit::shift_left(bfirst1_t, blast1_t, digits*3);
-    bool_ret = bit::word_shift_left(bool_first1_t, bool_last1_t, digits*3);
-    REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    bret = bit::shift_left(bfirst1, blast1_t, digits*3);
+    bool_ret = bit::word_shift_left(bool_first1, bool_last1_t, digits*3);
     REQUIRE(std::distance(bfirst1, bret) == std::distance(bool_first1, bool_ret));
+    REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
 
+    // Both unaligned, > word shift
     bool_first1_t = bool_first1;
     bool_last1_t = bool_first1;
     std::advance(bool_first1_t, 2);
@@ -89,7 +93,7 @@ TEMPLATE_PRODUCT_TEST_CASE("Shift: left_shift- single word",
 
     using container_type = TestType;
     using num_type = typename container_type::value_type;
-    auto container_size = 5;
+    auto container_size = 200;
     auto digits = bit::binary_digits<num_type>::value;
     container_type bitcont1 = make_random_container<container_type>
                                      (container_size); 
@@ -153,7 +157,7 @@ TEMPLATE_PRODUCT_TEST_CASE("Shift: right_shift",
 
     using container_type = TestType;
     using num_type = typename container_type::value_type;
-    auto container_size = 6;
+    auto container_size = 200;
     auto digits = bit::binary_digits<num_type>::value;
     container_type bitcont1 = make_random_container<container_type>
                                      (container_size); 
@@ -169,6 +173,10 @@ TEMPLATE_PRODUCT_TEST_CASE("Shift: right_shift",
 
     auto bret = bit::shift_right(bfirst1_t, blast1_t, 5);
     auto bool_ret = bit::word_shift_right(bool_first1_t, bool_last1_t, 5);
+    REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::distance(bfirst1, bret) == std::distance(bool_first1, bool_ret));
+    bret = bit::shift_right(bfirst1_t, blast1_t, 10*digits + 5);
+    bool_ret = bit::word_shift_right(bool_first1_t, bool_last1_t, 10*digits + 5);
     REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
     REQUIRE(std::distance(bfirst1, bret) == std::distance(bool_first1, bool_ret));
 
@@ -210,7 +218,7 @@ TEMPLATE_PRODUCT_TEST_CASE("Shift: right_shift- single word",
 
     using container_type = TestType;
     using num_type = typename container_type::value_type;
-    auto container_size = 6;
+    auto container_size = 200;
     auto digits = bit::binary_digits<num_type>::value;
     container_type bitcont1 = make_random_container<container_type>
                                      (container_size); 
@@ -260,6 +268,19 @@ TEMPLATE_PRODUCT_TEST_CASE("Shift: right_shift- single word",
     std::advance(blast1_t, 3*digits-3);
     bret = bit::shift_right(bfirst1_t, blast1_t, digits-6);
     bool_ret = bit::word_shift_right(bool_first1_t, bool_last1_t, digits-6);
+    REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::distance(bfirst1, bret) == std::distance(bool_first1, bool_ret));
+
+    bool_first1_t = bool_first1;
+    bool_last1_t = bool_first1;
+    std::advance(bool_first1_t, 4*digits + 2);
+    std::advance(bool_last1_t, 5*digits);
+    bfirst1_t = bfirst1;
+    blast1_t = bfirst1;
+    std::advance(bfirst1_t, 4*digits+2);
+    std::advance(blast1_t, 5*digits);
+    bret = bit::shift_right(bfirst1_t, blast1_t, 2);
+    bool_ret = bit::word_shift_right(bool_first1_t, bool_last1_t, 2);
     REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
     REQUIRE(std::distance(bfirst1, bret) == std::distance(bool_first1, bool_ret));
 }
