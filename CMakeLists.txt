@@ -9,7 +9,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 option(BUILD_BENCHMARKS "Build Google Bechmarks" ON)
 
 # specify global compiler flags
-add_compile_options(-std=c++2a -march=native -pedantic -Wall -Wextra)
+add_compile_options(-std=c++17 -march=native -pedantic -Wall -Wextra)
 
 # add the tests executable
 add_executable(tests src/tests/test_main.cc src/tests/test_root.cc)
@@ -25,7 +25,7 @@ if (BUILD_BENCHMARKS)
 endif()
 
 # specify the C++ standard
-set_property(GLOBAL PROPERTY CXX_STANDARD 20)
+set_property(GLOBAL PROPERTY CXX_STANDARD 17)
 set_property(GLOBAL PROPERTY CXX_STANDARD_REQUIRED true)
 
 # specify global include directories
