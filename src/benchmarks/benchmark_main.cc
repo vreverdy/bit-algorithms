@@ -193,22 +193,22 @@ int main(int argc, char** argv) {
             size_large);
 
     // Search benchmarks
-    //register_word_containers<decltype(BM_BitSearch), std::vector>(
-            //BM_BitSearch, 
-            //"Search_Bit_Large",
-            //size);
-    //register_bool_containers<decltype(BM_BoolSearch), std::vector>(
-            //BM_BoolSearch, 
-            //"Search_Bool_Large",
-            //size);
-    //register_word_containers<decltype(BM_BitSearch_WorstCase), std::vector>(
-            //BM_BitSearch_WorstCase, 
-            //"Search_Bit_Large_WorstCase",
-            //size);
-    //register_bool_containers<decltype(BM_BoolSearch_WorstCase), std::vector>(
-            //BM_BoolSearch_WorstCase, 
-            //"Search_Bool_Large_WorstCase",
-            //size);
+    register_word_containers<decltype(BM_BitSearch), std::vector>(
+            BM_BitSearch, 
+            "Search_Bit_Large",
+            size_large);
+    register_bool_containers<decltype(BM_BoolSearch), std::vector>(
+            BM_BoolSearch, 
+            "Search_Bool_Large",
+            size_large);
+    register_word_containers<decltype(BM_BitSearch_WorstCase), std::vector>(
+            BM_BitSearch_WorstCase, 
+            "Search_Bit_Large_WorstCase",
+            size_large);
+    register_bool_containers<decltype(BM_BoolSearch_WorstCase), std::vector>(
+            BM_BoolSearch_WorstCase, 
+            "Search_Bool_Large_WorstCase",
+            size_large);
     benchmark::Initialize(&argc, argv);
     benchmark::RunSpecifiedBenchmarks();
 }
