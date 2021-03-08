@@ -136,6 +136,17 @@ TEMPLATE_PRODUCT_TEST_CASE("Shift: left_shift- single word",
 
     bool_first1_t = bool_first1;
     bool_last1_t = bool_first1;
+    std::advance(bool_last1_t, digits);
+    bfirst1_t = bfirst1;
+    blast1_t = bfirst1;
+    std::advance(blast1_t, digits);
+    bret = bit::shift_left(bfirst1_t, blast1_t, 1);
+    bool_ret = bit::word_shift_left(bool_first1_t, bool_last1_t, 1);
+    REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::distance(bfirst1, bret) == std::distance(bool_first1, bool_ret));
+
+    bool_first1_t = bool_first1;
+    bool_last1_t = bool_first1;
     std::advance(bool_first1_t, 2*digits+3);
     std::advance(bool_last1_t, 3*digits-3);
     bfirst1_t = bfirst1;
@@ -257,6 +268,18 @@ TEMPLATE_PRODUCT_TEST_CASE("Shift: right_shift- single word",
     bool_ret = bit::word_shift_right(bool_first1_t, bool_last1_t, 1);
     REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
     REQUIRE(std::distance(bfirst1, bret) == std::distance(bool_first1, bool_ret));
+    
+    bool_first1_t = bool_first1;
+    bool_last1_t = bool_first1;
+    std::advance(bool_last1_t, digits);
+    bfirst1_t = bfirst1;
+    blast1_t = bfirst1;
+    std::advance(blast1_t, digits);
+    bret = bit::shift_right(bfirst1_t, blast1_t, 1);
+    bool_ret = bit::word_shift_right(bool_first1_t, bool_last1_t, 1);
+    REQUIRE(std::equal(bool_first1, bool_last1, bfirst1, blast1, comparator));
+    REQUIRE(std::distance(bfirst1, bret) == std::distance(bool_first1, bool_ret));
+
 
     bool_first1_t = bool_first1;
     bool_last1_t = bool_first1;

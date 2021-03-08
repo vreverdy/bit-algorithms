@@ -12,7 +12,6 @@ auto BM_BitSearch = [](benchmark::State& state, auto input) {
     auto first1 = bit::bit_iterator<decltype(std::begin(cont1))>(std::begin(cont1));
     auto last1 = bit::bit_iterator<decltype(std::end(cont1))>(std::end(cont1));
 
-    auto and_f = [](const auto& x, const auto& y) {return x & y; };
     for (auto _ : state)
         bit::search_shift_or(
             first1, 

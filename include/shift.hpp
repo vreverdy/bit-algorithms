@@ -396,7 +396,7 @@ bit_iterator<ForwardIt> shift_left(
                 ((
                     *first.base() & (
                         static_cast<word_type>(-1) >> (
-                            digits - last.position()
+                            digits - (is_last_aligned ? digits : last.position())
                         )
                     )
                 )) >> n,
