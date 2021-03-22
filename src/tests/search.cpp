@@ -1,14 +1,14 @@
 // ============================== SEARCH TESTS ============================== //
 // Project: The Experimental Bit Algorithms Library
-// Name: search_shift_or.hpp
+// Name: search.hpp
 // Description: tests for search algorithm bit iterator overloads 
 // Creator: Vincent Reverdy
 // Contributor(s): Vincent Reverdy [2019]
 //                 Bryce Kille
 // License: BSD 3-Clause License
 // ========================================================================== //
-#ifndef _SEARCH_SHIFT_OR_TESTS_HPP_INCLUDED
-#define _SEARCH_SHIFT_OR_TESTS_HPP_INCLUDED
+#ifndef _SEARCH_TESTS_HPP_INCLUDED
+#define _SEARCH_TESTS_HPP_INCLUDED
 // ========================================================================== //
 
 
@@ -16,8 +16,9 @@
 // ============================== PREAMBLE ================================== //
 // C++ standard library
 // Project sources
-#include "test_root.cc"
+#include "catch2.hpp"
 #include "bit.hpp"
+#include "test_utils.hpp"
 // Third-party libraries
 // Miscellaneous
 // ========================================================================== //
@@ -25,11 +26,10 @@
 
 
 // ----------------------------- SEARCH Tests ------------------------------- //
-TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: single_word pattern or smaller", 
+TEMPLATE_PRODUCT_TEST_CASE("search: single_word pattern or smaller", 
                            "[template][product]", 
                            (std::vector), 
-                           (unsigned char, unsigned short, 
-                            unsigned int, unsigned long)) {
+                           (unsigned char)) {
 
     using container_type = TestType;
     using num_type = typename container_type::value_type;
@@ -43,22 +43,23 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: single_word pattern or smaller",
     auto bool_first_txt = std::begin(bool_txt);
     auto bool_last_txt = std::end(bool_txt);
 
-    auto bret = bit::search_shift_or(
+    // k == digits
+    auto bret = bit::search(
             bfirst_txt, 
             blast_txt, 
-            std::next(bfirst_txt, 4*digits+2),
-            std::next(bfirst_txt, 5*digits-1)
+            std::next(bfirst_txt, 4*digits),
+            std::next(bfirst_txt, 5*digits)
     );
     auto bool_ret = std::search(
             bool_first_txt, 
             bool_last_txt, 
-            std::next(bool_first_txt, 4*digits+2),
-            std::next(bool_first_txt, 5*digits-1)
+            std::next(bool_first_txt, 4*digits),
+            std::next(bool_first_txt, 5*digits)
     );
     REQUIRE(std::equal(bool_first_txt, bool_last_txt, bfirst_txt, blast_txt, comparator));
     REQUIRE(std::distance(bfirst_txt, bret) == std::distance(bool_first_txt, bool_ret));
 
-    bret = bit::search_shift_or(
+    bret = bit::search(
         bfirst_txt, 
         blast_txt, 
         std::next(bfirst_txt, 4*digits + 1),
@@ -73,7 +74,8 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: single_word pattern or smaller",
     REQUIRE(std::equal(bool_first_txt, bool_last_txt, bfirst_txt, blast_txt, comparator));
     REQUIRE(std::distance(bfirst_txt, bret) == std::distance(bool_first_txt, bool_ret));
 
-    bret = bit::search_shift_or(
+    // k < digits
+    bret = bit::search(
         bfirst_txt, 
         blast_txt, 
         std::next(bfirst_txt, 4*digits),
@@ -88,7 +90,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: single_word pattern or smaller",
     REQUIRE(std::equal(bool_first_txt, bool_last_txt, bfirst_txt, blast_txt, comparator));
     REQUIRE(std::distance(bfirst_txt, bret) == std::distance(bool_first_txt, bool_ret));
 
-    bret = bit::search_shift_or(
+    bret = bit::search(
         bfirst_txt, 
         blast_txt, 
         std::next(bfirst_txt, 4*digits + 3),
@@ -103,7 +105,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: single_word pattern or smaller",
     REQUIRE(std::equal(bool_first_txt, bool_last_txt, bfirst_txt, blast_txt, comparator));
     REQUIRE(std::distance(bfirst_txt, bret) == std::distance(bool_first_txt, bool_ret));
 
-    bret = bit::search_shift_or(
+    bret = bit::search(
         bfirst_txt, 
         blast_txt, 
         std::next(bfirst_txt, 4*digits + 3),
@@ -119,11 +121,10 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: single_word pattern or smaller",
     REQUIRE(std::distance(bfirst_txt, bret) == std::distance(bool_first_txt, bool_ret));
 }
 
-TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | text aligned", 
+TEMPLATE_PRODUCT_TEST_CASE("search: multiple_word pattern | text aligned", 
                            "[template][product]", 
                            (std::vector), 
-                           (unsigned char, unsigned short, 
-                            unsigned int, unsigned long, unsigned long long)) {
+                           (unsigned char)) {
 
     using container_type = TestType;
     using num_type = typename container_type::value_type;
@@ -138,7 +139,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | text aligne
     auto bool_last_txt = std::end(bool_txt);
 
     // Aligned
-    auto bret = bit::search_shift_or(
+    auto bret = bit::search(
             bfirst_txt, 
             blast_txt, 
             std::next(bfirst_txt, 3*digits),
@@ -154,7 +155,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | text aligne
     REQUIRE(std::distance(bfirst_txt, bret) == std::distance(bool_first_txt, bool_ret));
 
     //Text aligned | Pattern unaligned
-    bret = bit::search_shift_or(
+    bret = bit::search(
         bfirst_txt, 
         blast_txt, 
         std::next(bfirst_txt, 3*digits),
@@ -169,7 +170,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | text aligne
     REQUIRE(std::equal(bool_first_txt, bool_last_txt, bfirst_txt, blast_txt, comparator));
     REQUIRE(std::distance(bfirst_txt, bret) == std::distance(bool_first_txt, bool_ret));
 
-    bret = bit::search_shift_or(
+    bret = bit::search(
         bfirst_txt, 
         blast_txt, 
         std::next(bfirst_txt, 3*digits + 3),
@@ -184,7 +185,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | text aligne
     REQUIRE(std::equal(bool_first_txt, bool_last_txt, bfirst_txt, blast_txt, comparator));
     REQUIRE(std::distance(bfirst_txt, bret) == std::distance(bool_first_txt, bool_ret));
 
-    bret = bit::search_shift_or(
+    bret = bit::search(
         bfirst_txt, 
         blast_txt, 
         std::next(bfirst_txt, 3*digits + 3),
@@ -200,11 +201,10 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | text aligne
     REQUIRE(std::distance(bfirst_txt, bret) == std::distance(bool_first_txt, bool_ret));
 }
 
-TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | pattern aligned", 
+TEMPLATE_PRODUCT_TEST_CASE("search: multiple_word pattern | pattern aligned", 
                            "[template][product]", 
                            (std::vector), 
-                           (unsigned char, unsigned short, 
-                            unsigned int)) {
+                           (unsigned char)) {
 
     using container_type = TestType;
     using num_type = typename container_type::value_type;
@@ -219,7 +219,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | pattern ali
     auto bool_last_txt = std::end(bool_txt);
 
     //Text unaligned | Pattern aligned
-    auto bret = bit::search_shift_or(
+    auto bret = bit::search(
         bfirst_txt, 
         std::next(bfirst_txt, container_size*digits - 3), 
         std::next(bfirst_txt, 3*digits),
@@ -234,7 +234,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | pattern ali
     REQUIRE(std::equal(bool_first_txt, bool_last_txt, bfirst_txt, blast_txt, comparator));
     REQUIRE(std::distance(bfirst_txt, bret) == std::distance(bool_first_txt, bool_ret));
 
-    bret = bit::search_shift_or(
+    bret = bit::search(
         std::next(bfirst_txt, 3), 
         blast_txt, 
         std::next(bfirst_txt, 3*digits),
@@ -249,7 +249,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | pattern ali
     REQUIRE(std::equal(bool_first_txt, bool_last_txt, bfirst_txt, blast_txt, comparator));
     REQUIRE(std::distance(bfirst_txt, bret) == std::distance(bool_first_txt, bool_ret));
 
-    bret = bit::search_shift_or(
+    bret = bit::search(
         std::next(bfirst_txt, 3), 
         std::next(bfirst_txt, container_size*digits - 3), 
         std::next(bfirst_txt, 3*digits),
@@ -265,11 +265,10 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | pattern ali
     REQUIRE(std::distance(bfirst_txt, bret) == std::distance(bool_first_txt, bool_ret));
 }
 
-TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | unaligned", 
+TEMPLATE_PRODUCT_TEST_CASE("search: multiple_word pattern | unaligned", 
                            "[template][product]", 
                            (std::vector), 
-                           (unsigned char, unsigned short, 
-                            unsigned int)) {
+                           (unsigned char)) {
 
     using container_type = TestType;
     using num_type = typename container_type::value_type;
@@ -283,7 +282,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | unaligned",
     auto bool_first_txt = std::begin(bool_txt);
     auto bool_last_txt = std::end(bool_txt);
 
-    auto bret = bit::search_shift_or(
+    auto bret = bit::search(
         bfirst_txt, 
         std::next(bfirst_txt, container_size*digits - 3), 
         std::next(bfirst_txt, 3*digits + 2),
@@ -298,7 +297,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | unaligned",
     REQUIRE(std::equal(bool_first_txt, bool_last_txt, bfirst_txt, blast_txt, comparator));
     REQUIRE(std::distance(bfirst_txt, bret) == std::distance(bool_first_txt, bool_ret));
 
-    bret = bit::search_shift_or(
+    bret = bit::search(
         std::next(bfirst_txt, 3), 
         blast_txt, 
         std::next(bfirst_txt, 3*digits + 2),
@@ -313,7 +312,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | unaligned",
     REQUIRE(std::equal(bool_first_txt, bool_last_txt, bfirst_txt, blast_txt, comparator));
     REQUIRE(std::distance(bfirst_txt, bret) == std::distance(bool_first_txt, bool_ret));
 
-    bret = bit::search_shift_or(
+    bret = bit::search(
         std::next(bfirst_txt, 3), 
         std::next(bfirst_txt, container_size*digits - 3), 
         std::next(bfirst_txt, 3*digits + 4),
@@ -330,11 +329,10 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: multiple_word pattern | unaligned",
     REQUIRE(std::distance(bfirst_txt, bret) == std::distance(bool_first_txt, bool_ret));
 }
 
-TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: many_word pattern | unaligned", 
+TEMPLATE_PRODUCT_TEST_CASE("search: many_word pattern | unaligned", 
                            "[template][product]", 
                            (std::vector), 
-                           (unsigned char, unsigned short, 
-                            unsigned int)) {
+                           (unsigned char)) {
 
     using container_type = TestType;
     using num_type = typename container_type::value_type;
@@ -348,7 +346,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: many_word pattern | unaligned",
     auto bool_first_txt = std::begin(bool_txt);
     auto bool_last_txt = std::end(bool_txt);
 
-    auto bret = bit::search_shift_or(
+    auto bret = bit::search(
         bfirst_txt, 
         std::next(bfirst_txt, container_size*digits - 3), 
         std::next(bfirst_txt, 30*digits + 2),
@@ -363,7 +361,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: many_word pattern | unaligned",
     REQUIRE(std::equal(bool_first_txt, bool_last_txt, bfirst_txt, blast_txt, comparator));
     REQUIRE(std::distance(bfirst_txt, bret) == std::distance(bool_first_txt, bool_ret));
 
-    bret = bit::search_shift_or(
+    bret = bit::search(
         std::next(bfirst_txt, 3), 
         blast_txt, 
         std::next(bfirst_txt, 30*digits + 2),
@@ -378,7 +376,7 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: many_word pattern | unaligned",
     REQUIRE(std::equal(bool_first_txt, bool_last_txt, bfirst_txt, blast_txt, comparator));
     REQUIRE(std::distance(bfirst_txt, bret) == std::distance(bool_first_txt, bool_ret));
 
-    bret = bit::search_shift_or(
+    bret = bit::search(
         std::next(bfirst_txt, 3), 
         std::next(bfirst_txt, container_size*digits - 3), 
         std::next(bfirst_txt, 30*digits + 4),
@@ -399,5 +397,5 @@ TEMPLATE_PRODUCT_TEST_CASE("search_shift_or: many_word pattern | unaligned",
 
 
 // ========================================================================== //
-#endif // _SEARCH_SHIFT_OR_TESTS_HPP_INCLUDED
+#endif // _SEARCH_TESTS_HPP_INCLUDED
 // ========================================================================== //

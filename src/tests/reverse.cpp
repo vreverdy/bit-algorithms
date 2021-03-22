@@ -1,13 +1,13 @@
-// ============================== FILL TESTS ================================ //
+// ============================= REVERSE TESTS =============================== //
 // Project:         The Experimental Bit Algorithms Library
-// Name:            fill.hpp
-// Description:     Tests for fill algorithms 
+// Name:            reverse.hpp
+// Description:     Tests for reverse algorithms 
 // Creator:         Vincent Reverdy
 // Contributor(s):  Bryce Kille [2019]
 // License:         BSD 3-Clause License
 // ========================================================================== //
-#ifndef _FILL_TESTS_HPP_INCLUDED
-#define _FILL_TESTS_HPP_INCLUDED
+#ifndef _REVERSE_TESTS_HPP_INCLUDED
+#define _REVERSE_TESTS_HPP_INCLUDED
 // ========================================================================== //
 
 
@@ -15,18 +15,19 @@
 // ============================== PREAMBLE ================================== //
 // C++ standard library
 // Project sources
-#include "test_root.cc"
+#include "catch2.hpp"
 #include "bit.hpp"
+#include "test_utils.hpp"
 // Third-party libraries
 // Miscellaneous
 // ========================================================================== //
 
 
 
-// ------------------------------ Fill Tests -------------------------------- //
-TEMPLATE_PRODUCT_TEST_CASE("fill: single_word", 
+// ----------------------------- Reverse Tests ------------------------------- //
+TEMPLATE_PRODUCT_TEST_CASE("Reverse: single_word", 
                            "[template][product]", 
-                           (std::vector, std::list, std::forward_list), 
+                           (std::vector, std::list), 
                            (unsigned char, unsigned short, 
                             unsigned int, unsigned long)) {
 
@@ -42,65 +43,56 @@ TEMPLATE_PRODUCT_TEST_CASE("fill: single_word",
     auto bool_first = std::begin(boolcont);
     auto bool_last = std::end(boolcont);
 
-    bit::fill(
-            bfirst, 
-            std::next(bfirst, digits), 
-            bit::bit1
+    bit::reverse(
+        bfirst, 
+        std::next(bfirst, 3)
     );
-    std::fill(
-            bool_first, 
-            std::next(bool_first, digits), 
-            1
+    std::reverse(
+        bool_first, 
+        std::next(bool_first, 3)
     );
     REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
 
-    bit::fill(
-            bfirst, 
-            std::next(bfirst, 3), 
-            bit::bit0
+    bit::reverse(
+        bfirst, 
+        std::next(bfirst, digits)
     );
-    std::fill(
-            bool_first, 
-            std::next(bool_first, 3), 
-            0
+    std::reverse(
+        bool_first, 
+        std::next(bool_first, digits)
     );
     REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
 
-    bit::fill(
-            std::next(bfirst, 3), 
-            std::next(bfirst, digits),
-            bit::bit1
+    bit::reverse(
+        std::next(bfirst, 2), 
+        std::next(bfirst, digits)
     );
-    std::fill(
-            std::next(bool_first, 3), 
-            std::next(bool_first, digits),
-            1
+    std::reverse(
+        std::next(bool_first, 2), 
+        std::next(bool_first, digits)
     );
     REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
 
-    bit::fill(
-            std::next(bfirst, 3 + digits*(container_size - 1)), 
-            blast,
-            bit::bit1
+    bit::reverse(
+        std::next(bfirst, 2), 
+        std::next(bfirst, digits - 3)
     );
-    std::fill(
-            std::next(bool_first, 3 + digits*(container_size - 1)), 
-            bool_last,
-            1
+    std::reverse(
+        std::next(bool_first, 2), 
+        std::next(bool_first, digits - 3)
     );
     REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
-
 }
 
-TEMPLATE_PRODUCT_TEST_CASE("fill: multiple_word_subcases", 
+TEMPLATE_PRODUCT_TEST_CASE("Reverse: STD_multiple_word_main", 
                            "[template][product]", 
-                           (std::vector, std::list, std::forward_list), 
+                           (std::vector, std::list), 
                            (unsigned char, unsigned short, 
                             unsigned int, unsigned long)) {
 
     using container_type = TestType;
     using num_type = typename container_type::value_type;
-    auto container_size = 4;
+    auto container_size = 10;
     auto digits = bit::binary_digits<num_type>::value;
     container_type bitcont = make_random_container<container_type>
                                      (container_size); 
@@ -110,46 +102,54 @@ TEMPLATE_PRODUCT_TEST_CASE("fill: multiple_word_subcases",
     auto bool_first = std::begin(boolcont);
     auto bool_last = std::end(boolcont);
 
-    bit::fill(
-            bfirst, 
-            std::next(bfirst, container_size*digits), 
-            bit::bit1
+    bit::reverse(
+        bfirst,
+        blast
     );
-    std::fill(
-            bool_first, 
-            std::next(bool_first, container_size*digits), 
-            1
+    std::reverse(
+        bool_first,
+        bool_last
     );
     REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
 
-    bit::fill(
-            bfirst, 
-            std::next(bfirst, digits + 3), 
-            bit::bit0
+    // f.pos() <= nf.pos() and first is aligned
+    bit::reverse(
+        std::next(bfirst, 0),
+        std::next(bfirst, (container_size-4)*digits-3)
     );
-    std::fill(
-            bool_first, 
-            std::next(bool_first, digits + 3), 
-            0
+    std::reverse(
+        std::next(bool_first, 0), 
+        std::next(bool_first, (container_size-4)*digits-3)
+     );
+    REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
+
+    // f.pos() == nf.pos() and last is aligned
+    bit::reverse(
+        std::next(bfirst, 6),
+        std::next(bfirst, (container_size-4)*digits + 6)
+    );
+    std::reverse(
+        std::next(bool_first, 6), 
+        std::next(bool_first, (container_size-4)*digits + 6)
     );
     REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
 
-    bit::fill(
-            std::next(bfirst, 3), 
-            std::next(bfirst, container_size*digits - 6),
-            bit::bit1
+    // f.pos() <= nf.pos() and first is aligned
+    bit::reverse(
+        std::next(bfirst, 0),
+        std::next(bfirst, (container_size-4)*digits-3)
     );
-    std::fill(
-            std::next(bool_first, 3), 
-            std::next(bool_first, container_size*digits - 6),
-            1
-    );
+    std::reverse(
+        std::next(bool_first, 0), 
+        std::next(bool_first, (container_size-4)*digits-3)
+     );
     REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
 }
+
 // -------------------------------------------------------------------------- //
 
 
 
 // ========================================================================== //
-#endif // _FILL_TESTS_HPP_INCLUDED
+#endif // _REVERSE_TESTS_HPP_INCLUDED
 // ========================================================================== //

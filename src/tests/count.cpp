@@ -14,6 +14,8 @@
 // ============================== PREAMBLE ================================== //
 // C++ standard library
 // Project sources
+#include "bit.hpp"
+#include "test_utils.hpp"
 // Third party libraries
 #include "catch2.hpp"
 

@@ -15,9 +15,9 @@
 // =============================== PREAMBLE ================================= //
 // C++ standard library
 // Project sources
-#include "test_root.cc"
+#include "catch2.hpp"
 #include "bit.hpp"
-#include <vector>
+#include "test_utils.hpp"
 // Third-party libraries
 // Miscellaneous
 // ========================================================================== //
