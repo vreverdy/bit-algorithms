@@ -32,7 +32,7 @@ TEMPLATE_TEST_CASE("find: is correct for trivial single word cases", "[find]",
     auto pos = bit::find(first, last, bit::bit0); 
     auto pos_expected = std::find(first, last, bit::bit0);
 
-    REQUIRE(pos == pos_expected);
+    REQUIRE(std::distance(first, pos)==std::distance(first, pos_expected));
 }
 
 TEMPLATE_TEST_CASE("find: finding first set bit works for vectors", "[find]",
@@ -49,7 +49,7 @@ TEMPLATE_TEST_CASE("find: finding first set bit works for vectors", "[find]",
     auto pos = bit::find(first, last, bit::bit1);
     auto pos_expected = std::find(first, last, bit::bit1);
 
-    REQUIRE(pos == pos_expected);
+    REQUIRE(std::distance(first, pos)==std::distance(first, pos_expected));
 
     vec_t vec2 = {static_cast<TestType>(-1), static_cast<TestType>(-1), 3, 0};
     bit::bit_iterator<vec_iter_t> first2(vec2.begin());
@@ -58,12 +58,11 @@ TEMPLATE_TEST_CASE("find: finding first set bit works for vectors", "[find]",
     pos = bit::find(first2, last2, bit::bit0);
     pos_expected = std::find(first2, last2, bit::bit0);
 
-    REQUIRE(pos == pos_expected);
+    REQUIRE(std::distance(first, pos)==std::distance(first, pos_expected));
 }
 
 TEMPLATE_TEST_CASE("find: is ok for virtual/misaligned words", "[find]",
-    unsigned short, unsigned int, unsigned long, unsigned long long) {
-
+    unsigned short, unsigned int, unsigned long, unsigned long long) { 
     using vec_t = std::vector<TestType>;
     using vec_iter_t = typename vec_t::iterator;
 
@@ -84,7 +83,7 @@ TEMPLATE_PRODUCT_TEST_CASE("Find: multi-word",
 
     using container_type = TestType;
     using num_type = typename container_type::value_type;
-    auto container_size = 1 << 5;
+    auto container_size = 1 << 10;
     auto digits = bit::binary_digits<num_type>::value;
     container_type bitcont1 = make_random_container<container_type>
                                      (container_size); 
