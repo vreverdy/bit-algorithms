@@ -15,8 +15,9 @@
 // ============================== PREAMBLE ================================== //
 // C++ standard library
 // Project sources
-#include "test_root.cc"
+#include "catch2.hpp"
 #include "bit.hpp"
+#include "test_utils.hpp"
 // Third-party libraries
 // Miscellaneous
 // ========================================================================== //
@@ -77,6 +78,19 @@ TEMPLATE_PRODUCT_TEST_CASE("fill: single_word",
             1
     );
     REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
+
+    bit::fill(
+            std::next(bfirst, 3 + digits*(container_size - 1)), 
+            blast,
+            bit::bit1
+    );
+    std::fill(
+            std::next(bool_first, 3 + digits*(container_size - 1)), 
+            bool_last,
+            1
+    );
+    REQUIRE(std::equal(bool_first, bool_last, bfirst, blast, comparator));
+
 }
 
 TEMPLATE_PRODUCT_TEST_CASE("fill: multiple_word_subcases", 

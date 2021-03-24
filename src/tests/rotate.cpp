@@ -14,9 +14,14 @@
 
 // ============================== PREAMBLE ================================== //
 // C++ standard library
+#include <vector>
+#include <list>
+#include <forward_list>
 // Project sources
-#include "test_root.cc"
+#include "catch2.hpp"
 #include "bit.hpp"
+#include "test_utils.hpp"
+#include "test_utils.hpp"
 // Third-party libraries
 // Miscellaneous
 // ========================================================================== //

@@ -9,10 +9,11 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 option(BUILD_BENCHMARKS "Build Google Bechmarks" ON)
 
 # specify global compiler flags
-add_compile_options(-std=c++17 -march=native -pedantic -Wall -Wextra)
+add_compile_options(-std=c++17 -march=native -pedantic -Wall -Wextra -Wfatal-errors)
 
 # add the tests executable
-add_executable(tests src/tests/test_main.cc src/tests/test_root.cc)
+file(GLOB TEST_SOURCES "src/tests/*.cpp")
+add_executable(tests ${TEST_SOURCES})
 
 # configure benchmarks
 if (BUILD_BENCHMARKS)

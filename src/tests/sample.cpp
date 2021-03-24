@@ -13,6 +13,7 @@
 
 // ============================== PREAMBLE ================================== //
 // Project sources
+#include "bit.hpp"
 // Third party libraries
 #include "catch2.hpp"
 
